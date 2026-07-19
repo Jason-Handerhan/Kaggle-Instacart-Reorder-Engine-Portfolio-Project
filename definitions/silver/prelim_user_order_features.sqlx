@@ -1,0 +1,59 @@
+config {
+  type: "table",
+  schema: "building_blocks",
+  name: "prelim_user_order_features",
+  bigquery: { clusterBy: ["user_id"] },
+  description: "User order patterns (basket size, time intervals, order/reorder volumes, & distinct product counts )."
+}
+
+WITH product_first_purchases AS (
+  SELECT
+    user_id,
+    product_id,
+    MIN(order_number) as first_ordered_in
+  FROM ${ref("base_analytical_table")}
+  GROUP BY user_id, product_id
+),
+
+user_order_metrics_temp AS (
+  SELECT
+    b.user_id,
+    b.order_id,
+    b.order_number,
+    b.days_since_prior_order,
+    b.days_since_first_order,
+    COUNT(b.product_id) as basket_products,
+    SUM(b.reordered) as basket_reordered_products,
+    SUM(b.is_organic) as basket_organic_products,
+    SUM(CASE WHEN b.order_number = fp.first_ordered_in THEN 1 ELSE 0 END) as new_products_in_order
+  FROM ${ref("base_analytical_table")} b
+  INNER JOIN product_first_purchases fp
+    ON b.user_id = fp.user_id
+    AND b.product_id = fp.product_id
+  GROUP BY b.user_id, b.order_id, b.order_number, b.days_since_prior_order, b.days_since_first_order
+),
+
+user_order_metrics_temp2 AS (
+  SELECT
+    *,
+    SUM(new_products_in_order) OVER(PARTITION BY user_id ORDER BY order_number ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS user_distinct_product_count,
+    SUM(basket_products) OVER(PARTITION BY user_id ORDER BY order_number ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS user_cumulative_products,
+    SUM(basket_reordered_products) OVER(PARTITION BY user_id ORDER BY order_number ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS user_cumulative_products_reordered,
+    SUM(basket_organic_products) OVER(PARTITION BY user_id ORDER BY order_number ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS user_cumulative_organic_products
+  FROM user_order_metrics_temp
+)
+
+SELECT user_id,
+       order_id,
+       order_number,
+       days_since_prior_order,
+       days_since_first_order,
+       user_cumulative_products,
+       user_cumulative_products_reordered,
+       user_cumulative_organic_products,
+       user_distinct_product_count,
+       SAFE_DIVIDE(user_cumulative_organic_products, user_cumulative_products) AS user_organic_affinity_ratio,
+       SAFE_DIVIDE(user_cumulative_products, order_number) AS user_avg_basket_size,
+       SAFE_DIVIDE(user_cumulative_products_reordered, user_cumulative_products) AS user_reorder_ratio,
+       SAFE_DIVIDE(days_since_first_order, order_number - 1) AS user_avg_days_between_orders
+FROM user_order_metrics_temp2

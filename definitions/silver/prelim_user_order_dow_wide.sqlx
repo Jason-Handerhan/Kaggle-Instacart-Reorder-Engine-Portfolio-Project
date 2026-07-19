@@ -1,0 +1,22 @@
+config {
+  type: "table",
+  schema: "building_blocks",
+  name: "prelim_user_order_dow_wide",
+  bigquery: { clusterBy: ["user_id"] },
+  description: "Create wide table of historical product purchases indicating the day of week for each purchase."
+}
+
+SELECT
+  user_id,
+  product_id,
+  order_id,
+  order_number,
+  SUM(CASE WHEN order_dow = 0 THEN user_product_same_dow_count ELSE 0 END) as user_product_same_dow_count_0,
+  SUM(CASE WHEN order_dow = 1 THEN user_product_same_dow_count ELSE 0 END) as user_product_same_dow_count_1,
+  SUM(CASE WHEN order_dow = 2 THEN user_product_same_dow_count ELSE 0 END) as user_product_same_dow_count_2,
+  SUM(CASE WHEN order_dow = 3 THEN user_product_same_dow_count ELSE 0 END) as user_product_same_dow_count_3,
+  SUM(CASE WHEN order_dow = 4 THEN user_product_same_dow_count ELSE 0 END) as user_product_same_dow_count_4,
+  SUM(CASE WHEN order_dow = 5 THEN user_product_same_dow_count ELSE 0 END) as user_product_same_dow_count_5,
+  SUM(CASE WHEN order_dow = 6 THEN user_product_same_dow_count ELSE 0 END) as user_product_same_dow_count_6
+FROM ${ref("prelim_user_product_features")}
+GROUP BY user_id, product_id, order_id, order_number

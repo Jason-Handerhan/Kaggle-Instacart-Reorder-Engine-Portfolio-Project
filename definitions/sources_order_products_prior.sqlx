@@ -1,0 +1,7 @@
+config {
+  type: "declaration",
+  database: "instacart-ml-model",
+  schema: "instacart",
+  name: "order_products_prior",
+  description: "Order basket line-item datasets containing item reorder labels"
+}
