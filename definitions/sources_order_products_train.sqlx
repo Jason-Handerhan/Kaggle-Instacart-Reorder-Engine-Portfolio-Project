@@ -2,6 +2,6 @@ config {
   type: "declaration",
   database: "instacart-ml-model",
   schema: "instacart",
-  name: "order_products_train",
+  name: "order_products__train",
   description: "Second order basket line-item datasets containing item reorder labels"
 }

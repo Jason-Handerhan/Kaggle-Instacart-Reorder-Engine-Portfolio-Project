@@ -9,10 +9,10 @@ SELECT CAST(order_id AS INT64) AS order_id,
        CAST(product_id AS INT64) AS product_id,
        CAST(add_to_cart_order AS INT64) AS add_to_cart_order,
        CAST(reordered AS INT64) AS reordered
-FROM ${ref("order_products_prior")}
+FROM ${ref("order_products__prior")}
 UNION ALL
 SELECT CAST(order_id AS INT64) AS order_id,
        CAST(product_id AS INT64) AS product_id,
        CAST(add_to_cart_order AS INT64) AS add_to_cart_order,
        CAST(reordered AS INT64) AS reordered
-FROM ${ref("order_products_train")}
+FROM ${ref("order_products__train")}
