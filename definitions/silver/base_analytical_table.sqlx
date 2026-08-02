@@ -1,0 +1,26 @@
+config {
+  type: "table",
+  schema: "building_blocks",
+  name: "base_analytical_table",
+  bigquery: {
+    clusterBy: ["user_id"]
+  },
+  description: "Base analytical table that compiles cleaned orders, products, departments, and aisles to use for generating features."
+}
+
+SELECT
+  o.*,
+  op.product_id,
+  op.add_to_cart_order,
+  op.reordered,
+  p.aisle_id,
+  a.aisle,
+  p.department_id,
+  d.department,
+  p.product_name,
+  p.is_organic
+FROM ${ref("cleansed_orders")} o
+INNER JOIN ${ref("order_products_cleansed")} op ON o.order_id = op.order_id
+INNER JOIN ${ref("cleansed_products")} p ON op.product_id = p.product_id
+INNER JOIN ${ref("departments")} d ON p.department_id = d.department_id
+INNER JOIN ${ref("aisles")} a ON p.aisle_id = a.aisle_id

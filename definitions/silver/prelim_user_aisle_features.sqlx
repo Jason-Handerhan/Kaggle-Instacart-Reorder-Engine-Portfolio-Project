@@ -1,0 +1,47 @@
+config {
+  type: "table",
+  schema: "building_blocks",
+  name: "prelim_user_aisle_features",
+  bigquery: { clusterBy: ["user_id"] },
+  description: "User aisle-level categorical shares."
+}
+
+WITH user_category_temp AS (
+  SELECT 
+    user_id, 
+    order_id, 
+    order_number, 
+    aisle_id AS category_id, 
+    COUNT(*) AS user_order_category_products
+  FROM ${ref("base_analytical_table")}
+  GROUP BY user_id, order_id, order_number, category_id
+),
+
+user_category_temp2 AS (
+  SELECT
+    user_id,
+    order_id,
+    order_number,
+    category_id,
+    user_order_category_products,
+    SUM(user_order_category_products) OVER(
+      PARTITION BY user_id, category_id 
+      ORDER BY order_number
+    ) AS user_cumulative_category_products,
+    SUM(user_order_category_products) OVER(
+      PARTITION BY user_id 
+      ORDER BY order_number 
+      RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+    ) AS user_cumulative_products
+  FROM user_category_temp
+)
+
+SELECT 
+  user_id,
+  order_id,
+  order_number,
+  category_id AS aisle_id,
+  user_cumulative_category_products AS user_cumulative_aisle_products,
+  user_cumulative_products,
+  SAFE_DIVIDE(user_cumulative_category_products, user_cumulative_products) AS user_aisle_share
+FROM user_category_temp2

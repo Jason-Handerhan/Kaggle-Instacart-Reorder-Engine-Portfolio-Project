@@ -1,0 +1,18 @@
+config {
+  type: "table",
+  schema: "instacart",
+  name: "order_products_cleansed",
+  description: "Unified table combining prior and training set items to get the full transactional baskets"
+}
+
+SELECT CAST(order_id AS INT64) AS order_id,
+       CAST(product_id AS INT64) AS product_id,
+       CAST(add_to_cart_order AS INT64) AS add_to_cart_order,
+       CAST(reordered AS INT64) AS reordered
+FROM ${ref("order_products__prior")}
+UNION ALL
+SELECT CAST(order_id AS INT64) AS order_id,
+       CAST(product_id AS INT64) AS product_id,
+       CAST(add_to_cart_order AS INT64) AS add_to_cart_order,
+       CAST(reordered AS INT64) AS reordered
+FROM ${ref("order_products__train")}

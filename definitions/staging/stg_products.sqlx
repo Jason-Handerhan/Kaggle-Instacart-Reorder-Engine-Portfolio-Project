@@ -1,0 +1,17 @@
+config {
+  type: "table",
+  schema: "instacart",
+  name: "cleansed_products",
+  description: "Product dimension records with flag tracking if product is organic based on text lookup"
+}
+
+SELECT
+  CAST(product_id AS INT64) AS product_id,
+  CAST(aisle_id AS INT64) AS aisle_id,
+  CAST(department_id AS INT64) AS department_id,
+  product_name,
+  CASE
+    WHEN REGEXP_CONTAINS(LOWER(product_name), r'(^|[^a-z])organic([^a-z]|$)') THEN 1
+    ELSE 0
+  END AS is_organic
+FROM ${ref("products")}

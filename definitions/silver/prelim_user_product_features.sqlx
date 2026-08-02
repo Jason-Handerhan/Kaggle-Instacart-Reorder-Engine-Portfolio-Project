@@ -1,0 +1,62 @@
+config {
+  type: "table",
+  schema: "building_blocks",
+  name: "prelim_user_product_features",
+  bigquery: { clusterBy: ["user_id"] },
+  description: "User-product interaction metrics"
+}
+
+WITH user_product_metrics_temp AS (
+  SELECT
+    user_id, order_id, order_number, order_dow, time_of_day, product_id,
+    days_since_first_order, add_to_cart_order, reordered, 1 AS purchased_indicator,
+    COUNT(product_id) OVER(PARTITION BY order_id) AS total_cart_items,
+    SAFE_DIVIDE(add_to_cart_order, COUNT(product_id) OVER(PARTITION BY order_id)) AS relative_cart_position
+  FROM ${ref("base_analytical_table")}
+),
+
+user_product_metrics_temp2 AS (
+  SELECT
+    user_id, order_id, order_number, order_dow, time_of_day, product_id,
+    days_since_first_order, add_to_cart_order, purchased_indicator, total_cart_items, relative_cart_position,
+    COUNT(*) OVER(PARTITION BY user_id, product_id ORDER BY order_number) AS user_product_cumulative_purchases,
+    AVG(add_to_cart_order) OVER(PARTITION BY user_id, product_id ORDER BY order_number) AS user_product_avg_cart_position,
+    AVG(relative_cart_position) OVER(PARTITION BY user_id, product_id ORDER BY order_number) AS user_product_avg_relative_cart_position,
+    LAG(days_since_first_order) OVER(PARTITION BY user_id, product_id ORDER BY order_number) AS user_product_prev_purchase_day,
+    MIN(days_since_first_order) OVER(PARTITION BY user_id, product_id ORDER BY order_number) AS user_product_first_purchase_day,
+    LAG(order_number) OVER(PARTITION BY user_id, product_id ORDER BY order_number) AS user_product_order_number_1prior,
+    LAG(order_number, 2) OVER(PARTITION BY user_id, product_id ORDER BY order_number) AS user_product_order_number_2prior,
+    SUM(reordered) OVER(PARTITION BY user_id ORDER BY order_number) AS user_total_reorders,
+    SUM(reordered) OVER(PARTITION BY user_id, product_id ORDER BY order_number) AS user_product_total_reorders
+  FROM user_product_metrics_temp
+),
+
+user_product_metrics_temp3 AS (
+  SELECT
+    *,
+    COUNT(*) OVER(PARTITION BY user_id, product_id, order_dow ORDER BY order_number) AS user_product_same_dow_count,
+    COUNT(*) OVER(PARTITION BY user_id, product_id, time_of_day ORDER BY order_number) AS user_product_same_tod_count,
+    CASE
+      WHEN (order_number - user_product_order_number_1prior) = 1 AND (order_number - user_product_order_number_2prior) = 2 THEN 3
+      WHEN (order_number - user_product_order_number_1prior) = 1 THEN 2
+      ELSE 1
+    END AS user_product_last3order_streak
+  FROM user_product_metrics_temp2
+)
+
+SELECT
+  user_id, order_id, order_number, order_dow, time_of_day, product_id, add_to_cart_order, purchased_indicator,
+  MAX(user_product_cumulative_purchases) AS user_product_cumulative_purchases,
+  MAX(user_product_avg_cart_position) AS user_product_avg_cart_position,
+  MAX(user_product_avg_relative_cart_position) AS user_product_avg_relative_cart_position,
+  MAX(user_product_last3order_streak) AS user_product_last3order_streak,
+  MAX(user_product_same_dow_count) AS user_product_same_dow_count,
+  MAX(user_product_same_tod_count) AS user_product_same_tod_count,
+  MAX(days_since_first_order) AS user_product_last_purchased_day,
+  MAX(user_product_first_purchase_day) AS user_product_first_purchase_day,
+  MAX(user_product_prev_purchase_day) AS user_product_prev_purchase_day,
+  MAX(user_product_total_reorders) AS user_product_cumulative_reorders,
+  COALESCE(SAFE_DIVIDE(MAX(user_product_total_reorders), MAX(user_total_reorders)), 0) AS user_product_reorder_vs_total_reorders_ratio,
+  MAX(order_number) AS user_product_last_purchased_order_number
+FROM user_product_metrics_temp3
+GROUP BY user_id, order_id, order_number, order_dow, time_of_day, product_id, add_to_cart_order, purchased_indicator

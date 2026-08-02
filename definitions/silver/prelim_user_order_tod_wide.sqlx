@@ -1,0 +1,19 @@
+config {
+  type: "table",
+  schema: "building_blocks",
+  name: "prelim_user_order_tod_wide",
+  bigquery: { clusterBy: ["user_id"] },
+  description: "Create wide table of historical product purchases indicating the time of day for each purchase."
+}
+
+SELECT
+  user_id,
+  product_id,
+  order_id,
+  order_number,
+  SUM(CASE WHEN time_of_day = 'morning' THEN user_product_same_tod_count ELSE 0 END) as user_product_same_tod_count_morning,
+  SUM(CASE WHEN time_of_day = 'afternoon' THEN user_product_same_tod_count ELSE 0 END) as user_product_same_tod_count_afternoon,
+  SUM(CASE WHEN time_of_day = 'evening' THEN user_product_same_tod_count ELSE 0 END) as user_product_same_tod_count_evening,
+  SUM(CASE WHEN time_of_day = 'nighttime' THEN user_product_same_tod_count ELSE 0 END) as user_product_same_tod_count_nighttime
+FROM ${ref("prelim_user_product_features")}
+GROUP BY user_id, product_id, order_id, order_number
