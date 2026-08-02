@@ -1,5 +1,5 @@
 #Root File Location
-source_loc = '/home/jupyter/Instacart_Reorder_Engine'
+root_loc = '/home/jupyter/Instacart_Reorder_Engine'
 
 #Source File Location
 source_loc = '/home/jupyter/Instacart_Reorder_Engine/src'
