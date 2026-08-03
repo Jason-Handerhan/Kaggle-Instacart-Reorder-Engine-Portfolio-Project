@@ -1,0 +1,1 @@
+{"best_params": {"num_leaves": 121, "feature_fraction": 0.7995165422145638, "reg_lambda": 0.022555777935294646}, "optimal_trees": 62, "best_trees_per_fold": [43, 61, 83]}

@@ -19,3 +19,10 @@ service_account.json
 *.parquet
 *.pkl
 *.h5
+
+#Root Directory Backup Folder
+/backup/
+
+# MLflow Tracking Database
+mlflow.db
+mlartifacts/
