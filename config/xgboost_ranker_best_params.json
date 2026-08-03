@@ -1,1 +1,1 @@
-{"best_params": {"max_depth": 6, "colsample_bytree": 0.6162300621195683, "reg_lambda": 0.5970986842239486}, "best_trees_per_fold": [241, 50, 268]}
+{"best_params": {"max_depth": 6, "colsample_bytree": 0.8025910404521154, "reg_lambda": 1.8448648089412258}, "optimal_trees": 345, "best_trees_per_fold": [269, 468, 300]}
