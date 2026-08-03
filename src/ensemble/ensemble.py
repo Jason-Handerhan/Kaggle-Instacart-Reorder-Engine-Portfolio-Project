@@ -14,7 +14,7 @@ project_root = os.path.abspath(os.path.join(os.getcwd(), "../../"))
 if project_root not in sys.path:
     sys.path.append(project_root)
 
-from config.config import BUCKET_NAME, source_loc, output_loc, config_loc, MLFLOW_TRACKING_URI
+from config.config import BUCKET_NAME, source_loc, output_loc, config_loc, MLFLOW_TRACKING_URI, ensemble_trials
 
 sys.path.insert(0, source_loc)
 from utilities.utility_functions import compute_rrf_scores, calculate_recall_at_k, evaluate_ensemble
@@ -192,27 +192,27 @@ if __name__ == "__main__":
 
         #lgbm ranker + xgboost classifier weight tuning
         study1 = optuna.create_study(direction='maximize')
-        study1.optimize(obj_ens1, n_trials=30)
+        study1.optimize(obj_ens1, n_trials=ensemble_trials)
         best_weights['ens1_lgb_rank_xgb_class'] = study1.best_params
 
         #lgbm ranker + lgbm classifer weight tuning
         study2 = optuna.create_study(direction='maximize')
-        study2.optimize(obj_ens2, n_trials=30)
+        study2.optimize(obj_ens2, n_trials=ensemble_trials)
         best_weights['ens2_lgb_rank_lgb_class'] = study2.best_params
 
         #xgboost ranker + lgbm classifer weight tuning
         study3 = optuna.create_study(direction='maximize')
-        study3.optimize(obj_ens3, n_trials=30)
+        study3.optimize(obj_ens3, n_trials=ensemble_trials)
         best_weights['ens3_xgb_rank_lgb_class'] = study3.best_params
 
         #xgboost ranker + xgboost classifer weight tuning
         study4 = optuna.create_study(direction='maximize')
-        study4.optimize(obj_ens4, n_trials=30)
+        study4.optimize(obj_ens4, n_trials=ensemble_trials)
         best_weights['ens4_xgb_rank_xgb_class'] = study4.best_params
 
         #All base model ensemble
         study5 = optuna.create_study(direction='maximize')
-        study5.optimize(obj_ens5, n_trials=30)
+        study5.optimize(obj_ens5, n_trials=ensemble_trials)
         best_weights['ens5_all_base_models'] = study5.best_params
 
         # ----- SAVE OPTIMAL ENSEMBLE WEIGHTS -----

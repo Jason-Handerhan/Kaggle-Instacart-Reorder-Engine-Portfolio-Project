@@ -29,7 +29,7 @@ project_root = os.path.abspath(os.path.join(os.getcwd(), "../../"))
 if project_root not in sys.path:
     sys.path.append(project_root)
 
-from config.config import BUCKET_NAME, source_loc, output_loc, config_loc, MLFLOW_TRACKING_URI
+from config.config import BUCKET_NAME, source_loc, output_loc, config_loc, MLFLOW_TRACKING_URI, base_model_trials
 
 sys.path.insert(0, source_loc)
 from utilities.utility_functions import split_data, select_features, get_bq_data_full, pickle_and_stream_to_gcs
@@ -214,7 +214,7 @@ if __name__ == "__main__":
         
         #Optimize utilizing objective function
         #Set trials = 25 to enable the study to wrong long enough to find optimized parameters while also balancing data size
-        study.optimize(objective, n_trials=25)
+        study.optimize(objective, n_trials=base_model_trials)
         
         #Get optimal trees per fold
         optimal_trees = int(np.mean(best_trees_per_fold))

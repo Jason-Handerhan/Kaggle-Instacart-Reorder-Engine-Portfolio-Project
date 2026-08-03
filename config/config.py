@@ -28,3 +28,9 @@ PY_ENV = "/opt/micromamba/envs/jupyterlab/bin/python3"
 
 #mlflow tracking uri
 MLFLOW_TRACKING_URI = "sqlite:///mlflow.db"
+
+#Base Model Bayesian Search Trials
+base_model_trials = 25
+
+#Optuna Ensemble Weight Optimization Trials
+ensemble_trials = 30
