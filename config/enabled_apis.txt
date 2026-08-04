@@ -1,0 +1,27 @@
+# Compute & AI Workspaces
+aiplatform.googleapis.com
+compute.googleapis.com
+notebooks.googleapis.com
+
+# Data Warehouse & Dataform Pipeline
+bigquery.googleapis.com
+bigqueryconnection.googleapis.com
+bigquerystorage.googleapis.com
+dataform.googleapis.com
+
+# Cloud Storage Landing & Models
+storage.googleapis.com
+storage-api.googleapis.com
+
+# IAM & Resource Governance
+iam.googleapis.com
+iamcredentials.googleapis.com
+cloudresourcemanager.googleapis.com
+
+# Service Management & Secrets
+serviceusage.googleapis.com
+secretmanager.googleapis.com
+
+# MLOps & Container Ecosystem
+composer.googleapis.com
+artifactregistry.googleapis.com
