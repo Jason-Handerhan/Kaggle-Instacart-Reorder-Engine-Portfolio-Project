@@ -1,0 +1,17 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "98a9e496bb1d38c5ec5a",
+  "position": {
+    "x": 39,
+    "y": 76.579915134184091,
+    "z": 1000,
+    "height": 38.128078817733993,
+    "width": 183,
+    "tabOrder": 2000
+  },
+  "visualGroup": {
+    "displayName": "Recall Card Text",
+    "groupMode": "ScaleMode"
+  },
+  "parentGroupName": "83177cfc1426574316da"
+}

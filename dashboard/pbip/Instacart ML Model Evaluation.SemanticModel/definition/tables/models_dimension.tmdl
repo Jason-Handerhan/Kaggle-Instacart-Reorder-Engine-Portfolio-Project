@@ -1,0 +1,24 @@
+table models_dimension
+	lineageTag: f4c33ecd-ad70-4482-8242-5e93c8796160
+
+	column Model
+		dataType: string
+		lineageTag: 1b3f608b-ce59-456f-a512-924e74ea1eef
+		summarizeBy: none
+		sourceColumn: Model
+
+		annotation SummarizationSetBy = Automatic
+
+	partition models_dimension = m
+		mode: import
+		source =
+				let
+				    Source = GoogleBigQuery.Database([Implementation="2.0"]),
+				    #"instacart-ml-model_Database" = Source{[Name="instacart-ml-model",Kind="Database"]}[Data],
+				    ml_model_results_Schema = #"instacart-ml-model_Database"{[Name="ml_model_results",Kind="Schema"]}[Data],
+				    models_dimension_Table = ml_model_results_Schema{[Name="models_dimension",Kind="Table"]}[Data]
+				in
+				    models_dimension_Table
+
+	annotation PBI_ResultType = Table
+

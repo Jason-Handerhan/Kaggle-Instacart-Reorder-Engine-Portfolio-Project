@@ -1,0 +1,17 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "de52639bbe21f1d00fca",
+  "position": {
+    "x": 589.816283543889,
+    "y": 0.79825826363182273,
+    "z": 1000,
+    "height": 107.02751418997804,
+    "width": 212.00000000000003,
+    "tabOrder": 3000
+  },
+  "visualGroup": {
+    "displayName": "Churn Profit Lift Card",
+    "groupMode": "ScaleMode"
+  },
+  "parentGroupName": "86a8c4dc1f61d96104c3"
+}

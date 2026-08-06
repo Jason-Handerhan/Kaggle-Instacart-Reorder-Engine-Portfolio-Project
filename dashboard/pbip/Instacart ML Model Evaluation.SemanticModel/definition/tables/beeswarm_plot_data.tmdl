@@ -1,0 +1,163 @@
+table beeswarm_plot_data
+	lineageTag: 5ac294ae-f8c4-4a70-ad28-a549b8512de3
+
+	column unique_plot_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 4aecb88a-493e-4582-9e4b-a9ed7a3b7145
+		summarizeBy: sum
+		sourceColumn: unique_plot_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column user_id
+		dataType: int64
+		formatString: 0
+		lineageTag: dba0cb74-1851-44b2-b182-187579769a0c
+		summarizeBy: sum
+		sourceColumn: user_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column anchor_order_number
+		dataType: int64
+		formatString: 0
+		lineageTag: d9c47148-f7ec-4183-9a78-264a6e78d305
+		summarizeBy: sum
+		sourceColumn: anchor_order_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column label_reordered
+		dataType: int64
+		formatString: 0
+		lineageTag: 80439b15-9358-4570-b46f-ab72c96600b5
+		summarizeBy: sum
+		sourceColumn: label_reordered
+
+		annotation SummarizationSetBy = Automatic
+
+	column prediction
+		dataType: double
+		lineageTag: 3e15713b-d46a-44dc-9579-ccb7350653d5
+		summarizeBy: sum
+		sourceColumn: prediction
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column feature_name
+		dataType: string
+		lineageTag: 5a6d6056-7456-4462-8359-ca750a34f9a4
+		summarizeBy: none
+		sourceColumn: feature_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column feature_value
+		dataType: double
+		lineageTag: a2a8f017-21a7-4acb-b3e3-5a95265552c4
+		summarizeBy: sum
+		sourceColumn: feature_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column shap_value
+		dataType: double
+		lineageTag: 6abd305f-53c6-4de4-a3bb-6507b70212a4
+		summarizeBy: sum
+		sourceColumn: shap_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column model_name
+		dataType: string
+		lineageTag: cb9b06f4-3999-4743-8b2c-94dad8af5a07
+		summarizeBy: none
+		sourceColumn: model_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column model_id
+		dataType: string
+		lineageTag: 6acc0851-c3a2-42ee-ba00-e8766424afdf
+		summarizeBy: none
+		sourceColumn: model_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column split
+		dataType: string
+		lineageTag: c80e196c-dc94-460e-b12c-915e8a2c9559
+		summarizeBy: none
+		sourceColumn: split
+
+		annotation SummarizationSetBy = Automatic
+
+	column model_type
+		dataType: string
+		lineageTag: a0216fea-82fe-4816-9738-bf47a20e9913
+		summarizeBy: none
+		sourceColumn: model_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column feature_value_normalized
+		dataType: double
+		lineageTag: ab36ad41-d703-44ef-862a-f1f01b808aba
+		summarizeBy: sum
+		sourceColumn: feature_value_normalized
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column mean_absolute_shap
+		dataType: double
+		lineageTag: 233db3cd-d249-4988-afff-8e41e47d963d
+		summarizeBy: sum
+		sourceColumn: mean_absolute_shap
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column feature_importance_rank
+		dataType: double
+		lineageTag: dece55d3-88a7-425c-b0ad-a48e348093ed
+		summarizeBy: sum
+		sourceColumn: feature_importance_rank
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column feature_unique_id
+		dataType: int64
+		formatString: 0
+		lineageTag: dcfa194a-37ca-4113-9a20-5b2fdde3e8ad
+		summarizeBy: sum
+		sourceColumn: feature_unique_id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition beeswarm_plot_data = m
+		mode: import
+		source =
+				let
+				    Source = GoogleBigQuery.Database([Implementation="2.0"]),
+				    #"instacart-ml-model_Database" = Source{[Name="instacart-ml-model",Kind="Database"]}[Data],
+				    ml_model_results_Schema = #"instacart-ml-model_Database"{[Name="ml_model_results",Kind="Schema"]}[Data],
+				    beeswarm_plot_data_Table = ml_model_results_Schema{[Name="beeswarm_plot_data",Kind="Table"]}[Data]
+				in
+				    beeswarm_plot_data_Table
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

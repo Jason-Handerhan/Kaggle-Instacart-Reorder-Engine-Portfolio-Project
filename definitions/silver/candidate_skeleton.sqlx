@@ -1,0 +1,50 @@
+config {
+  type: "table",
+  schema: "building_blocks",
+  name: "candidate_skeleton",
+  bigquery: {
+    clusterBy: ["user_id"],
+    additionalOptions: {
+      expiration_timestamp: "TIMESTAMP_ADD(CURRENT_TIMESTAMP(), INTERVAL 14 DAY)"
+    }
+  },
+  description: "Create skeleton of all products a user has purchased prior to the label order. This table provides a historical anchor order for joining to preliminary features to ensure no data leakage."
+}
+
+WITH skeleton_temp AS(
+  SELECT DISTINCT
+    hist.user_id,
+    anchor.order_id,
+    anchor.order_number,
+    anchor.days_since_first_order AS days_since_first_order,
+    hist.product_id as candidate_product_id,
+    hist.aisle_id,
+    hist.department_id
+  FROM ${ref("base_analytical_table")} hist
+  INNER JOIN ${ref("cleansed_orders")} anchor
+    ON hist.user_id = anchor.user_id
+    AND hist.order_number <= anchor.order_number
+),
+
+labels AS (
+  SELECT order_id, product_id
+  FROM ${ref("base_analytical_table")}
+)
+
+SELECT
+  hist.*,
+  l_cntxt.order_id AS label_order_id,
+  l_cntxt.order_number AS label_order_number,
+  CASE WHEN l.product_id IS NOT NULL THEN 1 ELSE 0 END AS label_reordered,
+  l_cntxt.order_dow AS label_order_dow,
+  l_cntxt.order_hour_of_day AS label_order_hour_of_day,
+  l_cntxt.days_since_prior_order AS label_days_since_prior_order,
+  l_cntxt.time_of_day AS label_time_of_day,
+  l_cntxt.days_since_first_order AS label_days_since_first_order
+FROM skeleton_temp hist
+INNER JOIN ${ref("cleansed_orders")} l_cntxt
+  ON hist.user_id = l_cntxt.user_id
+  AND l_cntxt.order_number = (hist.order_number + 1)
+LEFT JOIN labels l
+  ON l_cntxt.order_id = l.order_id
+  AND hist.candidate_product_id = l.product_id

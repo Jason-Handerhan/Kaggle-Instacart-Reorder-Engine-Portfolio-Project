@@ -1,0 +1,66 @@
+table power_bi_shap_barplots
+	lineageTag: 21e22476-b942-4018-bfd6-62c1ebaa6eab
+
+	column split
+		dataType: string
+		lineageTag: db9440fe-91a4-4afe-98c9-cb5556e72b68
+		summarizeBy: none
+		sourceColumn: split
+
+		annotation SummarizationSetBy = Automatic
+
+	column model_id
+		dataType: string
+		lineageTag: 6a0acf95-01fc-4a11-a214-c63d1d1fcfdc
+		summarizeBy: none
+		sourceColumn: model_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column model_name
+		dataType: string
+		lineageTag: a99a2e34-bc31-4b97-b112-903665397089
+		summarizeBy: none
+		sourceColumn: model_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column feature_name
+		dataType: string
+		lineageTag: bdf4fa8a-bd7e-4ce0-bbdf-66a4cf16215c
+		summarizeBy: none
+		sourceColumn: feature_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column mean_absolute_shap
+		dataType: double
+		lineageTag: 5224f1ad-5601-427c-b5ec-08861352e183
+		summarizeBy: sum
+		sourceColumn: mean_absolute_shap
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column model_type
+		dataType: string
+		lineageTag: d9dc66ee-1645-4a59-99a8-713a18e0f88c
+		summarizeBy: none
+		sourceColumn: model_type
+
+		annotation SummarizationSetBy = Automatic
+
+	partition power_bi_shap_barplots = m
+		mode: import
+		source =
+				let
+				    Source = GoogleBigQuery.Database([Implementation="2.0"]),
+				    #"instacart-ml-model_Database" = Source{[Name="instacart-ml-model",Kind="Database"]}[Data],
+				    ml_model_results_Schema = #"instacart-ml-model_Database"{[Name="ml_model_results",Kind="Schema"]}[Data],
+				    power_bi_shap_barplots_Table = ml_model_results_Schema{[Name="power_bi_shap_barplots",Kind="Table"]}[Data]
+				in
+				    power_bi_shap_barplots_Table
+
+	annotation PBI_ResultType = Table
+

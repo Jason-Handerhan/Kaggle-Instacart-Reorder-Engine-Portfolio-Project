@@ -1,0 +1,91 @@
+config {
+  type: "table",
+  schema: "ml_model_feature_table",
+  name: "skeleton_features",
+  bigquery: {
+    clusterBy: ["user_id"],
+    additionalOptions: {
+      expiration_timestamp: "TIMESTAMP_ADD(CURRENT_TIMESTAMP(), INTERVAL 7 DAY)"
+    }
+  },
+  description: "Create preliminary table. Join prelim features to candidate skeleton and forward-filling behavioral histories for user products not part of the historical anchor order."
+}
+
+SELECT
+  cs.*,
+
+  -- Foward fill last non-null value for products that were not part of an order
+  LAST_VALUE(upf.user_product_cumulative_purchases IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.candidate_product_id ORDER BY cs.order_number) AS user_product_cumulative_purchases,
+  LAST_VALUE(upf.user_product_avg_cart_position IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.candidate_product_id ORDER BY cs.order_number) AS user_product_avg_cart_position,
+  LAST_VALUE(upf.user_product_avg_relative_cart_position IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.candidate_product_id ORDER BY cs.order_number) AS user_product_avg_relative_cart_position,
+  LAST_VALUE(upf.user_product_last_purchased_day IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.candidate_product_id ORDER BY cs.order_number) AS user_product_last_purchased_day,
+  LAST_VALUE(upf.user_product_first_purchase_day IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.candidate_product_id ORDER BY cs.order_number) AS user_product_first_purchase_day,
+  LAST_VALUE(upf.user_product_prev_purchase_day IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.candidate_product_id ORDER BY cs.order_number) AS user_product_prev_purchase_day,
+  LAST_VALUE(upf.user_product_last_purchased_order_number IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.candidate_product_id ORDER BY cs.order_number) AS user_product_last_purchased_order_number,
+  LAST_VALUE(upf.user_product_reorder_vs_total_reorders_ratio IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.candidate_product_id ORDER BY cs.order_number) AS user_product_reorder_vs_total_reorders_ratio,
+  LAST_VALUE(upf.user_product_cumulative_reorders IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.candidate_product_id ORDER BY cs.order_number) AS user_product_cumulative_reorders,
+
+  --Fill user_product_last3order_streak nulls with 0 to indicate the streak is 0 when a product is not ordered
+  COALESCE(upf.user_product_last3order_streak, 0) AS user_product_last3order_streak,
+
+  --Leave user product add to cart order for their order prior to the label as null if it was not part of the order
+  upf.add_to_cart_order AS user_product_cart_position_last_order,
+
+  -- Forward fill wide dow counts
+  LAST_VALUE(dow.user_product_same_dow_count_0 IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.candidate_product_id ORDER BY cs.order_number) AS user_product_same_dow_count_0,
+  LAST_VALUE(dow.user_product_same_dow_count_1 IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.candidate_product_id ORDER BY cs.order_number) AS user_product_same_dow_count_1,
+  LAST_VALUE(dow.user_product_same_dow_count_2 IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.candidate_product_id ORDER BY cs.order_number) AS user_product_same_dow_count_2,
+  LAST_VALUE(dow.user_product_same_dow_count_3 IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.candidate_product_id ORDER BY cs.order_number) AS user_product_same_dow_count_3,
+  LAST_VALUE(dow.user_product_same_dow_count_4 IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.candidate_product_id ORDER BY cs.order_number) AS user_product_same_dow_count_4,
+  LAST_VALUE(dow.user_product_same_dow_count_5 IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.candidate_product_id ORDER BY cs.order_number) AS user_product_same_dow_count_5,
+  LAST_VALUE(dow.user_product_same_dow_count_6 IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.candidate_product_id ORDER BY cs.order_number) AS user_product_same_dow_count_6,
+
+  -- Forward fill wide tod counts
+  LAST_VALUE(tod.user_product_same_tod_count_morning IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.candidate_product_id ORDER BY cs.order_number) AS user_product_same_tod_count_morning,
+  LAST_VALUE(tod.user_product_same_tod_count_afternoon IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.candidate_product_id ORDER BY cs.order_number) AS user_product_same_tod_count_afternoon,
+  LAST_VALUE(tod.user_product_same_tod_count_evening IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.candidate_product_id ORDER BY cs.order_number) AS user_product_same_tod_count_evening,
+  LAST_VALUE(tod.user_product_same_tod_count_nighttime IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.candidate_product_id ORDER BY cs.order_number) AS user_product_same_tod_count_nighttime,
+
+  -- Forward fill last non-null value for user department and user aisle preliminary features
+  LAST_VALUE(a.user_cumulative_aisle_products IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.aisle_id ORDER BY cs.order_number) AS user_cumulative_aisle_products,
+  LAST_VALUE(d.user_cumulative_department_products IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.department_id ORDER BY cs.order_number) AS user_cumulative_department_products,
+
+  -- Add preliminary order features
+  COALESCE(o.user_avg_days_between_orders, 0) AS user_avg_days_between_orders,
+  COALESCE(o.user_distinct_product_count, 0) AS user_distinct_product_count,
+  COALESCE(o.user_organic_affinity_ratio, 0) AS user_organic_affinity_ratio,
+  COALESCE(o.user_avg_basket_size, 0) AS user_avg_basket_size,
+  COALESCE(o.user_reorder_ratio, 0) AS user_reorder_ratio,
+  COALESCE(o.user_cumulative_products, 0) AS user_cumulative_products,
+  COALESCE(o.user_cumulative_products_reordered, 0) AS user_cumulative_products_reordered
+
+FROM ${ref("candidate_skeleton")} cs
+LEFT JOIN ${ref("prelim_user_product_features")} upf
+  ON cs.user_id = upf.user_id
+  AND cs.order_id = upf.order_id
+  AND cs.order_number = upf.order_number
+  AND cs.candidate_product_id = upf.product_id
+LEFT JOIN ${ref("prelim_user_order_dow_wide")} dow
+  ON cs.user_id = dow.user_id
+  AND cs.order_id = dow.order_id
+  AND cs.order_number = dow.order_number
+  AND cs.candidate_product_id = dow.product_id
+LEFT JOIN ${ref("prelim_user_order_tod_wide")} tod
+  ON cs.user_id = tod.user_id
+  AND cs.order_id = tod.order_id
+  AND cs.order_number = tod.order_number
+  AND cs.candidate_product_id = tod.product_id
+LEFT JOIN ${ref("prelim_user_aisle_features")} a
+  ON cs.user_id = a.user_id
+  AND cs.order_id = a.order_id
+  AND cs.order_number = a.order_number
+  AND cs.aisle_id = a.aisle_id
+LEFT JOIN ${ref("prelim_user_department_features")} d
+  ON cs.user_id = d.user_id
+  AND cs.order_id = d.order_id
+  AND cs.order_number = d.order_number
+  AND cs.department_id = d.department_id
+LEFT JOIN ${ref("prelim_user_order_features")} o
+  ON cs.user_id = o.user_id
+  AND cs.order_id = o.order_id
+  AND cs.order_number = o.order_number

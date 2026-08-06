@@ -1,0 +1,367 @@
+table _Financial_Impact_Measures
+	lineageTag: bbbab0bf-f97f-4f11-bc56-5f0fdd28f05e
+
+	measure Baseline_Profit = [SEC_2025_Total_Revenue] * [SEC_2025_Profit_Margin]
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: abc642a0-ebdd-45b9-bf08-594d93bc781e
+
+	measure Conversion_Profit_Lift =
+			
+			VAR Annual_Orders = [SEC_2025_Annual_Orders]
+			VAR Profit_Margin = [SEC_2025_Profit_Margin]
+			VAR Base_AOV = [Base_AOV]
+			
+			VAR Recall = IF(SELECTEDVALUE(evaluation_metrics[Model]) = "No Widget", 0, [Recall])
+			VAR RecallUnits = Recall / 0.10
+			
+			VAR Extra_Orders = Annual_Orders * (RecallUnits * [Conversion Lift per 10% Recall Value])
+			
+			RETURN
+			Extra_Orders * Base_AOV * Profit_Margin
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: c682ec7d-5db3-40ad-902b-ae0a6e8e8c64
+
+	measure Base_AOV = DIVIDE([SEC_2025_Total_Revenue], [SEC_2025_Annual_Orders], 0)
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 34192899-47d0-480c-8964-13608f6e3ba8
+
+	measure Conversion_Rate = 'Conversion Rate'[Conversion Rate Value]
+		lineageTag: 3577128d-d96c-40b8-ad4a-53a8cdc116c3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Annual_Visits = DIVIDE([SEC_2025_Annual_Orders], [Conversion_Rate], 0)
+		lineageTag: 9fb6919b-21b3-4065-9022-a32bbdbf2721
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Annual_User_Orders = DIVIDE([SEC_2025_Annual_Orders], [SEC_2025_Active_Customers], 0)
+		lineageTag: 43dbdd03-ccbd-42c2-aa71-77a582d1f846
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Churn_Profit_Lift =
+			
+			VAR Active_Users = [SEC_2025_Active_Customers]
+			VAR Annual_User_Orders = [Annual_User_Orders]
+			VAR Base_AOV = [Base_AOV]
+			VAR Profit_Margin = [SEC_2025_Profit_Margin]
+			
+			VAR Recall = IF(SELECTEDVALUE(evaluation_metrics[Model]) = "No Widget", 0, [Recall])
+			VAR RecallUnits = Recall / 0.10
+			
+			VAR New_Churn_Rate = MAX(0.01, [Churn Rate Value] - (RecallUnits * [Churn Reduction per 10% Recall Value]))
+			VAR Extra_Customers_Retained = Active_Users * ([Churn Rate Value] - New_Churn_Rate)
+			
+			RETURN
+			Extra_Customers_Retained * Annual_User_Orders * Base_AOV * Profit_Margin
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 56715b52-00cf-4a5d-81dc-190eea22de98
+
+	measure Annual_Profit_Lift = [AOV_Profit_Lift] + [Conversion_Profit_Lift] + [Churn_Profit_Lift]
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 51634cfc-8838-424e-aac1-427d783d56cb
+
+	measure Annual_Profit = [Baseline_Profit] + [Annual_Profit_Lift]
+		lineageTag: c84cc650-fc64-45a1-b2af-8e9e6909ba82
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Champion Profit' =
+			
+			VAR Champion = [Champion_Model]
+			RETURN
+			CALCULATE(
+			    [Annual_Profit],
+			    evaluation_metrics[Model] = Champion
+			)
+		formatString: \$#,0.000;(\$#,0.000);\$#,0.000
+		lineageTag: b641436f-9298-436e-bfcf-82e657efa4b3
+
+	measure 'Champion Profit Lift' =
+			
+			VAR Champion = [Champion_Model]
+			RETURN
+			CALCULATE(
+			    [Annual_Profit_Lift],
+			    evaluation_metrics[Model] = Champion
+			)
+		formatString: \$#,0.000;(\$#,0.000);\$#,0.000
+		lineageTag: 61bcf33b-b284-4dc0-aede-fcb1fac02a68
+
+	measure 'Champion Conversion Profit Lift' =
+			
+			VAR Champion = [Champion_Model]
+			RETURN
+			CALCULATE(
+			    [Conversion_Profit_Lift],
+			    evaluation_metrics[Model] = Champion
+			)
+		formatString: \$#,0.000;(\$#,0.000);\$#,0.000
+		lineageTag: 608bcc9d-17a8-426b-9f0d-9af76fdd9165
+
+	measure 'Champion Churn Profit Lift' =
+			
+			VAR Champion = [Champion_Model]
+			RETURN
+			CALCULATE(
+			    [Churn_Profit_Lift],
+			    evaluation_metrics[Model] = Champion
+			)
+		formatString: \$#,0.0;(\$#,0.0);\$#,0.0
+		lineageTag: 397b5805-0081-48ff-b06d-00cfe6cd47d4
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure AOV_Profit_Lift =
+			
+			VAR Annual_Orders = [SEC_2025_Annual_Orders]
+			VAR Active_Users = [SEC_2025_Active_Customers]
+			VAR Annual_User_Orders = [Annual_User_Orders]
+			VAR Base_AOV = [Base_AOV]
+			VAR Profit_Margin = [SEC_2025_Profit_Margin]
+			
+			VAR Recall = IF(SELECTEDVALUE(evaluation_metrics[Model]) = "No Widget", 0, [Recall])
+			VAR RecallUnits = Recall / 0.10
+			
+			-- 1. Calculate New AOV
+			VAR New_AOV = Base_AOV + (RecallUnits * [AOV Lift per 10% Recall Value])
+			
+			-- 2. Extra Order AOV Lift (From Conversion)
+			VAR Extra_Orders = Annual_Orders * (RecallUnits * [Conversion Lift per 10% Recall Value])
+			VAR Extra_Order_AOV_Lift = (Extra_Orders * New_AOV * Profit_Margin) - [Conversion_Profit_Lift]
+			
+			-- 3. Extra Customer AOV Lift (From Retention)
+			VAR New_Churn_Rate = MAX(0.01, [Churn Rate Value] - (RecallUnits * [Churn Reduction per 10% Recall Value]))
+			VAR Extra_Customers_Retained = Active_Users * ([Churn Rate Value] - New_Churn_Rate)
+			VAR Extra_Customer_AOV_Lift = (Extra_Customers_Retained * Annual_User_Orders * New_AOV * Profit_Margin) - [Churn_Profit_Lift]
+			
+			-- 4. Baseline Order AOV Lift (From existing transaction stream)
+			VAR Baseline_Order_AOV_Lift = (Annual_Orders * New_AOV * Profit_Margin) - [Baseline_Profit]
+			
+			RETURN
+			Extra_Order_AOV_Lift + Extra_Customer_AOV_Lift + Baseline_Order_AOV_Lift
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: cf0573ee-c082-4c54-b8ba-15394729158b
+
+	measure 'Champion AOV Profit Lift' =
+			
+			VAR Champion = [Champion_Model]
+			RETURN
+			CALCULATE(
+			    [AOV_Profit_Lift],
+			    evaluation_metrics[Model] = Champion
+			)
+		lineageTag: be75120a-b2fd-486b-8080-556f4078b86c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Donut_Chart_Lift_Values =
+			
+			SWITCH(
+			    SELECTEDVALUE(Donut_Dimensions[Driver Name]),
+			    "Conversion Profit Lift", CALCULATE([Conversion_Profit_Lift], REMOVEFILTERS(Donut_Dimensions)),
+			    "Churn Profit Lift", CALCULATE([Churn_Profit_Lift], REMOVEFILTERS(Donut_Dimensions)),
+			    "AOV Profit Lift", CALCULATE([AOV_Profit_Lift], REMOVEFILTERS(Donut_Dimensions)),
+			    BLANK()
+			)
+		lineageTag: a365b5eb-3f90-4038-846b-6f18af594ce7
+
+	measure 'Heuristic Profit Lift' = ```
+			
+			CALCULATE(
+			     [Annual_Profit_Lift],
+			    -- Filters the table to pull ONLY the heuristic row
+			    'evaluation_metrics'[Type] = "Heuristic Baseline" 
+			)
+			```
+		lineageTag: 4227ec35-ed04-4ffb-a377-e8b413ba8833
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Pct_Diff_Profit_Lift = DIVIDE([Champion Profit Lift] - [Heuristic Profit Lift], [Heuristic Profit Lift], 0)
+		formatString: "▲ "0.0%;"▼ "0.0%;0.0%
+		lineageTag: e5d3334a-7bb3-4bba-bc96-7afe79e536e0
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	measure 'Heuristic AOV Profit Lift' = ```
+			
+			CALCULATE(
+			     [AOV_Profit_Lift],
+			    -- Filters the table to pull ONLY the heuristic row
+			    'evaluation_metrics'[Type] = "Heuristic Baseline" 
+			)
+			```
+		lineageTag: 5ed0d130-f9c8-4b66-8207-bd9fc576441c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Heuristic Churn Profit Lift' = ```
+			
+			CALCULATE(
+			     [Churn_Profit_Lift],
+			    -- Filters the table to pull ONLY the heuristic row
+			    'evaluation_metrics'[Type] = "Heuristic Baseline" 
+			)
+			```
+		lineageTag: be4c9297-9675-48fc-932f-ae73e9cbe0f8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Heuristic Conversion Profit Lift' = ```
+			
+			CALCULATE(
+			     [Conversion_Profit_Lift],
+			    -- Filters the table to pull ONLY the heuristic row
+			    'evaluation_metrics'[Type] = "Heuristic Baseline" 
+			)
+			```
+		lineageTag: 6c7a2b99-e22e-4025-808c-cf9a750cdd88
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Pct_Diff_AOV_Profit_Lift = DIVIDE([Champion AOV Profit Lift] - [Heuristic AOV Profit Lift], [Heuristic AOV Profit Lift], 0)
+		formatString: "▲ "0.0%;"▼ "0.0%;0.0%
+		lineageTag: 3daf6378-db1d-428d-b144-afc8e21b7200
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	measure Pct_Diff_Churn_Profit_Lift = DIVIDE([Champion Churn Profit Lift] - [Heuristic Churn Profit Lift], [Heuristic Churn Profit Lift], 0)
+		formatString: "▲ "0.0%;"▼ "0.0%;0.0%
+		lineageTag: 7cd8e18d-8971-46f1-ba78-4607a34cb5d2
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	measure Pct_Diff_Conversion_Profit_Lift = DIVIDE([Champion Conversion Profit Lift] - [Heuristic Conversion Profit Lift], [Heuristic Conversion Profit Lift], 0)
+		formatString: "▲ "0.0%;"▼ "0.0%;0.0%
+		lineageTag: a561b2d9-7085-430c-871b-e60b6af5134c
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	measure HTML_Financial_Impact_Info = ```
+			
+			"
+			<div style='font-family: ""Segoe UI"", Helvetica, Arial, sans-serif; color: #2D3748; line-height: 1.6; width: 100%; padding: 10px 25px;'>
+			    
+			    <!-- EXECUTIVE SUMMARY & CONTEXT -->
+			    <div style='margin-bottom: 25px;'>
+			        <h2 style='color: #1A365D; border-bottom: 2px solid #2B6CB0; padding-bottom: 8px; margin-top: 0; font-size: 22px; display: flex; align-items: center;'>
+			            <svg style='width:24px; height:24px; margin-right:8px; fill:#1A365D;' viewBox='0 0 24 24'><path d='M19,1H5A2,2 0 0,0 3,3V21A2,2 0 0,0 5,23H19A2,2 0 0,0 21,21V3A2,2 0 0,0 19,1M19,21H5V3H19V21M17,11V9H11V11H17M17,15V13H11V15H17M17,19V17H11V19H17M7,9H9V11H7V9M7,13H9V15H7V13M7,17H9V19H7V17Z'/></svg>
+			            Executive Summary & Context
+			        </h2>
+			        <p style='font-size: 14px; text-align: justify;'>
+			            This interactive dashboard translates the machine learning primary evaluation metric (Recall @ 5) into corporate profitability. Utilizing the Instacart Kaggle dataset, I developed and evaluated classification and ranking models (XGBoost and LightGBM) to predict customer reorder patterns. By connecting the model scores to financial baselines derived from SEC filings, this tool allows the business to conduct sensitivity analysis (on conversion rate, churn rate, & AOV), illustrating how improvements in model recommendation performance could unlock tens of millions in savings.
+			        </p>
+			    </div>
+			
+			    <!-- HOW TO NAVIGATE THIS PAGE -->
+			    <div style='margin-bottom: 25px;'>
+			        <h2 style='color: #1A365D; border-bottom: 2px solid #2B6CB0; padding-bottom: 8px; font-size: 22px; display: flex; align-items: center;'>
+			            <svg style='width:24px; height:24px; margin-right:8px; fill:#1A365D;' viewBox='0 0 24 24'><path d='M15,19A3,3 0 0,1 12,22A3,3 0 0,1 9,19C9,17.66 9.87,16.5 11,16.1V11.9C9.13,11.5 7.6,10.16 7.1,8.3L3.66,9.5L2.94,7.4L6.4,6.2C6.7,4.35 8.16,2.9 10,2.4V1H12V2.4C13.84,2.9 15.3,4.35 15.6,6.2L19.06,5L19.78,7.1L16.34,8.3C15.84,10.16 14.31,11.5 12.43,11.9V16.1C13.56,16.5 14.43,17.66 14.43,19H15M11,4A2,2 0 0,0 9,6A2,2 0 0,0 11,8A2,2 0 0,0 13,6A2,2 0 0,0 11,4Z'/></svg>
+			            How to Navigate This Page
+			        </h2>
+			        <ul style='font-size: 14px; padding-left: 20px; margin-top: 10px;'>
+			            <li style='margin-bottom: 12px;'>
+			                <strong>Top Right Panel:</strong> Access global page toggle and supplementary information:
+			                <ul style='padding-left: 20px; margin-top: 6px; list-style-type: circle;'>
+			                    <li style='margin-bottom: 4px;'><span style='font-style: italic; font-weight: normal; color: #4A5568;'>Data Split Toggle:</span> Flip page metrics between <span style='font-family: Consolas, monospace; background-color: #EFEFEF; color: #C53030; padding: 2px 5px; border-radius: 3px; font-size: 12px;'>Validation</span> and <span style='font-family: Consolas, monospace; background-color: #EFEFEF; color: #C53030; padding: 2px 5px; border-radius: 3px; font-size: 12px;'>Test</span> datasets.</li>
+			                    <li style='margin-bottom: 4px;'><span style='font-style: italic; font-weight: normal; color: #4A5568;'>Donut Chart Icon:</span> Opens a pop-up window displaying the profit lift share by lift driver (AOV, Conversion, Churn).</li>
+			                    <li style='margin-bottom: 4px;'><span style='font-style: italic; font-weight: normal; color: #4A5568;'>List Icon:</span> Opens a pop-up window displaying assumptions used by the financial model.</li>
+			                </ul>
+			            </li>
+			            <li style='margin-bottom: 8px;'><strong>Sensitivity Analysis Controls:</strong> Slide the inputs (Conversion Rate, Churn Rate, Conversion Lift, AOV Lift, Churn Reduction) to visualize financial impact under different business assumptions.</li>
+			            <li style='margin-bottom: 8px;'><strong>Projected Annual Profit by Model:</strong> Compares the baseline heuristic performance directly against every model candidate to visualize the total lift by driver.</li>
+			            <li style='margin-bottom: 8px;'><strong>Total Profit by Driver Waterfall:</strong> Tracks the sequential step-up from the baseline profit, due to each lift driver (AOV, Conversion, Churn).</li>
+			        </ul>
+			    </div>
+			
+			    <!-- KEY FORMULAS & DEFINITIONS -->
+			    <div style='margin-bottom: 25px;'>
+			        <h2 style='color: #1A365D; border-bottom: 2px solid #2B6CB0; padding-bottom: 8px; font-size: 22px; display: flex; align-items: center;'>
+			            <svg style='width:24px; height:24px; margin-right:8px; fill:#1A365D;' viewBox='0 0 24 24'><path d='M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3M19 19H5V5H19V19M11.5 6.4L10.1 5L7 8.1L3.9 5L2.5 6.4L5.6 9.5L2.5 12.6L3.9 14L7 10.9L10.1 14L11.5 12.6L8.4 9.5L11.5 6.4M18.5 7H13V9H18.5V7M18.5 10H13V12H18.5V10M18.5 14H13V16H18.5V14M18.5 17H13V19H18.5V17Z'/></svg>
+			            Key Formulas & Definitions
+			        </h2>
+			        <ul style='font-size: 14px; padding-left: 20px; margin-top: 10px;'>
+			            
+			            <!-- BASELINE PROFIT -->
+			            <li style='margin-bottom: 20px;'>
+			                <strong>Baseline Profit:</strong> Calculated directly from audited SEC filings as the starting financial anchor.
+			                <div style='background-color: #F7FAFC; border-left: 4px solid #4A5568; padding: 12px 20px; margin: 8px 0; font-family: ""Segoe UI"", Arial, sans-serif; font-size: 14px; color: #1A202C; width: 95%; display: flex; align-items: center;'>
+			                    <span style='font-family: Consolas, monospace; font-size: 13px; font-weight: bold; margin-right: 10px;'>Baseline Profit</span> = Annual Revenue ($3.742B) &times; Profit Margin (73.7%) &asymp; $2.757B
+			                </div>
+			            </li>
+			            
+			            <!-- CONVERSION PROFIT LIFT -->
+			            <li style='margin-bottom: 20px;'>
+			                <strong>Conversion Profit Lift:</strong> Captures incremental orders generated by recommending high-reorder items during an active shopping session.
+			                <div style='background-color: #F7FAFC; border-left: 4px solid #4A5568; padding: 12px 20px; margin: 8px 0; font-family: ""Segoe UI"", Arial, sans-serif; font-size: 14px; color: #1A202C; width: 95%; display: flex; flex-direction: column; align-items: flex-start;'>
+			                    <div style='display: flex; align-items: center; margin-bottom: 6px;'>
+			                        <span style='font-family: Consolas, monospace; font-size: 13px; font-weight: bold; margin-right: 10px;'>Conversion Profit Lift</span> = Extra Orders &times; Base AOV &times; Profit Margin
+			                    </div>
+			                    <div style='font-size: 12px; color: #4A5568; margin-left: 10px;'>
+			                        <em>Where:</em> <span style='font-family: Consolas, monospace; font-size: 11px;'>Extra Orders</span> = Annual Orders &times; (Recall Units &times; Conversion Lift per 10% Recall)
+			                    </div>
+			                </div>
+			            </li>
+			            
+			            <!-- CHURN PROFIT LIFT -->
+			            <li style='margin-bottom: 20px;'>
+			                <strong>Churn Profit Lift:</strong> Measure the financial value of improving user retention due to relevant product recommendations.
+			                <div style='background-color: #F7FAFC; border-left: 4px solid #4A5568; padding: 12px 20px; margin: 8px 0; font-family: ""Segoe UI"", Arial, sans-serif; font-size: 14px; color: #1A202C; width: 95%; display: flex; flex-direction: column; align-items: flex-start;'>
+			                    <div style='display: flex; align-items: center; margin-bottom: 6px;'>
+			                        <span style='font-family: Consolas, monospace; font-size: 13px; font-weight: bold; margin-right: 10px;'>Churn Profit Lift</span> = Extra Customers Retained &times; Annual Orders/User &times; Base AOV &times; Profit Margin
+			                    </div>
+			                    <div style='font-size: 12px; color: #4A5568; margin-left: 10px;'>
+			                        <em>Where:</em> <span style='font-family: Consolas, monospace; font-size: 11px;'>Extra Customers Retained</span> = Active Customers &times; (Base Churn - New Churn)
+			                    </div>
+			                </div>
+			            </li>
+			            
+			            <!-- AOV PROFIT LIFT -->
+			            <li style='margin-bottom: 15px;'>
+			                <strong>AOV Profit Lift:</strong> Calculates the compound value of both new and existing transactions spending more per order due to effective cross-selling.
+			                <div style='background-color: #F7FAFC; border-left: 4px solid #4A5568; padding: 12px 20px; margin: 8px 0; font-family: ""Segoe UI"", Arial, sans-serif; font-size: 14px; color: #1A202C; width: 95%; display: flex; align-items: center;'>
+			                    <span style='font-family: Consolas, monospace; font-size: 13px; font-weight: bold; margin-right: 10px;'>AOV Profit Lift</span> = Extra Order AOV Lift + Extra Customer AOV Lift + Baseline Order AOV Lift
+			                </div>
+			            </li>
+			        </ul>
+			    </div>
+			
+			    <!-- DATA SOURCES -->
+			    <div>
+			        <h2 style='color: #1A365D; border-bottom: 2px solid #2B6CB0; padding-bottom: 8px; font-size: 22px; display: flex; align-items: center;'>
+			            <svg style='width:24px; height:24px; margin-right:8px; fill:#1A365D;' viewBox='0 0 24 24'><path d='M12 20C16.42 20 20 18.21 20 16V18C20 20.21 16.42 22 12 22C7.58 22 4 20.21 4 18V16C4 18.21 7.58 20 12 20M12 2C16.42 2 20 3.79 20 6C20 8.21 16.42 10 12 10C7.58 10 4 8.21 4 6C4 3.79 7.58 2 12 2M12 14C16.42 14 20 12.21 20 10V12C20 14.21 16.42 16 12 16C7.58 16 4 14.21 4 12V10C4 12.21 7.58 14 12 14Z'/></svg>
+			            Data Sources
+			        </h2>
+			        <ul style='font-size: 14px; padding-left: 20px; margin-top: 10px;'>
+			            <li style='margin-bottom: 8px;'>
+			                <strong>'InstaCart' Online Grocery Basket Analysis Dataset:</strong> Models and dashboard were built utilizing: <span style='font-family: Consolas, monospace; background-color: #F7FAFC; padding: 3px 6px; border-radius: 4px; font-size: 13px; border: 1px solid #E2E8F0; color: #2B6CB0;'>https://www.kaggle.com/datasets/yasserh/instacart-online-grocery-basket-analysis-dataset</span>
+			            </li>
+			        </ul>
+			    </div>
+			
+			</div>
+			"
+			```
+		lineageTag: bc6ef7a9-ab3c-4453-b349-ceef0cc3a6dc
+
+	column Column1
+		dataType: string
+		lineageTag: ad4751d7-9db5-4503-b3f1-f13ba6d76635
+		summarizeBy: none
+		sourceColumn: Column1
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Financial_Impact_Measures = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

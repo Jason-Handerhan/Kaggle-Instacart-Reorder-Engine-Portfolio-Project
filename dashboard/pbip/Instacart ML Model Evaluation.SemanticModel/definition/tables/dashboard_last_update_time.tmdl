@@ -1,0 +1,38 @@
+table dashboard_last_update_time
+	lineageTag: 874b654b-cd3b-413f-beec-8bc18e6885fb
+
+	column Status
+		dataType: string
+		lineageTag: ba379100-3c57-46f7-a11d-b05d8a107f16
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column Timestamp
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: df48d143-0d8d-4c02-9945-eded114d318b
+		summarizeBy: none
+		sourceColumn: Timestamp
+
+		variation Variation
+			isDefault
+			relationship: b56573f8-1d42-4daf-8d4f-56ddd8004ec7
+			defaultHierarchy: LocalDateTable_7a6ad1dd-ec82-4033-b65a-16f4d10a903f.'Date Hierarchy'
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dashboard_last_update_time = m
+		mode: import
+		source =
+				let
+				    Source = GoogleBigQuery.Database([Implementation="2.0"]),
+				    #"instacart-ml-model_Database" = Source{[Name="instacart-ml-model",Kind="Database"]}[Data],
+				    ml_model_results_Schema = #"instacart-ml-model_Database"{[Name="ml_model_results",Kind="Schema"]}[Data],
+				    dashboard_last_update_time_Table = ml_model_results_Schema{[Name="dashboard_last_update_time",Kind="Table"]}[Data]
+				in
+				    dashboard_last_update_time_Table
+

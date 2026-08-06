@@ -1,0 +1,42 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["beeswarm_plot_data","dataset_split_dimension","evaluation_metrics","model_types_dimension","models_dimension","power_bi_shap_barplots","_Model_Evaluation_Measures","base_models_dimension","optimal_ensemble_weights","_Financial_Model_Constants","_Financial_Impact_Measures","_Waterfall_Measures","Waterfall_Dimensions","Donut_Dimensions","dashboard_last_update_time"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table beeswarm_plot_data
+ref table dataset_split_dimension
+ref table evaluation_metrics
+ref table model_types_dimension
+ref table models_dimension
+ref table power_bi_shap_barplots
+ref table _Model_Evaluation_Measures
+ref table 'Evaluation Metric Parameter'
+ref table base_models_dimension
+ref table optimal_ensemble_weights
+ref table 'Ensemble Weight Parameter'
+ref table 'Conversion Rate'
+ref table 'Churn Rate'
+ref table 'Conversion Lift per 10% Recall'
+ref table 'AOV Lift per 10% Recall'
+ref table 'Churn Reduction per 10% Recall'
+ref table _Financial_Model_Constants
+ref table _Financial_Impact_Measures
+ref table _Waterfall_Measures
+ref table Waterfall_Dimensions
+ref table Donut_Dimensions
+ref table dashboard_last_update_time
+ref table DateTableTemplate_30f4c5c5-5a93-4f99-9deb-08be9b339fb2
+ref table LocalDateTable_7a6ad1dd-ec82-4033-b65a-16f4d10a903f
+ref table Validation_Evaluation_Metrics
+
+ref cultureInfo en-US
+

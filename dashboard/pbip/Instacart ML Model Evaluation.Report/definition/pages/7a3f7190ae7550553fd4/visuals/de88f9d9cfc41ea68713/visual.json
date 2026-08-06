@@ -1,0 +1,17 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "de88f9d9cfc41ea68713",
+  "position": {
+    "x": 41.605007837096764,
+    "y": 76.579915134184091,
+    "z": 1000,
+    "height": 38.420084865815909,
+    "width": 180,
+    "tabOrder": 2000
+  },
+  "visualGroup": {
+    "displayName": "Precision Card Text",
+    "groupMode": "ScaleMode"
+  },
+  "parentGroupName": "f793b506f9b33dbdb408"
+}

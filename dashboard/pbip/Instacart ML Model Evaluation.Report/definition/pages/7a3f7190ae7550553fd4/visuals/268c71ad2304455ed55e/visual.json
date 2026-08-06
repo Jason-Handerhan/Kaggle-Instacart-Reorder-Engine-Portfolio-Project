@@ -1,0 +1,17 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "268c71ad2304455ed55e",
+  "position": {
+    "x": 39.302503918548382,
+    "y": 76.579915134184091,
+    "z": 1000,
+    "height": 38.420084865815909,
+    "width": 180.00000000000003,
+    "tabOrder": 1000
+  },
+  "visualGroup": {
+    "displayName": "NDCG Card Text",
+    "groupMode": "ScaleMode"
+  },
+  "parentGroupName": "3dc286bcb499cbdcded5"
+}

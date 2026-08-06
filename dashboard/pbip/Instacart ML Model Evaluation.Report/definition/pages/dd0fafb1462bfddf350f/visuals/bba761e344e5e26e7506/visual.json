@@ -1,0 +1,17 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "bba761e344e5e26e7506",
+  "position": {
+    "x": 470.480589208212,
+    "y": 5.3290705182007514E-15,
+    "z": 2000,
+    "height": 99.201851273069678,
+    "width": 235.87876453986451,
+    "tabOrder": 0
+  },
+  "visualGroup": {
+    "displayName": "Conversion Lift",
+    "groupMode": "ScaleMode"
+  },
+  "parentGroupName": "2b2571f27e167b74eda1"
+}

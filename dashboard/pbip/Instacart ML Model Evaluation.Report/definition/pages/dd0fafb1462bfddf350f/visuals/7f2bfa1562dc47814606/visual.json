@@ -1,0 +1,17 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "7f2bfa1562dc47814606",
+  "position": {
+    "x": 22.756268187386638,
+    "y": 73.1463331670538,
+    "z": 1000,
+    "height": 33.881181022924231,
+    "width": 178.36707807147974,
+    "tabOrder": 1000
+  },
+  "visualGroup": {
+    "displayName": "Profit Lift Card Text",
+    "groupMode": "ScaleMode"
+  },
+  "parentGroupName": "de52639bbe21f1d00fca"
+}

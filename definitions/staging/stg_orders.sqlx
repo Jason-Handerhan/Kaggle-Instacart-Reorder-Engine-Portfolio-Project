@@ -1,0 +1,24 @@
+config {
+  type: "table",
+  schema: "instacart",
+  name: "cleansed_orders",
+  description: "Cleansed order records capturing a reproducible 10% sample of users with time metrics"
+}
+
+SELECT
+  CAST(order_id AS INT64) AS order_id,
+  CAST(user_id AS INT64) AS user_id,
+  CAST(order_number AS INT64) AS order_number,
+  CAST(order_dow AS INT64) AS order_dow,
+  CAST(order_hour_of_day AS INT64) AS order_hour_of_day,
+  CASE
+    WHEN CAST(order_hour_of_day AS INT64) BETWEEN 5 AND 11 THEN 'morning'
+    WHEN CAST(order_hour_of_day AS INT64) BETWEEN 12 AND 16 THEN 'afternoon'
+    WHEN CAST(order_hour_of_day AS INT64) BETWEEN 17 AND 21 THEN 'evening'
+    ELSE 'nighttime'
+  END AS time_of_day,
+  COALESCE(CAST(days_since_prior_order AS INT64), 0) AS days_since_prior_order,
+  SUM(COALESCE(CAST(days_since_prior_order AS INT64), 0)) OVER(PARTITION BY user_id ORDER BY CAST(order_number AS INT64)) AS days_since_first_order,
+  LOWER(TRIM(eval_set)) AS eval_set
+FROM ${ref("orders")}
+WHERE MOD(ABS(FARM_FINGERPRINT(CAST(user_id AS STRING))), 10) = 0

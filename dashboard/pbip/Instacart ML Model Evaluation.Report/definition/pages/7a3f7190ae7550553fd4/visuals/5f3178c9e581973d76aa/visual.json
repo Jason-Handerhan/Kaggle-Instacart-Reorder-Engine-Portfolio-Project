@@ -1,0 +1,17 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "5f3178c9e581973d76aa",
+  "position": {
+    "x": 240.29992624249618,
+    "y": 335.53804844609976,
+    "z": 3000,
+    "height": 46.304078791548051,
+    "width": 489.853427584824,
+    "tabOrder": 3000
+  },
+  "visualGroup": {
+    "displayName": "SHAP Value Legend",
+    "groupMode": "ScaleMode"
+  },
+  "parentGroupName": "653bbe2a9dd24e4b94c0"
+}

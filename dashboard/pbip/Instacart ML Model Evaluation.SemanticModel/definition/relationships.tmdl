@@ -1,0 +1,37 @@
+relationship 9ad0133b-cd85-5070-c9f4-5814c259069d
+	fromColumn: power_bi_shap_barplots.model_type
+	toColumn: model_types_dimension.model_type
+
+relationship 376209fe-4897-6c70-ae6a-6765b32a9f58
+	fromColumn: beeswarm_plot_data.model_type
+	toColumn: model_types_dimension.model_type
+
+relationship ff69e3f2-c5b0-10be-c0b5-164f85d7d92e
+	fromColumn: evaluation_metrics.Model
+	toColumn: models_dimension.Model
+
+relationship a18507d3-22dc-12d3-15d8-7eec08ccdc29
+	fromColumn: evaluation_metrics.Split
+	toColumn: dataset_split_dimension.dataset_split
+
+relationship 47d27f11-e3b3-ec53-49df-948b7cf83cf3
+	fromColumn: beeswarm_plot_data.split
+	toColumn: dataset_split_dimension.dataset_split
+
+relationship aad664ee-3b2c-53ee-bbd3-bc5e26719deb
+	fromColumn: power_bi_shap_barplots.split
+	toColumn: dataset_split_dimension.dataset_split
+
+relationship AutoDetected_36958369-d138-4b5a-bf63-e10f992ecc4f
+	fromColumn: beeswarm_plot_data.model_name
+	toColumn: base_models_dimension.model_name
+
+relationship AutoDetected_03e6d449-2386-475f-9efb-f07a6b5dbb82
+	fromColumn: power_bi_shap_barplots.model_name
+	toColumn: base_models_dimension.model_name
+
+relationship b56573f8-1d42-4daf-8d4f-56ddd8004ec7
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dashboard_last_update_time.Timestamp
+	toColumn: LocalDateTable_7a6ad1dd-ec82-4033-b65a-16f4d10a903f.Date
+

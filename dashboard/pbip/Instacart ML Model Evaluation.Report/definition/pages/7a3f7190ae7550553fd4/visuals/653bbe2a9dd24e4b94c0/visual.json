@@ -1,0 +1,17 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "653bbe2a9dd24e4b94c0",
+  "position": {
+    "x": 9.2350505268629967E-15,
+    "y": 75.680843238468611,
+    "z": 1000,
+    "height": 383.04519202418066,
+    "width": 746.81753889674678,
+    "tabOrder": 2000
+  },
+  "visualGroup": {
+    "displayName": "Beeswarm Plot",
+    "groupMode": "ScaleMode"
+  },
+  "parentGroupName": "538523792ea938062fdc"
+}

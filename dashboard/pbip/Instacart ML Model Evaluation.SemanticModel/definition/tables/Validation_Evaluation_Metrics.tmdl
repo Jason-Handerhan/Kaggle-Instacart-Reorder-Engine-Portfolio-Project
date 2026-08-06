@@ -1,0 +1,78 @@
+table Validation_Evaluation_Metrics
+	lineageTag: 86aa37ea-4109-4d13-9fe1-f62163892e51
+
+	column Split
+		lineageTag: 5843d889-675b-4d83-bcd2-2ff05d6d4f96
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: evaluation_metrics[Split]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Type
+		lineageTag: 579a443d-afaa-4d1f-afb6-27d74afdfcc8
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: evaluation_metrics[Type]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Model
+		lineageTag: 71170122-aa4a-46a4-a179-66320470d2be
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: evaluation_metrics[Model]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Recall_at_5
+		lineageTag: c424a5b2-9bd2-4f95-8fa8-ef13b8301e74
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: evaluation_metrics[Recall_at_5]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column NDCG_at_5
+		lineageTag: 056cd259-2cf6-409b-9721-af2a2e1950d4
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: evaluation_metrics[NDCG_at_5]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Precision_at_5
+		lineageTag: 59e9f3b7-1e34-41b6-b00e-09a0583a4364
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: evaluation_metrics[Precision_at_5]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column F1_at_5
+		lineageTag: 2c17b758-4a99-499e-b782-7c7546ea9b0a
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: evaluation_metrics[F1_at_5]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Validation_Evaluation_Metrics = calculated
+		mode: import
+		source =
+				
+				FILTER(
+				    evaluation_metrics,
+				    evaluation_metrics[Split] = "validation"
+				)
+
+	annotation PBI_Id = ae380fee0df8430183774a42d4ae3a87
+

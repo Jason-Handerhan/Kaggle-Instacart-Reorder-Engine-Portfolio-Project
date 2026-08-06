@@ -1,0 +1,17 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "5021af5c366cfafd700b",
+  "position": {
+    "x": 294.90814177194449,
+    "y": 0.79825826363182273,
+    "z": 2000,
+    "height": 107.02751418997804,
+    "width": 212.00000000000003,
+    "tabOrder": 1000
+  },
+  "visualGroup": {
+    "displayName": "AOV Profit Lift Card",
+    "groupMode": "ScaleMode"
+  },
+  "parentGroupName": "86a8c4dc1f61d96104c3"
+}

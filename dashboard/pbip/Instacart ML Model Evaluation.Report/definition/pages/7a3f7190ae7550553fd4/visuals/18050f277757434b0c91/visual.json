@@ -1,0 +1,17 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "18050f277757434b0c91",
+  "position": {
+    "x": 1403.8461538461538,
+    "y": 3.9209928003031447,
+    "z": 3000,
+    "height": 42.307692307692307,
+    "width": 78.538461538461576,
+    "tabOrder": 8004
+  },
+  "visualGroup": {
+    "displayName": "Email & Page Info",
+    "groupMode": "ScaleMode"
+  },
+  "parentGroupName": "d23c82ae63abd973ab95"
+}

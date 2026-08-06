@@ -1,0 +1,80 @@
+table evaluation_metrics
+	lineageTag: 160401bf-8ec6-4f92-87fc-9f4b86c85ded
+
+	column Split
+		dataType: string
+		lineageTag: 246ade2c-35cc-4b27-9958-9c22876f0364
+		summarizeBy: none
+		sourceColumn: Split
+
+		annotation SummarizationSetBy = Automatic
+
+	column Type
+		dataType: string
+		lineageTag: a56166dc-d68d-4fe6-9010-00262099b67d
+		summarizeBy: none
+		sourceColumn: Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Model
+		dataType: string
+		lineageTag: 437a207c-2fad-4273-a044-fc17f46b88d4
+		summarizeBy: none
+		sourceColumn: Model
+
+		annotation SummarizationSetBy = Automatic
+
+	column Recall_at_5
+		dataType: double
+		lineageTag: 99ec4f6f-9819-4daf-8c73-aec88cc9365b
+		summarizeBy: sum
+		sourceColumn: Recall_at_5
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column NDCG_at_5
+		dataType: double
+		lineageTag: 24d9c4bc-3eb4-4039-a48a-ad1e177ac45c
+		summarizeBy: sum
+		sourceColumn: NDCG_at_5
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Precision_at_5
+		dataType: double
+		lineageTag: cdc4e4ac-05cf-4f32-a06f-cb94acfee694
+		summarizeBy: sum
+		sourceColumn: Precision_at_5
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column F1_at_5
+		dataType: double
+		lineageTag: 0de8f8d6-1606-41a8-9297-84a740a8cd74
+		summarizeBy: sum
+		sourceColumn: F1_at_5
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition evaluation_metrics = m
+		mode: import
+		source =
+				let
+				    Source = GoogleBigQuery.Database([Implementation="2.0"]),
+				    #"instacart-ml-model_Database" = Source{[Name="instacart-ml-model",Kind="Database"]}[Data],
+				    ml_model_results_Schema = #"instacart-ml-model_Database"{[Name="ml_model_results",Kind="Schema"]}[Data],
+				    evaluation_metrics_Table = ml_model_results_Schema{[Name="evaluation_metrics",Kind="Table"]}[Data]
+				in
+				    evaluation_metrics_Table
+
+	annotation PBI_ResultType = Table
+

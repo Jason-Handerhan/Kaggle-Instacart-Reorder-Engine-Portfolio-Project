@@ -1,0 +1,17 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "0074edfe79fbe28f514b",
+  "position": {
+    "x": 0,
+    "y": 0,
+    "z": 1000,
+    "height": 51.824809581715037,
+    "width": 571.9103827612779,
+    "tabOrder": 1000
+  },
+  "visualGroup": {
+    "displayName": "Metric Selection",
+    "groupMode": "ScaleMode"
+  },
+  "parentGroupName": "b40592dd1b0d8a12e0a5"
+}

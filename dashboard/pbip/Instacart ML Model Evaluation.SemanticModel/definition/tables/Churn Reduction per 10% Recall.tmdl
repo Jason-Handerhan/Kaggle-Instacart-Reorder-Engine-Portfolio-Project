@@ -1,0 +1,28 @@
+table 'Churn Reduction per 10% Recall'
+	lineageTag: 949d9c8b-4fb5-43b1-a1ff-9dc9e1c81e6b
+
+	measure 'Churn Reduction per 10% Recall Value' = SELECTEDVALUE('Churn Reduction per 10% Recall'[Churn Reduction per 10% Recall], 0.005)
+		lineageTag: b115afff-ccd9-424b-9d49-2e7fb67a1d3a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Churn Reduction per 10% Recall'
+		lineageTag: 22f0cfe6-fb04-4192-b759-42cbdd0b608e
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'Churn Reduction per 10% Recall' = calculated
+		mode: import
+		source = GENERATESERIES(0, 0.021, 0.001)
+
+	annotation PBI_Id = 26557049427a4ba593ca4c9825b2f0ed
+

@@ -1,0 +1,37 @@
+node_modules/
+
+# Python & Jupyter Notebook Checkpoints
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+venv/
+env/
+
+# Sensitive Credentials & Local Keys
+kaggle.json
+*.pem
+*.key
+service_account.json
+
+# Local Data Files & Large Caches
+*.csv
+*.zip
+*.parquet
+*.pkl
+*.h5
+
+#Root Directory Backup Folder
+/backup/
+
+# MLflow Tracking Database
+mlflow.db
+mlartifacts/
+mlruns/
+
+# ==========================================
+# Power BI Temporary & User Settings
+# ==========================================
+*.pbip.user
+*.Dataset/localSettings.json
+*.Report/localSettings.json
+*.Report/definition.pir

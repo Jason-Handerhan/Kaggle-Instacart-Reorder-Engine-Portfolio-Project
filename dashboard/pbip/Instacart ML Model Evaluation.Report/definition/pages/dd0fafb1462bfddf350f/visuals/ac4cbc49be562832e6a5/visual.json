@@ -1,0 +1,17 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "ac4cbc49be562832e6a5",
+  "position": {
+    "x": 943.06906826554928,
+    "y": 0,
+    "z": 0,
+    "height": 99.406113247462912,
+    "width": 235.87876453986451,
+    "tabOrder": 3000
+  },
+  "visualGroup": {
+    "displayName": "Churn Reduction",
+    "groupMode": "ScaleMode"
+  },
+  "parentGroupName": "2b2571f27e167b74eda1"
+}

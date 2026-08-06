@@ -1,0 +1,17 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "8cf7ebe9d9e672695975",
+  "position": {
+    "x": 37.907511755645146,
+    "y": 76.579915134184091,
+    "z": 1000,
+    "height": 38.420084865815909,
+    "width": 179.99999999999997,
+    "tabOrder": 1000
+  },
+  "visualGroup": {
+    "displayName": "F1 Card Text",
+    "groupMode": "ScaleMode"
+  },
+  "parentGroupName": "b3faa63971c5c259f19a"
+}

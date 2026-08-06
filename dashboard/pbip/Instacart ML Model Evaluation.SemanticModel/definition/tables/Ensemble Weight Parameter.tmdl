@@ -1,0 +1,51 @@
+table 'Ensemble Weight Parameter'
+	lineageTag: 68da07ac-a656-4a9d-948a-6d3ab185e636
+
+	column 'Ensemble Weight Parameter'
+		lineageTag: 066e906a-813d-49dc-a5a6-56404858a295
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Ensemble Weight Parameter Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Ensemble Weight Parameter Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ensemble Weight Parameter Fields'
+		isHidden
+		lineageTag: 2764124c-92b5-4452-8e0c-e799cb992d89
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Ensemble Weight Parameter Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ensemble Weight Parameter Order'
+		isHidden
+		formatString: 0
+		lineageTag: b944eab7-1136-4ef9-b34a-e2d5e87bde74
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Ensemble Weight Parameter' = calculated
+		mode: import
+		source =
+				{
+				    ("XGB Ranker + XGB Classifer", NAMEOF('_Model_Evaluation_Measures'[ensemble_weights_xgb_rank_xgb_class]), 0),
+				    ("XGB Ranker + LGBM Classifer", NAMEOF('_Model_Evaluation_Measures'[ensemble_weights_xgb_rank_lgbm_class]), 1),
+				    ("LGBM Ranker + XGB Classifer", NAMEOF('_Model_Evaluation_Measures'[ensemble_weights_lgbm_rank_xgb_class]), 2),
+				    ("LGBM Ranker + LGBM Classifer", NAMEOF('_Model_Evaluation_Measures'[ensemble_weights_lgbm_rank_lgbm_class]), 3),
+				    ("All Base Models", NAMEOF('_Model_Evaluation_Measures'[ensemble_weights_all_base_models]), 4)
+				}
+
+	annotation PBI_Id = 9c83ea41a5f640a4bc814a1728134ffd
+
