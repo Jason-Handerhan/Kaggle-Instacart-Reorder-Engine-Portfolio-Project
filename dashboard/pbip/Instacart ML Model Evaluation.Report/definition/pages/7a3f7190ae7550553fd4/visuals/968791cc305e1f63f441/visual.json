@@ -1,0 +1,16 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "968791cc305e1f63f441",
+  "position": {
+    "x": 29.702970297237027,
+    "y": 128.42008486581591,
+    "z": 5000,
+    "height": 115,
+    "width": 1120.2905080463352,
+    "tabOrder": 2000
+  },
+  "visualGroup": {
+    "displayName": "Cards",
+    "groupMode": "ScaleMode"
+  }
+}

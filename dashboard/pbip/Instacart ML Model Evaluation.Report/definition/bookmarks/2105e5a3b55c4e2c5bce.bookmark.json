@@ -1,0 +1,1618 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/2.1.0/schema.json",
+  "displayName": "Close Pie Chart",
+  "name": "2105e5a3b55c4e2c5bce",
+  "options": {
+    "applyOnlyToTargetVisuals": true,
+    "targetVisualNames": [
+      "7787e1b69b7b1b90a567",
+      "c5f8e4fc8ad1adf6134c",
+      "5bd15bf5b3901644da8d",
+      "c9bc5273e24b31c7e7a1",
+      "7664aafa80ac13bb788e",
+      "5f711e50c8ea305181db",
+      "1bbfa40b5939abbe538c",
+      "7f1d68b31ed1d3ae05ae"
+    ],
+    "suppressData": true
+  },
+  "explorationState": {
+    "version": "1.11",
+    "activeSection": "7a3f7190ae7550553fd4",
+    "sections": {
+      "7a3f7190ae7550553fd4": {
+        "visualContainers": {
+          "6a3b2b426a5984951436": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "7b2752805bf4294418b1": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "2e48f0352e13102c04b0",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "Champion_Model"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {}
+            }
+          },
+          "5bd15bf5b3901644da8d": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "aed51f6451a17db14e53",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Ensemble Weight Parameter"
+                        }
+                      },
+                      "Property": "Ensemble Weight Parameter"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "general": [
+                    {
+                      "properties": {
+                        "filter": {
+                          "filter": {
+                            "Version": 2,
+                            "From": [
+                              {
+                                "Name": "e",
+                                "Entity": "Ensemble Weight Parameter",
+                                "Type": 0
+                              }
+                            ],
+                            "Where": [
+                              {
+                                "Condition": {
+                                  "In": {
+                                    "Expressions": [
+                                      {
+                                        "Column": {
+                                          "Expression": {
+                                            "SourceRef": {
+                                              "Source": "e"
+                                            }
+                                          },
+                                          "Property": "Ensemble Weight Parameter Fields"
+                                        }
+                                      }
+                                    ],
+                                    "Values": [
+                                      [
+                                        {
+                                          "Literal": {
+                                            "Value": "'''_Model_Evaluation_Measures''[ensemble_weights_xgb_rank_lgbm_class]'"
+                                          }
+                                        }
+                                      ]
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Basic'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "selection": [
+                    {
+                      "properties": {
+                        "strictSingleSelect": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "true"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Ensemble Weight Parameter"
+                        }
+                      },
+                      "Property": "Ensemble Weight Parameter"
+                    }
+                  }
+                ]
+              },
+              "cachedFilterDisplayItems": [
+                {
+                  "id": {
+                    "scopeId": {
+                      "Comparison": {
+                        "ComparisonKind": 0,
+                        "Left": {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Entity": "Ensemble Weight Parameter"
+                              }
+                            },
+                            "Property": "Ensemble Weight Parameter Fields"
+                          }
+                        },
+                        "Right": {
+                          "Literal": {
+                            "Value": "'''_Model_Evaluation_Measures''[ensemble_weights_xgb_rank_lgbm_class]'"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "displayName": "XGB Ranker + LGBM Classifer"
+                }
+              ]
+            }
+          },
+          "7664aafa80ac13bb788e": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "c5f8e4fc8ad1adf6134c": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "5d8f69998ab7621602dd",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "optimal_ensemble_weights"
+                        }
+                      },
+                      "Property": "model_name"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "8dfbbe4936570664db9d",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "ensemble_weights_xgb_rank_lgbm_class"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "pieChart",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "ensemble_weights_xgb_rank_lgbm_class"
+                    }
+                  }
+                }
+              ],
+              "activeProjections": {
+                "Category": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "optimal_ensemble_weights"
+                        }
+                      },
+                      "Property": "model_name"
+                    }
+                  }
+                ]
+              },
+              "projections": {
+                "Y": [
+                  {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "ensemble_weights_xgb_rank_lgbm_class"
+                    }
+                  }
+                ],
+                "Category": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "optimal_ensemble_weights"
+                        }
+                      },
+                      "Property": "model_name"
+                    }
+                  }
+                ]
+              },
+              "parameters": {
+                "Y": [
+                  {
+                    "expr": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "Ensemble Weight Parameter"
+                          }
+                        },
+                        "Property": "Ensemble Weight Parameter"
+                      }
+                    },
+                    "index": 0,
+                    "length": 1
+                  }
+                ]
+              }
+            }
+          },
+          "c9bc5273e24b31c7e7a1": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "0e4f78026be4399cf532": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "b5aa4ee6cbca83c10c2b",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "power_bi_shap_barplots"
+                        }
+                      },
+                      "Property": "feature_name"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "fbf75674542975d9ea6d",
+                  "type": "Advanced",
+                  "expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "power_bi_shap_barplots"
+                            }
+                          },
+                          "Property": "mean_absolute_shap"
+                        }
+                      },
+                      "Function": 0
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "clusteredBarChart",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "power_bi_shap_barplots"
+                            }
+                          },
+                          "Property": "mean_absolute_shap"
+                        }
+                      },
+                      "Function": 0
+                    }
+                  }
+                }
+              ],
+              "activeProjections": {
+                "Category": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "power_bi_shap_barplots"
+                        }
+                      },
+                      "Property": "feature_name"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "25b8188e6d0e923105d7": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "d689d57bcb300ce24a61": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "2589488670009e0630c0",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "base_models_dimension"
+                        }
+                      },
+                      "Property": "model_name"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "general": [
+                    {
+                      "properties": {
+                        "filter": {
+                          "filter": {
+                            "Version": 2,
+                            "From": [
+                              {
+                                "Name": "b",
+                                "Entity": "base_models_dimension",
+                                "Type": 0
+                              }
+                            ],
+                            "Where": [
+                              {
+                                "Condition": {
+                                  "In": {
+                                    "Expressions": [
+                                      {
+                                        "Column": {
+                                          "Expression": {
+                                            "SourceRef": {
+                                              "Source": "b"
+                                            }
+                                          },
+                                          "Property": "model_name"
+                                        }
+                                      }
+                                    ],
+                                    "Values": [
+                                      [
+                                        {
+                                          "Literal": {
+                                            "Value": "'XGBoost Ranker'"
+                                          }
+                                        }
+                                      ]
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Basic'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "selection": [
+                    {
+                      "properties": {
+                        "strictSingleSelect": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "true"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "base_models_dimension"
+                        }
+                      },
+                      "Property": "model_name"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "60f57a038ed6f50759ef": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "7298cfafac11c6b689e4": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "9d878f7431c9f64c4fa6": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "4429bdd1d0268e7b969f": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "05c4bf9c0265c0662a51": {
+            "singleVisual": {
+              "visualType": "image",
+              "objects": {}
+            }
+          },
+          "0e2efe866111b0294f3c": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "8bd1de0486a6a819852c": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "e0f4354bc72af687c1c1": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "5a1bb0eeebb8c4900c70": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "0daa1ae44d2895aae555",
+                  "type": "Advanced",
+                  "expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "beeswarm_plot_data"
+                            }
+                          },
+                          "Property": "feature_name"
+                        }
+                      },
+                      "Function": 3
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "3ff34a9547092ccb5082",
+                  "type": "Advanced",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "beeswarm_plot_data"
+                        }
+                      },
+                      "Property": "shap_value"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "900db51ceac2836dbd69",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "Feature_Y_Axis_Position"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "scatterChart",
+              "objects": {},
+              "activeProjections": {
+                "X": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "beeswarm_plot_data"
+                        }
+                      },
+                      "Property": "shap_value"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "c217f98e9064e37836e3": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "ce12d1a4e3319eba9764": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "de72808314cee0027399": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "de7df2207640932cc428": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "1838d2f4d2f73c47e6a6": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "0a70b1aca5e224105561",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "Pct_Diff_NDCG"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "Pct_Diff_NDCG"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "8f0f4aae2fe1289461b4": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "c0b67fc94e1892982c8b",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "Baseline NDCG"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "Baseline NDCG"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "a5ce6fb3580955c55e62": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "81a33eb561fa59f5a2df": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "b3c1f8bee2c8bb80acb2",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "Champion NDCG"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "Champion NDCG"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "949ab48913c78dd6467c": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "e1d7aaf185c1d2a30d2c",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "Champion Recall"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "Champion Recall"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "081c138acf5e34afae48": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "72053073d9e8a40a7ca5",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "Pct_Diff_Recall"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "Pct_Diff_Recall"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "605864176c4886ccf924": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "79b45be0602bddac9178",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "Baseline Recall"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "Baseline Recall"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "611ef8d3d262eb53874a": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "032a681e538ae7e56feb": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "24e037950b8c324d517b": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "abd0570b50674d6571ae",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "Pct_Diff_F1"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "Pct_Diff_F1"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "fa523720ed64987eadc3": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "23fc337f54a246c4848d",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "Baseline F1"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "Baseline F1"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "d7a53b7d63b3ac3ddf05": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "46d0f47c61c1106265d9",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "Champion F1"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "Champion F1"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "36be5747973d1da48924": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "24d349b975beb0ad0375",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "Champion Precision"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "Champion Precision"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "0cc7ec1f60ac7b980771": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "dee43ab8b08fe0986d6a": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "b0fbf57ce42e004e0ab6",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "Pct_Diff_Precision"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "Pct_Diff_Precision"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "ec903ecffa3179f4dccf": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "9877ddff804266ea10d0",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "Baseline Precision"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "Baseline Precision"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "25313e60e3e2bb932683": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "c2c96906b06b8bab4b01",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Evaluation Metric Parameter"
+                        }
+                      },
+                      "Property": "Evaluation Metric Parameter"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "general": [
+                    {
+                      "properties": {
+                        "filter": {
+                          "filter": {
+                            "Version": 2,
+                            "From": [
+                              {
+                                "Name": "e",
+                                "Entity": "Evaluation Metric Parameter",
+                                "Type": 0
+                              }
+                            ],
+                            "Where": [
+                              {
+                                "Condition": {
+                                  "In": {
+                                    "Expressions": [
+                                      {
+                                        "Column": {
+                                          "Expression": {
+                                            "SourceRef": {
+                                              "Source": "e"
+                                            }
+                                          },
+                                          "Property": "Parameter Fields"
+                                        }
+                                      }
+                                    ],
+                                    "Values": [
+                                      [
+                                        {
+                                          "Literal": {
+                                            "Value": "'''_Model_Evaluation_Measures''[NDCG]'"
+                                          }
+                                        }
+                                      ]
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Basic'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "selection": [
+                    {
+                      "properties": {
+                        "strictSingleSelect": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "true"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Evaluation Metric Parameter"
+                        }
+                      },
+                      "Property": "Evaluation Metric Parameter"
+                    }
+                  }
+                ]
+              },
+              "cachedFilterDisplayItems": [
+                {
+                  "id": {
+                    "scopeId": {
+                      "Comparison": {
+                        "ComparisonKind": 0,
+                        "Left": {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Entity": "Evaluation Metric Parameter"
+                              }
+                            },
+                            "Property": "Parameter Fields"
+                          }
+                        },
+                        "Right": {
+                          "Literal": {
+                            "Value": "'''_Model_Evaluation_Measures''[NDCG]'"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "displayName": "NDCG@5"
+                }
+              ]
+            }
+          },
+          "8559d233198ef3a6a5f0": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "c0d819ddaf53abcea6b6": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "6f2d23375ad71e671709",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "models_dimension"
+                        }
+                      },
+                      "Property": "Model"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "57c448d44dc171cc85e7",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "NDCG"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "clusteredBarChart",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "NDCG"
+                    }
+                  }
+                }
+              ],
+              "activeProjections": {
+                "Category": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "models_dimension"
+                        }
+                      },
+                      "Property": "Model"
+                    }
+                  }
+                ]
+              },
+              "projections": {
+                "Y": [
+                  {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Model_Evaluation_Measures"
+                        }
+                      },
+                      "Property": "NDCG"
+                    }
+                  }
+                ],
+                "Category": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "models_dimension"
+                        }
+                      },
+                      "Property": "Model"
+                    }
+                  }
+                ]
+              },
+              "parameters": {
+                "Y": [
+                  {
+                    "expr": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "Evaluation Metric Parameter"
+                          }
+                        },
+                        "Property": "Evaluation Metric Parameter"
+                      }
+                    },
+                    "index": 0,
+                    "length": 1
+                  }
+                ]
+              }
+            }
+          },
+          "3644b8c17c41d1b19a2b": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "808685bba19dda21fbf0": {
+            "singleVisual": {
+              "visualType": "image",
+              "objects": {}
+            }
+          },
+          "627c196b3e945e1e82a4": {
+            "singleVisual": {
+              "visualType": "image",
+              "objects": {}
+            }
+          },
+          "f99e59bf4c1e1c4b1278": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "46ca1fed8d7be0cae285",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "dataset_split_dimension"
+                        }
+                      },
+                      "Property": "dataset_split"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "general": [
+                    {
+                      "properties": {
+                        "filter": {
+                          "filter": {
+                            "Version": 2,
+                            "From": [
+                              {
+                                "Name": "d",
+                                "Entity": "dataset_split_dimension",
+                                "Type": 0
+                              }
+                            ],
+                            "Where": [
+                              {
+                                "Condition": {
+                                  "In": {
+                                    "Expressions": [
+                                      {
+                                        "Column": {
+                                          "Expression": {
+                                            "SourceRef": {
+                                              "Source": "d"
+                                            }
+                                          },
+                                          "Property": "dataset_split"
+                                        }
+                                      }
+                                    ],
+                                    "Values": [
+                                      [
+                                        {
+                                          "Literal": {
+                                            "Value": "'Validation'"
+                                          }
+                                        }
+                                      ]
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Basic'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "selection": [
+                    {
+                      "properties": {
+                        "strictSingleSelect": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "true"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "dataset_split_dimension"
+                        }
+                      },
+                      "Property": "dataset_split"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "7f1d68b31ed1d3ae05ae": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "1bbfa40b5939abbe538c": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "5f711e50c8ea305181db": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          }
+        },
+        "visualContainerGroups": {
+          "7787e1b69b7b1b90a567": {
+            "isHidden": true
+          },
+          "538523792ea938062fdc": {
+            "children": {
+              "653bbe2a9dd24e4b94c0": {
+                "isHidden": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "objects": {
+      "merge": {
+        "outspacePane": [
+          {
+            "properties": {
+              "expanded": {
+                "expr": {
+                  "Literal": {
+                    "Value": "false"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

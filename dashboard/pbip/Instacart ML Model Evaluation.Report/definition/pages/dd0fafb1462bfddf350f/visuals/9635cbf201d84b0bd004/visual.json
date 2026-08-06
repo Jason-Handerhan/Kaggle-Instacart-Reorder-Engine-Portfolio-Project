@@ -1,0 +1,17 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "9635cbf201d84b0bd004",
+  "position": {
+    "x": 2.1216407355021216,
+    "y": 0.38189533239039974,
+    "z": 7000,
+    "height": 719.2362093352192,
+    "width": 1497.8783592644979,
+    "tabOrder": 6000
+  },
+  "visualGroup": {
+    "displayName": "Pop-Up (Donut Chart)",
+    "groupMode": "ScaleMode"
+  },
+  "isHidden": true
+}

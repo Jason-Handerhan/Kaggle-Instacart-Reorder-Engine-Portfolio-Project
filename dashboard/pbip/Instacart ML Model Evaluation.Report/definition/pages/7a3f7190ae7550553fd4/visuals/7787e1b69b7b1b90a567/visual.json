@@ -1,0 +1,17 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "7787e1b69b7b1b90a567",
+  "position": {
+    "x": 2.6737967914439196,
+    "y": 0.74866310160427929,
+    "z": 8000,
+    "height": 719.25133689839572,
+    "width": 1497.3262032085561,
+    "tabOrder": 4000
+  },
+  "visualGroup": {
+    "displayName": "Pie Chart Pop-Up",
+    "groupMode": "ScaleMode"
+  },
+  "isHidden": true
+}

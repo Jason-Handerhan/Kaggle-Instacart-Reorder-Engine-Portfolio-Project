@@ -1,0 +1,16 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "d1762fb81ac5b7274809",
+  "position": {
+    "x": 31.007751937984494,
+    "y": 45.219638242894057,
+    "z": 6500,
+    "height": 69.767441860465112,
+    "width": 611.111111111111,
+    "tabOrder": 9000
+  },
+  "visualGroup": {
+    "displayName": "Champion Model",
+    "groupMode": "ScaleMode"
+  }
+}

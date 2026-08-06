@@ -1,0 +1,17 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "6369d74536bbd74ee748",
+  "position": {
+    "x": 0,
+    "y": 0,
+    "z": 2000,
+    "height": 71.912562549386422,
+    "width": 623.99769927559043,
+    "tabOrder": 1000
+  },
+  "visualGroup": {
+    "displayName": "Feat Import Selection",
+    "groupMode": "ScaleMode"
+  },
+  "parentGroupName": "538523792ea938062fdc"
+}

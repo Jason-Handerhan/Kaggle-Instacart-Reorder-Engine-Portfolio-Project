@@ -1,0 +1,17 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "d23829b8cdf1fb494081",
+  "position": {
+    "x": 409.95162126875675,
+    "y": 191.14096900541912,
+    "z": 1000,
+    "height": 324.83277591973246,
+    "width": 670.98662207357859,
+    "tabOrder": 8001
+  },
+  "visualGroup": {
+    "displayName": "Pop-Up Table",
+    "groupMode": "ScaleMode"
+  },
+  "parentGroupName": "304d45c8abd25f2e7a55"
+}

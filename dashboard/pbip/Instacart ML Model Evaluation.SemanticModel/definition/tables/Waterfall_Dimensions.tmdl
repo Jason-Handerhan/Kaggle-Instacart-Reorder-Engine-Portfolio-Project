@@ -1,0 +1,31 @@
+table Waterfall_Dimensions
+	lineageTag: c5442fae-a0e0-4688-b7c7-af834f493249
+
+	column 'Stage Name'
+		dataType: string
+		lineageTag: b2d3c66f-e10c-42d6-8221-c670f0c97206
+		summarizeBy: none
+		sourceColumn: Stage Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sort Order'
+		dataType: int64
+		formatString: 0
+		lineageTag: dcd38899-f1ba-4f69-bd56-bda5c8089b9e
+		summarizeBy: sum
+		sourceColumn: Sort Order
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Waterfall_Dimensions = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WckosTs3JzEtVCCjKT8ssUdJRMlSK1YlWcs7PK0stKs7Mz4PKKPhkpoGkjSDSGaVF6DLGYBlH/zA0cROl2FgA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Stage Name" = _t, #"Sort Order" = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Stage Name", type text}, {"Sort Order", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

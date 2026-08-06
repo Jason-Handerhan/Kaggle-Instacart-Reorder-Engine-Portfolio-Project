@@ -1,0 +1,27 @@
+table dataset_split_dimension
+	lineageTag: 4dc2ee1b-22db-4ebf-8bea-218a970b34c1
+
+	column dataset_split
+		dataType: string
+		lineageTag: 6c0b05ee-b919-4aab-bbf0-2facfbaaf54c
+		summarizeBy: none
+		sourceColumn: dataset_split
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dataset_split_dimension = m
+		mode: import
+		source =
+				let
+				    Source = GoogleBigQuery.Database([Implementation="2.0"]),
+				    #"instacart-ml-model_Database" = Source{[Name="instacart-ml-model",Kind="Database"]}[Data],
+				    ml_model_results_Schema = #"instacart-ml-model_Database"{[Name="ml_model_results",Kind="Schema"]}[Data],
+				    dataset_split_dimension_Table = ml_model_results_Schema{[Name="dataset_split_dimension",Kind="Table"]}[Data],
+				    #"Capitalized Each Word" = Table.TransformColumns(dataset_split_dimension_Table,{{"dataset_split", Text.Proper, type text}})
+				in
+				    #"Capitalized Each Word"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

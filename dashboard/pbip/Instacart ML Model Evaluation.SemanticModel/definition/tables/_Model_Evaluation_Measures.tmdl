@@ -1,0 +1,456 @@
+table _Model_Evaluation_Measures
+	lineageTag: 75932f5a-9401-4cea-ab9b-6074cf8c6fec
+
+	measure Recall = SUM(evaluation_metrics[Recall_at_5])
+		formatString: 0.00000
+		lineageTag: 23581aca-a856-4ba3-b27d-f17e43bd8634
+
+	measure Precision = SUM(evaluation_metrics[Precision_at_5])
+		formatString: 0.00000
+		lineageTag: c3b34068-f9ac-4524-883c-0c3ccf28daf5
+
+	measure NDCG = SUM(evaluation_metrics[NDCG_at_5])
+		formatString: 0.00000
+		lineageTag: 356850fb-dfab-4248-8d87-722825619be7
+
+	measure F1 = SUM(evaluation_metrics[F1_at_5])
+		formatString: 0.00000
+		lineageTag: c4ae2324-42cd-4b1f-90f4-44283517510c
+
+	measure Dynamic_Metric_Description = ```
+			
+			VAR SelectedMetricText = SELECTEDVALUE('Evaluation Metric Parameter'[Parameter Fields])
+			VAR DescriptionText = 
+			    SWITCH(
+			        TRUE(),
+			        CONTAINSSTRING(SelectedMetricText, "Precision"), "Out of the top 5 products recommended, what percentage were actual reorders.",
+			        CONTAINSSTRING(SelectedMetricText, "Recall"), "Out of the total reorders, what percentage were captured in the top 5 recommendations.",
+			        CONTAINSSTRING(SelectedMetricText, "F1"), "The harmonic mean of Precision and Recall, identifying if one metric is inflated at the expense of the other.",
+			        CONTAINSSTRING(SelectedMetricText, "NDCG"), "Rewards models that place true reorders higher in the top 5 list (Order Matters).",
+			        "Select a metric from the slicer to see its analytical definition."
+			    )
+			RETURN
+			    DescriptionText & ""
+			```
+		lineageTag: 09b7e478-8708-4e41-80a0-783d0241986c
+
+	measure 'Champion Recall' =
+			
+			VAR Champion = [Champion_Model]
+			RETURN
+			CALCULATE(
+			    SUM(evaluation_metrics[Recall_at_5]),
+			    evaluation_metrics[Model] = Champion
+			)
+		formatString: 0.0000
+		lineageTag: 76904924-0468-449a-aec3-e5fee38688d3
+
+	measure 'Champion Precision' =
+			
+			VAR Champion = [Champion_Model]
+			RETURN
+			CALCULATE(
+			    SUM(evaluation_metrics[Precision_at_5]),
+			    evaluation_metrics[Model] = Champion
+			)
+		formatString: 0.0000
+		lineageTag: a3b48325-70c8-4bbc-bf27-0616316c0343
+
+	measure 'Champion NDCG' =
+			
+			VAR Champion = [Champion_Model]
+			RETURN
+			CALCULATE(
+			    SUM(evaluation_metrics[NDCG_at_5]),
+			    evaluation_metrics[Model] = Champion
+			)
+		formatString: 0.0000
+		lineageTag: 9239bf7c-f427-4cb6-b66d-8fd9e460e246
+
+	measure 'Champion F1' =
+			
+			VAR Champion = [Champion_Model]
+			RETURN
+			CALCULATE(
+			    SUM(evaluation_metrics[F1_at_5]),
+			    evaluation_metrics[Model] = Champion
+			)
+		formatString: 0.0000
+		lineageTag: 49431830-80f3-40e0-a6a1-156fc6fdf3c0
+
+	measure Feature_Y_Axis_Position = ```
+			
+			-- Step 1: Get the baseline rank of the feature (e.g., 1 through 15)
+			VAR BaseRank = SELECTEDVALUE('beeswarm_plot_data'[feature_importance_rank])
+			
+			-- Step 2: Extract the unique plot ID integer for this specific dot
+			VAR RowID = SELECTEDVALUE('beeswarm_plot_data'[unique_plot_id])
+			
+			-- Step 3: Add an incredibly tiny fraction to make the coordinate 100% unique to Power BI
+			VAR Jitter = DIVIDE(RowID, 100000000) 
+			
+			RETURN
+			    BaseRank + Jitter
+			```
+		formatString: 0
+		lineageTag: 46aebf55-9609-43f8-9005-4404aa3fe257
+
+	measure SHAP_Color_Scale = ```
+			
+			-- Step 1: Capture the current row's feature name and individual feature value
+			VAR CurrentFeature = SELECTEDVALUE('beeswarm_plot_data'[feature_name])
+			VAR IndividualValue = AVERAGE('beeswarm_plot_data'[feature_value])
+			
+			-- Step 2: Compute the min and max for ONLY this specific feature across the dataset
+			VAR FeatureMin = 
+			    CALCULATE(
+			        MIN('beeswarm_plot_data'[feature_value]), 
+			        REMOVEFILTERS('beeswarm_plot_data'), 
+			        'beeswarm_plot_data'[feature_name] = CurrentFeature,
+			        'beeswarm_plot_data'[feature_value] < 999 -- Defensive drop for outliers/flags
+			    )
+			
+			VAR FeatureMax = 
+			    CALCULATE(
+			        MAX('beeswarm_plot_data'[feature_value]), 
+			        REMOVEFILTERS('beeswarm_plot_data'), 
+			        'beeswarm_plot_data'[feature_name] = CurrentFeature,
+			        'beeswarm_plot_data'[feature_value] < 999 -- Defensive drop for outliers/flags
+			    )
+			
+			-- Step 3: Run a 0-to-1 Min-Max calculation scaled strictly to this feature's domain
+			VAR NormalizedValue = 
+			    DIVIDE(
+			        IndividualValue - FeatureMin, 
+			        FeatureMax - FeatureMin, 
+			        0
+			    )
+			RETURN
+			    NormalizedValue
+			```
+		lineageTag: e1198b5c-5e30-4db4-a50f-5384c1aab10c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Baseline Recall' = ```
+			
+			CALCULATE(
+			    AVERAGE('evaluation_metrics'[Recall_at_5]),
+			    -- Filters the table to pull ONLY the heuristic row
+			    'evaluation_metrics'[Type] = "Heuristic Baseline" 
+			)
+			```
+		formatString: 0.0000
+		lineageTag: 1c3f1cbc-ef8e-49a7-82dc-94fd824867f3
+
+	measure Pct_Diff_Recall = DIVIDE([Champion Recall] - [Baseline Recall], [Baseline Recall], 0)
+		formatString: "▲ "0.0%;"▼ "0.0%;0.0%
+		lineageTag: b54dd8b8-791d-4bb5-956e-80ab83878318
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	measure 'Baseline NDCG' = ```
+			
+			CALCULATE(
+			    AVERAGE('evaluation_metrics'[NDCG_at_5]),
+			    -- Filters the table to pull ONLY the heuristic row
+			    'evaluation_metrics'[Type] = "Heuristic Baseline" 
+			)
+			```
+		formatString: 0.0000
+		lineageTag: 214a87c9-b0a8-4682-818d-a3acca7a2f31
+
+	measure Pct_Diff_NDCG = DIVIDE([Champion NDCG] - [Baseline NDCG], [Baseline NDCG], 0)
+		formatString: "▲ "0.0%;"▼ "0.0%;0.0%
+		lineageTag: c0c6cea7-97ac-43b0-9a6d-faface0d4c80
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	measure ensemble_weights_lgbm_rank_xgb_class = SUM('optimal_ensemble_weights'[ens1_lgb_rank_xgb_class])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 15a2b6f2-7a18-424b-8dfa-3fed9c36cbf7
+
+	measure ensemble_weights_lgbm_rank_lgbm_class = SUM('optimal_ensemble_weights'[ens2_lgb_rank_lgb_class])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 249c46ef-8235-49c4-a157-05f186fdbcc6
+
+	measure ensemble_weights_xgb_rank_lgbm_class = SUM('optimal_ensemble_weights'[ens3_xgb_rank_lgb_class])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: f99fd433-7b3a-498d-b857-950ef3820882
+
+	measure ensemble_weights_xgb_rank_xgb_class = SUM('optimal_ensemble_weights'[ens4_xgb_rank_xgb_class])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: ddaf1132-6723-44bb-a960-9a5f7a2b1eda
+
+	measure ensemble_weights_all_base_models = SUM('optimal_ensemble_weights'[ens5_all_base_models])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 913719c5-7511-44e9-aa61-df56d1603ada
+
+	measure 'Baseline Precision' = ```
+			
+			CALCULATE(
+			    AVERAGE('evaluation_metrics'[Precision_at_5]),
+			    -- Filters the table to pull ONLY the heuristic row
+			    'evaluation_metrics'[Type] = "Heuristic Baseline" 
+			)
+			```
+		formatString: 0.0000
+		lineageTag: 6e4ef990-0854-4d7b-adcd-f7329b1bd72d
+
+	measure Pct_Diff_Precision = DIVIDE([Champion Precision] - [Baseline Precision], [Baseline Precision], 0)
+		formatString: "▲ "0.0%;"▼ "0.0%;0.0%
+		lineageTag: ad3a1481-0839-4f5e-8e50-00359859b4fd
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	measure 'Baseline F1' = ```
+			
+			CALCULATE(
+			    AVERAGE('evaluation_metrics'[F1_at_5]),
+			    -- Filters the table to pull ONLY the heuristic row
+			    'evaluation_metrics'[Type] = "Heuristic Baseline" 
+			)
+			```
+		formatString: 0.0000
+		lineageTag: d13e33d4-643f-4f49-aae1-87512432710e
+
+	measure Pct_Diff_F1 = DIVIDE([Champion F1] - [Baseline F1], [Baseline F1], 0)
+		formatString: "▲ "0.0%;"▼ "0.0%;0.0%
+		lineageTag: 1144cd1c-2832-4cd9-aef0-d2e2045a0cff
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	measure Champion_Model = ```
+			
+			VAR ModelSummary = 
+			    ADDCOLUMNS(
+			        VALUES(Validation_Evaluation_Metrics[Model]),
+			        "@ValRecall", 
+			        CALCULATE(
+			            MAX(Validation_Evaluation_Metrics[Recall_at_5])
+			        )
+			    )
+			VAR MaxRecallValue = 
+			    MAXX(ModelSummary, [@ValRecall])
+			VAR BestModelName = 
+			    MAXX(
+			        FILTER(ModelSummary, [@ValRecall] = MaxRecallValue),
+			        Validation_Evaluation_Metrics[Model]
+			    )
+			RETURN 
+			    BestModelName
+			```
+		lineageTag: ccbf51b1-3bb8-4b04-9711-b0630ad33193
+
+	measure HTML_Model_Evaluation_Info = ```
+			
+			"
+			<div style='font-family: ""Segoe UI"", Helvetica, Arial, sans-serif; color: #2D3748; line-height: 1.6; width: 100%; padding: 10px 25px;'>
+			    
+			    <!-- EXECUTIVE SUMMARY & CONTEXT -->
+			    <div style='margin-bottom: 25px;'>
+			        <h2 style='color: #1A365D; border-bottom: 2px solid #2B6CB0; padding-bottom: 8px; margin-top: 0; font-size: 22px; display: flex; align-items: center;'>
+			            <svg style='width:24px; height:24px; margin-right:8px; fill:#1A365D;' viewBox='0 0 24 24'><path d='M19,1H5A2,2 0 0,0 3,3V21A2,2 0 0,0 5,23H19A2,2 0 0,0 21,21V3A2,2 0 0,0 19,1M19,21H5V3H19V21M17,11V9H11V11H17M17,15V13H11V15H17M17,19V17H11V19H17M7,9H9V11H7V9M7,13H9V15H7V13M7,17H9V19H7V17Z'/></svg>
+			            Executive Summary & Context
+			        </h2>
+			        <p style='font-size: 14px; text-align: justify;'>
+			            This page provides an evaluation of candidate machine learning models developed using the Instacart Kaggle dataset. To solve the task of predicting user reorder patterns, I built, optimized, and compared several classification and ranking frameworks (XGBoost and LightGBM), alongside a heuristic baseline. The objective of these models is to power a personalized 'Top 5' recommendation widget for customers—minimizing customer friction during active shopping sessions. By serving relevant product suggestions, this product is engineered to improve user conversion rates, increase Average Order Value (AOV), and decrease customer churn. Leveraging SHAP (SHapley Additive exPlanations) feature importance visualizations, this page moves beyond 'black-box' predictions, illustrating how key behavioral features drive recommendation probabilities.
+			        </p>
+			    </div>
+			
+			    <!-- HOW TO NAVIGATE THIS PAGE -->
+			    <div style='margin-bottom: 25px;'>
+			        <h2 style='color: #1A365D; border-bottom: 2px solid #2B6CB0; padding-bottom: 8px; font-size: 22px; display: flex; align-items: center;'>
+			            <svg style='width:24px; height:24px; margin-right:8px; fill:#1A365D;' viewBox='0 0 24 24'><path d='M15,19A3,3 0 0,1 12,22A3,3 0 0,1 9,19C9,17.66 9.87,16.5 11,16.1V11.9C9.13,11.5 7.6,10.16 7.1,8.3L3.66,9.5L2.94,7.4L6.4,6.2C6.7,4.35 8.16,2.9 10,2.4V1H12V2.4C13.84,2.9 15.3,4.35 15.6,6.2L19.06,5L19.78,7.1L16.34,8.3C15.84,10.16 14.31,11.5 12.43,11.9V16.1C13.56,16.5 14.43,17.66 14.43,19H15M11,4A2,2 0 0,0 9,6A2,2 0 0,0 11,8A2,2 0 0,0 13,6A2,2 0 0,0 11,4Z'/></svg>
+			            How to Navigate This Page
+			        </h2>
+			        <ul style='font-size: 14px; padding-left: 20px; margin-top: 10px;'>
+			            <li style='margin-bottom: 12px;'>
+			                <strong>Top Right Controls:</strong> Access global page toggle and supplementary information:
+			                <ul style='padding-left: 20px; margin-top: 6px; list-style-type: circle;'>
+			                    <li style='margin-bottom: 4px;'><span style='font-style: italic; font-weight: normal; color: #4A5568;'>Data Split Toggle:</span> Flip page metrics between <span style='font-family: Consolas, monospace; background-color: #EFEFEF; color: #C53030; padding: 2px 5px; border-radius: 3px; font-size: 12px;'>Validation</span> and <span style='font-family: Consolas, monospace; background-color: #EFEFEF; color: #C53030; padding: 2px 5px; border-radius: 3px; font-size: 12px;'>Test</span> datasets.</li>
+			                    <li style='margin-bottom: 4px;'><span style='font-style: italic; font-weight: normal; color: #4A5568;'>Pie Chart Icon:</span> Opens a pop-up window displaying the optimal model blending weights used to build ensemble predictions.</li>
+			                    <li style='margin-bottom: 4px;'><span style='font-style: italic; font-weight: normal; color: #4A5568;'>Spreadsheet Icon:</span> Expands a table displaying all evaluation metrics for all models.</li>
+			                </ul>
+			            </li>
+			            <li style='margin-bottom: 8px;'><strong>Evaluation Metric Slicer (Horizontal Bar Chart):</strong> Click a metric (<span style='font-family: Consolas, monospace; background-color: #EFEFEF; padding: 2px 5px; border-radius: 3px; font-size: 12px;'>Recall@5</span>, <span style='font-family: Consolas, monospace; background-color: #EFEFEF; padding: 2px 5px; border-radius: 3px; font-size: 12px;'>NDCG@5</span>, <span style='font-family: Consolas, monospace; background-color: #EFEFEF; padding: 2px 5px; border-radius: 3px; font-size: 12px;'>Precision@5</span>, <span style='font-family: Consolas, monospace; background-color: #EFEFEF; padding: 2px 5px; border-radius: 3px; font-size: 12px;'>F1@5</span>) to swap the evaluation metric.</li>
+			            <li style='margin-bottom: 8px;'><strong>Plot Selection Buttons (Feature Importance Charts):</strong> Select a plot type (Beeswarm or Barplot).</li>
+			            <li style='margin-bottom: 8px;'><strong>Model Selection Slicer (Feature Importance Charts):</strong> Select any base model to view its feature importance.</li>
+			            <li style='margin-bottom: 8px;'><strong>Optimal Ensemble Weights:</strong> Toggle different model pairings to view the ratios used for ensemble predictions.</li>
+			        </ul>
+			    </div>
+			
+			    <!-- KEY FORMULAS & DEFINITIONS -->
+			    <div style='margin-bottom: 25px;'>
+			        <h2 style='color: #1A365D; border-bottom: 2px solid #2B6CB0; padding-bottom: 8px; font-size: 22px; display: flex; align-items: center;'>
+			            <svg style='width:24px; height:24px; margin-right:8px; fill:#1A365D;' viewBox='0 0 24 24'><path d='M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3M19 19H5V5H19V19M11.5 6.4L10.1 5L7 8.1L3.9 5L2.5 6.4L5.6 9.5L2.5 12.6L3.9 14L7 10.9L10.1 14L11.5 12.6L8.4 9.5L11.5 6.4M18.5 7H13V9H18.5V7M18.5 10H13V12H18.5V10M18.5 14H13V16H18.5V14M18.5 17H13V19H18.5V17Z'/></svg>
+			            Key Formulas & Definitions
+			        </h2>
+			        <ul style='font-size: 14px; padding-left: 20px; margin-top: 10px;'>
+			            <li style='margin-bottom: 20px;'>
+			                <strong>Recall @ 5 (Primary Metric):</strong> Out of all the products a user actually reordered in their next basket, what percentage did the model successfully capture in its top 5 recommendations?
+			                <div style='background-color: #F7FAFC; border-left: 4px solid #4A5568; padding: 12px 20px; margin: 8px 0; font-family: ""Segoe UI"", Arial, sans-serif; font-size: 14px; color: #1A202C; width: 95%; display: flex; align-items: center;'>
+			                    <span style='font-family: Consolas, monospace; font-size: 13px; font-weight: bold; margin-right: 10px;'>Recall@5</span> = 
+			                    <div style='display: inline-flex; flex-direction: column; align-items: center; text-align: center; padding: 0 10px; vertical-align: middle;'>
+			                        <span style='border-bottom: 1px solid #4A5568; padding-bottom: 2px; font-weight: 500;'>True Reorders in Top 5</span>
+			                        <span style='padding-top: 2px; font-weight: 500;'>Total Actual Reorders</span>
+			                    </div>
+			                </div>
+			            </li>
+			            <li style='margin-bottom: 20px;'>
+			                <strong>NDCG @ 5 (Normalized Discounted Cumulative Gain):</strong> Measures the quality of the ranking. It rewards the model for placing true reorders higher in the top 5 list.
+			                <div style='background-color: #F7FAFC; border-left: 4px solid #4A5568; padding: 12px 20px; margin: 8px 0; width: 95%;'>
+			                    <div style='display: flex; align-items: center; margin-bottom: 15px;'>
+			                        <span style='font-family: Consolas, monospace; font-size: 13px; font-weight: bold; margin-right: 10px;'>NDCG@5</span> = 
+			                        <div style='display: inline-flex; flex-direction: column; align-items: center; text-align: center; padding: 0 10px; vertical-align: middle;'>
+			                            <span style='border-bottom: 1px solid #4A5568; padding-bottom: 2px; font-weight: 500;'>DCG@5</span>
+			                            <span style='padding-top: 2px; font-weight: 500;'>IDCG@5</span>
+			                        </div>
+			                    </div>
+			                    <div style='font-size: 13px; color: #2D3748;'>
+			                        <strong>DCG@5:</strong> <span style='font-family: Consolas, monospace;'>&sum; (Relevance<sub>i</sub> / log<sub>2</sub>(i+1))</span> — Penalizes relevant items found lower in the list.<br>
+			                        <strong>IDCG@5:</strong> The maximum possible DCG (Ideal list) which normalizes the score between 0 and 1.
+			                    </div>
+			                </div>
+			            </li>
+			            <li style='margin-bottom: 20px;'>
+			                <strong>Precision @ 5:</strong> Out of the 5 recommendations presented to the user, what percentage were actual reorders?
+			                <div style='background-color: #F7FAFC; border-left: 4px solid #4A5568; padding: 12px 20px; margin: 8px 0; font-family: ""Segoe UI"", Arial, sans-serif; font-size: 14px; color: #1A202C; width: 95%; display: flex; align-items: center;'>
+			                    <span style='font-family: Consolas, monospace; font-size: 13px; font-weight: bold; margin-right: 10px;'>Precision@5</span> = 
+			                    <div style='display: inline-flex; flex-direction: column; align-items: center; text-align: center; padding: 0 10px; vertical-align: middle;'>
+			                        <span style='border-bottom: 1px solid #4A5568; padding-bottom: 2px; font-weight: 500;'>True Reorders in Top 5</span>
+			                        <span style='padding-top: 2px; font-weight: 500;'>5</span>
+			                    </div>
+			                </div>
+			            </li>
+			            <li style='margin-bottom: 15px;'>
+			                <strong>F1-Score @ 5:</strong> The harmonic mean of Precision and Recall, identifying if one metric is inflated at the expense of another.
+			                <div style='background-color: #F7FAFC; border-left: 4px solid #4A5568; padding: 12px 20px; margin: 8px 0; font-family: ""Segoe UI"", Arial, sans-serif; font-size: 14px; color: #1A202C; width: 95%; display: flex; align-items: center;'>
+			                    <span style='font-family: Consolas, monospace; font-size: 13px; font-weight: bold; margin-right: 10px;'>F1@5</span> = 2 &times; 
+			                    <div style='display: inline-flex; flex-direction: column; align-items: center; text-align: center; padding: 0 10px; vertical-align: middle;'>
+			                        <span style='border-bottom: 1px solid #4A5568; padding-bottom: 2px; font-weight: 500;'>Precision@5 &times; Recall@5</span>
+			                        <span style='padding-top: 2px; font-weight: 500;'>Precision@5 + Recall@5</span>
+			                    </div>
+			                </div>
+			            </li>
+			        </ul>
+			    </div>
+			
+			    <!-- UNDERSTANDING THE SHAP BEESWARM PLOT -->
+			    <div style='margin-bottom: 25px;'>
+			        <h2 style='color: #1A365D; border-bottom: 2px solid #2B6CB0; padding-bottom: 8px; font-size: 22px; display: flex; align-items: center;'>
+			            <svg style='width:24px; height:24px; margin-right:8px; fill:#1A365D;' viewBox='0 0 24 24'><path d='M21,11A1,1 0 0,1 20,12A1,1 0 0,1 19,11A1,1 0 0,1 20,10A1,1 0 0,1 21,11M16,5A1,1 0 0,1 15,6A1,1 0 0,1 14,5A1,1 0 0,1 15,4A1,1 0 0,1 16,5M17,17A1,1 0 0,1 16,18A1,1 0 0,1 15,17A1,1 0 0,1 16,16A1,1 0 0,1 17,17M10,7A1,1 0 0,1 9,8A1,1 0 0,1 8,7A1,1 0 0,1 9,6A1,1 0 0,1 10,7M12,14A1.5,1.5 0 0,1 10.5,15.5A1.5,1.5 0 0,1 9,14A1.5,1.5 0 0,1 10.5,12.5A1.5,1.5 0 0,1 12,14M6,18A1.5,1.5 0 0,1 4.5,19.5A1.5,1.5 0 0,1 3,18A1.5,1.5 0 0,1 4.5,16.5A1.5,1.5 0 0,1 6,18M5,11A1,1 0 0,1 4,12A1,1 0 0,1 3,11A1,1 0 0,1 4,10A1,1 0 0,1 5,11M1,22V2H3V20H22V22H1Z'/></svg>
+			            Understanding the SHAP Beeswarm Plot
+			        </h2>
+			        <ul style='font-size: 14px; padding-left: 20px; margin-top: 10px;'>
+			            <li style='margin-bottom: 8px;'><strong>What is SHAP?</strong> SHAP breaks down how much each feature contributed to predictions.</li>
+			            <li style='margin-bottom: 8px;'><strong>X-Axis (SHAP Value):</strong> Represents direction of impact. Dots to the <strong>right</strong> indicate increased reorder probability; dots to the <strong>left</strong> indicate decreased reorder probability.</li>
+			            <li style='margin-bottom: 8px;'><strong>Color Scale:</strong> Blue indicates low feature values; Red indicates high values.</li>
+			            <li style='margin-bottom: 8px;'><strong>Example:</strong> For <span style='font-family: Consolas, monospace; background-color: #EFEFEF; padding: 2px 4px; border-radius: 3px; font-size: 13px;'>Days Since Last Purchase</span>, a high value (Red) sitting on the left means that longer gaps since a product was last purchased reduce reorder likelihood.</li>
+			        </ul>
+			    </div>
+			
+			    <!-- DATA SOURCES -->
+			    <div>
+			        <h2 style='color: #1A365D; border-bottom: 2px solid #2B6CB0; padding-bottom: 8px; font-size: 22px; display: flex; align-items: center;'>
+			            <svg style='width:24px; height:24px; margin-right:8px; fill:#1A365D;' viewBox='0 0 24 24'><path d='M12 20C16.42 20 20 18.21 20 16V18C20 20.21 16.42 22 12 22C7.58 22 4 20.21 4 18V16C4 18.21 7.58 20 12 20M12 2C16.42 2 20 3.79 20 6C20 8.21 16.42 10 12 10C7.58 10 4 8.21 4 6C4 3.79 7.58 2 12 2M12 14C16.42 14 20 12.21 20 10V12C20 14.21 16.42 16 12 16C7.58 16 4 14.21 4 12V10C4 12.21 7.58 14 12 14Z'/></svg>
+			            Data Sources
+			        </h2>
+			        <ul style='font-size: 14px; padding-left: 20px; margin-top: 10px;'>
+			            <li style='margin-bottom: 8px;'>
+			                <strong>'InstaCart' Online Grocery Basket Analysis Dataset:</strong> Models and dashboard were built utilizing: <span style='font-family: Consolas, monospace; background-color: #F7FAFC; padding: 3px 6px; border-radius: 4px; font-size: 13px; border: 1px solid #E2E8F0; color: #2B6CB0;'>https://www.kaggle.com/datasets/yasserh/instacart-online-grocery-basket-analysis-dataset</span>
+			            </li>
+			        </ul>
+			    </div>
+			
+			</div>
+			"
+			```
+		lineageTag: 497e8aee-d57c-48da-99c9-688228ae623d
+
+	measure HTML_Icon_Author_Credit = ```
+			
+			"
+			<div style='font-family: ""Segoe UI"", Helvetica, Arial, sans-serif; color: #2D3748; line-height: 1.6; width: 100%; padding: 10px 25px;'>
+			    
+			    <!-- EXECUTIVE SUMMARY & CONTEXT -->
+			    <div style='margin-bottom: 25px;'>
+			        <h2 style='color: #1A365D; border-bottom: 2px solid #2B6CB0; padding-bottom: 8px; margin-top: 0; font-size: 22px; display: flex; align-items: center;'>
+			            <svg style='width:24px; height:24px; margin-right:8px; fill:#1A365D;' viewBox='0 0 24 24'><path d='M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,18.5C10.16,18.5 8.5,17.75 7.31,16.56C8.58,15.13 10.18,14.25 12,14.25C13.82,14.25 15.42,15.13 16.69,16.56C15.5,17.75 13.84,18.5 12,18.5Z'/></svg>
+			            Icon Author Credit
+			        </h2>
+			        <p style='font-size: 14px; text-align: justify; margin-bottom: 20px;'>
+			            To maintain open-source compliance and credit the creative authors behind the visual assets used throughout this dashboard, the official attributions for all UI design icons sourced via Flaticon are detailed below.
+			        </p>
+			    </div>
+			
+			    <!-- ATTRIBUTION LISTING -->
+			    <div>
+			        <table style='width: 100%; border-collapse: collapse; font-size: 14px;'>
+			            <!-- CROWN ICON -->
+			            <tr style='border-bottom: 1px solid #E2E8F0;'>
+			                <td style='padding: 12px 0; color: #1A365D; font-weight: bold; width: 30%;'>Crown Icon</td>
+			                <td style='padding: 12px 0;'>
+			                    Crown icons created by Magnific - Flaticon <br>
+			                    <span style='font-family: Consolas, monospace; background-color: #F7FAFC; padding: 2px 6px; border-radius: 4px; font-size: 12px; border: 1px solid #E2E8F0; color: #4A5568; display: inline-block; margin-top: 4px;'>https://www.flaticon.com/free-icons/crown</span>
+			                </td>
+			            </tr>
+			            <!-- DONUT CHART ICON -->
+			            <tr style='border-bottom: 1px solid #E2E8F0;'>
+			                <td style='padding: 12px 0; color: #1A365D; font-weight: bold;'>Donut Chart Icon</td>
+			                <td style='padding: 12px 0;'>
+			                    Donut chart icons created by juicy_fish - Flaticon <br>
+			                    <span style='font-family: Consolas, monospace; background-color: #F7FAFC; padding: 2px 6px; border-radius: 4px; font-size: 12px; border: 1px solid #E2E8F0; color: #4A5568; display: inline-block; margin-top: 4px;'>https://www.flaticon.com/free-icons/donut-chart</span>
+			                </td>
+			            </tr>
+			            <!-- LIST ICON -->
+			            <tr style='border-bottom: 1px solid #E2E8F0;'>
+			                <td style='padding: 12px 0; color: #1A365D; font-weight: bold;'>List Icon</td>
+			                <td style='padding: 12px 0;'>
+			                    List icons created by phatplus - Flaticon <br>
+			                    <span style='font-family: Consolas, monospace; background-color: #F7FAFC; padding: 2px 6px; border-radius: 4px; font-size: 12px; border: 1px solid #E2E8F0; color: #4A5568; display: inline-block; margin-top: 4px;'>https://www.flaticon.com/free-icons/list</span>
+			                </td>
+			            </tr>
+			            <!-- PIE CHART ICON -->
+			            <tr style='border-bottom: 1px solid #E2E8F0;'>
+			                <td style='padding: 12px 0; color: #1A365D; font-weight: bold;'>Pie Chart Icon</td>
+			                <td style='padding: 12px 0;'>
+			                    Pie chart icons created by Yudhi Restu - Flaticon <br>
+			                    <span style='font-family: Consolas, monospace; background-color: #F7FAFC; padding: 2px 6px; border-radius: 4px; font-size: 12px; border: 1px solid #E2E8F0; color: #4A5568; display: inline-block; margin-top: 4px;'>https://www.flaticon.com/free-icons/pie-chart</span>
+			                </td>
+			            </tr>
+			            <!-- SPREADSHEET ICON -->
+			            <tr style='border-bottom: 1px solid #E2E8F0;'>
+			                <td style='padding: 12px 0; color: #1A365D; font-weight: bold;'>Spreadsheet Icon</td>
+			                <td style='padding: 12px 0;'>
+			                    Spreadsheet icons created by Muhammad Atif - Flaticon <br>
+			                    <span style='font-family: Consolas, monospace; background-color: #F7FAFC; padding: 2px 6px; border-radius: 4px; font-size: 12px; border: 1px solid #E2E8F0; color: #4A5568; display: inline-block; margin-top: 4px;'>https://www.flaticon.com/free-icons/spreadsheet</span>
+			                </td>
+			            </tr>
+			        </table>
+			    </div>
+			
+			</div>
+			"
+			```
+		lineageTag: df7baecc-ff2e-4c2e-b674-d4153e5a2a0b
+
+	column Column1
+		dataType: string
+		lineageTag: 25ca7028-dfcc-4895-9e21-c9aac7a158f9
+		summarizeBy: none
+		sourceColumn: Column1
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Model_Evaluation_Measures = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

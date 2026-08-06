@@ -1,0 +1,69 @@
+table optimal_ensemble_weights
+	lineageTag: b9ecaceb-3490-43bb-bb86-9bec836cc48e
+
+	column model_name
+		dataType: string
+		lineageTag: f26ecb97-6ffe-40f5-80f9-29daa1377646
+		summarizeBy: none
+		sourceColumn: model_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column ens1_lgb_rank_xgb_class
+		dataType: double
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 6827edab-d5ee-44ab-a72c-cbd4d557cca0
+		summarizeBy: sum
+		sourceColumn: ens1_lgb_rank_xgb_class
+
+		annotation SummarizationSetBy = Automatic
+
+	column ens2_lgb_rank_lgb_class
+		dataType: double
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: e0d78436-ad6c-4ab4-8b13-f21913041785
+		summarizeBy: sum
+		sourceColumn: ens2_lgb_rank_lgb_class
+
+		annotation SummarizationSetBy = Automatic
+
+	column ens3_xgb_rank_lgb_class
+		dataType: double
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 199f3c59-1817-49c7-b5d0-4971f7c626a9
+		summarizeBy: sum
+		sourceColumn: ens3_xgb_rank_lgb_class
+
+		annotation SummarizationSetBy = Automatic
+
+	column ens4_xgb_rank_xgb_class
+		dataType: double
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: b026bee3-4480-4b4d-a7a9-11dec7292869
+		summarizeBy: sum
+		sourceColumn: ens4_xgb_rank_xgb_class
+
+		annotation SummarizationSetBy = Automatic
+
+	column ens5_all_base_models
+		dataType: double
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 6159c5e3-baf9-4fc6-86be-8c492f0e5c59
+		summarizeBy: sum
+		sourceColumn: ens5_all_base_models
+
+		annotation SummarizationSetBy = Automatic
+
+	partition optimal_ensemble_weights = m
+		mode: import
+		source =
+				let
+				    Source = GoogleBigQuery.Database([Implementation="2.0"]),
+				    #"instacart-ml-model_Database" = Source{[Name="instacart-ml-model",Kind="Database"]}[Data],
+				    ml_model_results_Schema = #"instacart-ml-model_Database"{[Name="ml_model_results",Kind="Schema"]}[Data],
+				    optimal_ensemble_weights_Table = ml_model_results_Schema{[Name="optimal_ensemble_weights",Kind="Table"]}[Data]
+				in
+				    optimal_ensemble_weights_Table
+
+	annotation PBI_ResultType = Table
+

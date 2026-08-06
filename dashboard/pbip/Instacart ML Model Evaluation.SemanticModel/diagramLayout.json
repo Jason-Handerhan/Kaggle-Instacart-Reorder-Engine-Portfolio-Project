@@ -1,0 +1,320 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 434284.65705593349
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 709.96675423546071,
+            "y": 435230.45235053904
+          },
+          "nodeIndex": "beeswarm_plot_data",
+          "nodeLineageTag": "5ac294ae-f8c4-4a70-ad28-a549b8512de3",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 19
+        },
+        {
+          "location": {
+            "x": 712.9312480546,
+            "y": 435744.45235053904
+          },
+          "nodeIndex": "dataset_split_dimension",
+          "nodeLineageTag": "4dc2ee1b-22db-4ebf-8bea-218a970b34c1",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 14
+        },
+        {
+          "location": {
+            "x": 319,
+            "y": 435246.45235053904
+          },
+          "nodeIndex": "evaluation_metrics",
+          "nodeLineageTag": "160401bf-8ec6-4f92-87fc-9f4b86c85ded",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 18
+        },
+        {
+          "location": {
+            "x": 993.46483468181623,
+            "y": 435158.44066567731
+          },
+          "nodeIndex": "model_types_dimension",
+          "nodeLineageTag": "4c440674-8d1d-4c0c-9db5-0e4949ce024f",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 15
+        },
+        {
+          "location": {
+            "x": 323.7281159258041,
+            "y": 434988.90899961919
+          },
+          "nodeIndex": "models_dimension",
+          "nodeLineageTag": "f4c33ecd-ad70-4482-8242-5e93c8796160",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 16
+        },
+        {
+          "location": {
+            "x": 1242.4312480546,
+            "y": 435262.28597162676
+          },
+          "nodeIndex": "power_bi_shap_barplots",
+          "nodeLineageTag": "21e22476-b942-4018-bfd6-62c1ebaa6eab",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 17
+        },
+        {
+          "location": {
+            "x": 2173.3333333333335,
+            "y": 435122.17073443357
+          },
+          "nodeIndex": "_Model_Evaluation_Measures",
+          "nodeLineageTag": "75932f5a-9401-4cea-ab9b-6074cf8c6fec",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 11
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 435145.39493077749
+          },
+          "nodeIndex": "Evaluation Metric Parameter",
+          "nodeLineageTag": "ff0e4751-e634-4778-a7d0-a88ea1e05f07",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 12
+        },
+        {
+          "location": {
+            "x": 1215.1812480546,
+            "y": 434937.55869121954
+          },
+          "nodeIndex": "base_models_dimension",
+          "nodeLineageTag": "e8062ae0-fa50-4c5b-a650-a2400c563a84",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 13
+        },
+        {
+          "location": {
+            "x": 1570.1812480546,
+            "y": 435244.6822655861
+          },
+          "nodeIndex": "optimal_ensemble_weights",
+          "nodeLineageTag": "b9ecaceb-3490-43bb-bb86-9bec836cc48e",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 435311.48687934165
+          },
+          "nodeIndex": "Ensemble Weight Parameter",
+          "nodeLineageTag": "68da07ac-a656-4a9d-948a-6d3ab185e636",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 21
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 434474.28798218141
+          },
+          "nodeIndex": "Conversion Rate",
+          "nodeLineageTag": "02454cd9-aa7e-4464-bf5f-444c1404bb38",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 531.08600995936172,
+            "y": 434473.42171020864
+          },
+          "nodeIndex": "Churn Rate",
+          "nodeLineageTag": "24bea127-afa1-4e9b-82f1-974b4fa26b4c",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 262.8955337688858,
+            "y": 434475.73776097642
+          },
+          "nodeIndex": "Conversion Lift per 10% Recall",
+          "nodeLineageTag": "3d99836e-d927-4159-9f49-d89e6ebcd7e1",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 793.18124805459991,
+            "y": 434474.4086723224
+          },
+          "nodeIndex": "AOV Lift per 10% Recall",
+          "nodeLineageTag": "649061ba-359d-4256-a13e-44a92e43ff35",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 8
+        },
+        {
+          "location": {
+            "x": 1072.1812480545998,
+            "y": 434474.39669159846
+          },
+          "nodeIndex": "Churn Reduction per 10% Recall",
+          "nodeLineageTag": "949d9c8b-4fb5-43b1-a1ff-9dc9e1c81e6b",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 9
+        },
+        {
+          "location": {
+            "x": 2179.1812480546,
+            "y": 435350.07473086531
+          },
+          "nodeIndex": "_Financial_Model_Constants",
+          "nodeLineageTag": "83035f8d-2d70-44b8-a835-ba9f9fb57e1b",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 10
+        },
+        {
+          "location": {
+            "x": 2183.5145813879344,
+            "y": 435474.72748279688
+          },
+          "nodeIndex": "_Financial_Impact_Measures",
+          "nodeLineageTag": "bbbab0bf-f97f-4f11-bc56-5f0fdd28f05e",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 20
+        },
+        {
+          "location": {
+            "x": 2176.847914721267,
+            "y": 435237.46641121176
+          },
+          "nodeIndex": "_Waterfall_Measures",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 1563.5145813879344,
+            "y": 435056.12089005765
+          },
+          "nodeIndex": "Waterfall_Dimensions",
+          "nodeLineageTag": "c5442fae-a0e0-4688-b7c7-af834f493249",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 1563.0145813879344,
+            "y": 434881.58882080205
+          },
+          "nodeIndex": "Donut_Dimensions",
+          "nodeLineageTag": "0b57926e-2dd2-4e08-b275-55b31d974c12",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 757.51458138793441,
+            "y": 434247.41471601604
+          },
+          "nodeIndex": "dashboard_last_update_time",
+          "nodeLineageTag": "874b654b-cd3b-413f-beec-8bc18e6885fb",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 22
+        },
+        {
+          "location": {
+            "x": 710.01458138793441,
+            "y": 435924.65705593349
+          },
+          "nodeIndex": "Validation_Evaluation_Metrics",
+          "nodeLineageTag": "86aa37ea-4109-4d13-9fe1-f62163892e51",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 40,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

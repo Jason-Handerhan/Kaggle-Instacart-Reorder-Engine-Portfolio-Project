@@ -1,0 +1,54 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "350eab24601dc477bd0a",
+  "position": {
+    "x": 59.405940594059409,
+    "y": 66.831683168316829,
+    "z": 2000,
+    "height": 449.78783592644982,
+    "width": 388.26025459688827,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "htmlContent443BE3AD55E043BF878BED274D3A6855",
+    "query": {
+      "queryState": {
+        "content": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Financial_Model_Constants"
+                    }
+                  },
+                  "Property": "Financial_Assumptions_HTML"
+                }
+              },
+              "queryRef": "_Financial_Model_Constants.Financial_Assumptions_HTML",
+              "nativeQueryRef": "Financial_Assumptions_HTML"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'HTML Assumptions'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "parentGroupName": "c5f198d28519a3cd30d0"
+}

@@ -1,0 +1,29 @@
+table 'AOV Lift per 10% Recall'
+	lineageTag: 649061ba-359d-4256-a13e-44a92e43ff35
+
+	measure 'AOV Lift per 10% Recall Value' = SELECTEDVALUE('AOV Lift per 10% Recall'[AOV Lift per 10% Recall], 0.05)
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 929d953d-1537-407e-925a-240290b7f44b
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column 'AOV Lift per 10% Recall'
+		lineageTag: 2890218e-004f-41d2-ad66-7de30099f067
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'AOV Lift per 10% Recall' = calculated
+		mode: import
+		source = GENERATESERIES(CURRENCY(0.00), CURRENCY(0.26), CURRENCY(0.01))
+
+	annotation PBI_Id = c6655d2034934bc3bde90210bcab0024
+

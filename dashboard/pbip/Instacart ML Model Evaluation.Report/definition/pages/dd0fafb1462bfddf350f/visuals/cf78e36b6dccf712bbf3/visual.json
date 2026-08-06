@@ -1,0 +1,17 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "cf78e36b6dccf712bbf3",
+  "position": {
+    "x": 884.72442531583351,
+    "y": 0,
+    "z": 0,
+    "height": 107.82577245360986,
+    "width": 212.16407355021215,
+    "tabOrder": 2000
+  },
+  "visualGroup": {
+    "displayName": "Conversion Profit Lift Card",
+    "groupMode": "ScaleMode"
+  },
+  "parentGroupName": "86a8c4dc1f61d96104c3"
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "926d1e26cde2558fc6b5",
+  "position": {
+    "x": 1.1152715607643164,
+    "y": 0,
+    "z": 0,
+    "height": 37.930284008124076,
+    "width": 335.08273481216133,
+    "tabOrder": 1000
+  },
+  "visualGroup": {
+    "displayName": "Plot Selection",
+    "groupMode": "ScaleMode"
+  },
+  "parentGroupName": "6369d74536bbd74ee748"
+}

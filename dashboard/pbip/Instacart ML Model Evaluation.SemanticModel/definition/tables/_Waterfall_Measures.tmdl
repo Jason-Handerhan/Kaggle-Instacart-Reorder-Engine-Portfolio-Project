@@ -1,0 +1,81 @@
+table _Waterfall_Measures
+	lineageTag: 854c7b68-24c7-4923-ab70-9cfc755763b7
+
+	measure Conversion_Stage1_Baseline_Orders = [SEC_2025_Annual_Orders]
+		formatString: 0
+		lineageTag: 9321fba6-5f7f-4239-8acb-0ed9f4e29e42
+
+	measure Conversion_Stage2_Extra_Orders =
+			
+			VAR Annual_Orders = [SEC_2025_Annual_Orders]
+			VAR Recall = IF(SELECTEDVALUE(evaluation_metrics[Model]) = "No Widget", 0, [Recall])
+			VAR RecallUnits = Recall / 0.10
+			VAR Extra_Orders = Annual_Orders * (RecallUnits * [Conversion Lift per 10% Recall Value])
+			
+			RETURN
+			Extra_Orders
+		lineageTag: 8e353b37-2cfd-4355-93b0-c59675d24f15
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Conversion_Stage3_Profit_Lift = [Conversion_Profit_Lift]
+		lineageTag: 43235b7b-eb0d-45ec-858c-60fdd5239734
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Master_Waterfall_Values =
+			
+			SWITCH(
+			    SELECTEDVALUE(Waterfall_Dimensions[Stage Name]),
+			    "Baseline Profit", CALCULATE([Baseline_Profit], REMOVEFILTERS(Waterfall_Dimensions)),
+			    "Conversion Profit Lift", CALCULATE([Conversion_Profit_Lift], REMOVEFILTERS(Waterfall_Dimensions)),
+			    "Churn Profit Lift", CALCULATE([Churn_Profit_Lift], REMOVEFILTERS(Waterfall_Dimensions)),
+			    "AOV Profit Lift", CALCULATE([AOV_Profit_Lift], REMOVEFILTERS(Waterfall_Dimensions)),
+			    BLANK()
+			)
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: b60899c0-3e8d-4341-b6f5-e2441d9d9f89
+
+	measure Conversion_Dyanmic_Tool_Tip = ```
+			
+			VAR Recall = IF(SELECTEDVALUE(evaluation_metrics[Model]) = "No Widget", 0, [Recall])
+			VAR RecallUnits = Recall / 0.10
+			VAR Lift_Amount = RecallUnits * [Conversion Lift per 10% Recall Value]
+			VAR New_Conv = [Conversion Rate Value] + Lift_Amount
+			
+			RETURN
+			"Baseline Conversion Rate: " & FORMAT([Conversion Rate Value], "0.00%") & 
+			" | Model Lift: +" & FORMAT(Lift_Amount, "0.00%") & 
+			" | New Conversion Rate: " & FORMAT(New_Conv, "0.00%")
+			```
+		lineageTag: 204c365f-f433-49bb-a83a-7d0d7684ec03
+
+	measure Yaxis_min = [Baseline_Profit] - 100000000
+		lineageTag: bbe54033-ef93-4045-98e0-014e834a40b0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Yaxis_max = [Annual_Profit] *1.017
+		lineageTag: d96708be-2897-41c8-8997-beae774d060a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Column1
+		dataType: string
+		lineageTag: c7b891bb-db08-4f8f-9305-e31302eccc35
+		summarizeBy: none
+		sourceColumn: Column1
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Waterfall_Measures = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

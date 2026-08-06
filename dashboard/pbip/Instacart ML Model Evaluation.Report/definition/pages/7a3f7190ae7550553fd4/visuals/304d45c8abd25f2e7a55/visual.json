@@ -1,0 +1,17 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "304d45c8abd25f2e7a55",
+  "position": {
+    "x": 2.6737967914439196,
+    "y": 0.74866310160427929,
+    "z": 9000,
+    "height": 719.25133689839572,
+    "width": 1497.3262032085561,
+    "tabOrder": 6000
+  },
+  "visualGroup": {
+    "displayName": "Pop-Up Eval Metrics Table",
+    "groupMode": "ScaleMode"
+  },
+  "isHidden": true
+}

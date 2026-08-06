@@ -1,0 +1,50 @@
+table 'Evaluation Metric Parameter'
+	lineageTag: ff0e4751-e634-4778-a7d0-a88ea1e05f07
+
+	column 'Evaluation Metric Parameter'
+		lineageTag: 2f95d248-ede4-409b-9006-51034d0961df
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Parameter Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Parameter Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Fields'
+		isHidden
+		lineageTag: 23d64112-dc4c-49fc-957e-40ac85888bac
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Parameter Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Order'
+		isHidden
+		formatString: 0
+		lineageTag: 880217cb-6cba-415b-b4ec-2758df2c3459
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Evaluation Metric Parameter' = calculated
+		mode: import
+		source =
+				{
+				    ("Recall@5", NAMEOF('_Model_Evaluation_Measures'[Recall]), 0),
+				    ("NDCG@5", NAMEOF('_Model_Evaluation_Measures'[NDCG]), 1),
+				    ("Precision@5", NAMEOF('_Model_Evaluation_Measures'[Precision]), 2),
+				    ("F1@5", NAMEOF('_Model_Evaluation_Measures'[F1]), 3)
+				}
+
+	annotation PBI_Id = 8e4cc22ceaaa486aadf5236888060672
+

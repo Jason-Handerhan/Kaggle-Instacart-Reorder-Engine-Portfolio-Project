@@ -27,3 +27,11 @@ service_account.json
 mlflow.db
 mlartifacts/
 mlruns/
+
+# ==========================================
+# Power BI Temporary & User Settings
+# ==========================================
+*.pbip.user
+*.Dataset/localSettings.json
+*.Report/localSettings.json
+*.Report/definition.pir

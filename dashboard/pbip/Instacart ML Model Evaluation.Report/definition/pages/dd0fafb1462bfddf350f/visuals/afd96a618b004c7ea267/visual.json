@@ -1,0 +1,17 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "afd96a618b004c7ea267",
+  "position": {
+    "x": 706.77482873688064,
+    "y": 0,
+    "z": 1000,
+    "height": 100.10595469800236,
+    "width": 235.87876453986451,
+    "tabOrder": 1000
+  },
+  "visualGroup": {
+    "displayName": "AOV Lift",
+    "groupMode": "ScaleMode"
+  },
+  "parentGroupName": "2b2571f27e167b74eda1"
+}

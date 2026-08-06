@@ -1,0 +1,16 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "d23c82ae63abd973ab95",
+  "position": {
+    "x": 0,
+    "y": 0.88669950738916259,
+    "z": 6000,
+    "height": 51.607715980324912,
+    "width": 1500,
+    "tabOrder": 0
+  },
+  "visualGroup": {
+    "displayName": "Page Header Block",
+    "groupMode": "ScaleMode"
+  }
+}

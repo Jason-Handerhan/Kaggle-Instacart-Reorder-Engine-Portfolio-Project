@@ -1,0 +1,28 @@
+table 'Conversion Lift per 10% Recall'
+	lineageTag: 3d99836e-d927-4159-9f49-d89e6ebcd7e1
+
+	measure 'Conversion Lift per 10% Recall Value' = SELECTEDVALUE('Conversion Lift per 10% Recall'[Conversion Lift per 10% Recall], 0.002)
+		lineageTag: 6858e1ef-d004-4d03-bb86-fdef0177f8a0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Conversion Lift per 10% Recall'
+		lineageTag: 500ddd5b-b562-4b7e-b88f-64a3cac52a43
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'Conversion Lift per 10% Recall' = calculated
+		mode: import
+		source = GENERATESERIES(0, 0.011, 0.001)
+
+	annotation PBI_Id = d5507020c4c74698965bdbe31cb3f542
+

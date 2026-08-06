@@ -1,0 +1,16 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "e432eb0ba0c7b8f85c47",
+  "position": {
+    "x": 757,
+    "y": 357,
+    "z": 1000,
+    "height": 358,
+    "width": 734.08769448373414,
+    "tabOrder": 0
+  },
+  "visualGroup": {
+    "displayName": "Waterfall Chart",
+    "groupMode": "ScaleMode"
+  }
+}
