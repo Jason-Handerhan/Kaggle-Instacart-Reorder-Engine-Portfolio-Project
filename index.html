@@ -2152,6 +2152,11 @@ for train_index, val_index in sgkf.split(train_val_df[feature_list], train_val_d
             <li><strong>Minimum Split Gain (<code>min_split_gain</code> / <code>gamma</code>):</strong> Set to a baseline of 0.1 for classifier models. This acts as a conservative regularization threshold, preventing the models from creating complex branches for marginal gains.</li>
         </ul>
 
+        <div class="strategy-callout">
+            <strong>⚖️ Class Imbalance & Class Weight Rationale (<code>scale_pos_weight</code> / <code>is_unbalance</code>):</strong><br>
+            Positive reorder labels comprise ~9% of the dataset. Given the overall scale of the training data, that 9% minority class still represents a significant volume of positive samples—allowing XGBoost and LightGBM to effectively learn patterns using default loss weights. To stay pragmatic with compute time and cloud costs, hyperparameter tuning focused primarily on tree shape rather than class weighting. However, because the model specifically targets the top 5 slots, experimenting with class weights could provide fine-grained ranking improvements at the very top of the list. Testing these hyperparameters is therefore recommended for future iterations.
+        </div>
+
         <h3>3.2 Optimal Base Model Parameters</h3>
         <table>
             <thead>
@@ -2984,7 +2989,7 @@ nohup ./run_training_pipeline.sh > pipeline.log 2>&1 &</code></pre>
 
         <ul>
             <li><strong>Widget UI Expansion (Top 10+):</strong> The champion model's Recall@5 scores in the high 0.3s represent strong performance within a strict constraint, but also indicate that roughly 60% of a user's reorders are left on the table. Expanding the UI to a horizontally scrolling Top 10 or Top 15 carousel would capture more reorders, increasing the financial lift without fundamentally changing the model architecture.</li>
-            <li><strong>More Extensive Hyperparameter Tuning:</strong> Allocating more computational resources to deeper, more exhaustive hyperparameter tuning (e.g., running Optuna trials for more iterations or tuning a more extensive list of hyperparameters) could yield additional marginal gains. At the scale of a business like Instacart, even a slight improvement in Recall@5 could translate into significant profit increases.</li>
+            <li><strong>More Extensive Hyperparameter Tuning & Class Weighting:</strong> Allocating more computational resources to deeper, more exhaustive hyperparameter tuning—such as running Optuna trials for more iterations, exploring expanded tree architectures, or evaluating class-imbalance hyperparameters (<code>scale_pos_weight</code> in XGBoost and <code>is_unbalance</code> / <code>scale_pos_weight</code> in LightGBM)—could yield additional top-of-list ranking refinements. At the scale of a business like Instacart, even a slight improvement in Recall@5 could translate into significant profit increases.</li>
             <li><strong>Timestamps & Global Features:</strong> The current model is limited by the lack of dates/timestamps in the dataset. Accessing real-world date/time data would unlock powerful global features—such as tracking top-selling/trending products, modeling seasonal shifts, and calculating global average purchase cycles. This could substantially boost predictive power.</li>
             <li><strong>Real-Time "In-Session" Context:</strong> Incorporating the current state of a user's cart would enable dynamic recommendations. For example, if a user adds hot dogs to their cart mid-session, the model could recalculate predictions and push hot dog buns to the #1 rank based on real-time context.</li>
             <li><strong>Price & Promotion Features:</strong> Integrating item price histories, active promotions, and a user's historical response to discounts could improve model predictions (price fluctuations could influence customer reorder decisions).</li>
