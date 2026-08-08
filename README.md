@@ -38,11 +38,13 @@ This project leverages the Kaggle Instacart Market Basket Analysis dataset to bu
 
 ## 📂 Repository Structure
 ```text
-├── Notebooks/          # EDA and evaluation notebooks
-├── config/             # GCP service API specifications & environment parameters
-├── definitions/        # Dataform medallion ELT SQL transformation models
-├── images/             # Images used in full .html documentation
-├── power_bi/           # .pbip & .pbix versions of power bi dashboard
-├── scripts/            # Infrastructure setup, VM deployment, & ml pipeline execution shell scripts
-├── src/                # Python training & Bayesian Search Tuning scripts, & RRF ensemble blending weight optimization 
-└── index.html          # Live documentation source page
+├── Notebooks/              # EDA and evaluation notebooks
+├── config/                 # GCP service API specifications & environment parameters
+├── dashboard/              # .pbip & .pbix versions of power bi dashboard
+├── definitions/            # Dataform medallion ELT SQL transformation models
+├── images/                 # Images used in full .html documentation
+├── scripts/                # Infrastructure setup, VM deployment, & ml pipeline execution shell scripts
+├── src/                    # Python training & Bayesian Search Tuning scripts, & RRF ensemble blending weight optimization 
+├── index.html              # Live documentation source page
+├── requirements.txt        # Environment Dependencies
+└── workflow_settings.yaml  # Dataform configuration file
