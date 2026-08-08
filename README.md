@@ -46,5 +46,5 @@ This project leverages the Kaggle Instacart Market Basket Analysis dataset to bu
 ├── scripts/                # Infrastructure setup, VM deployment, & ml pipeline execution shell scripts
 ├── src/                    # Python training & Bayesian Search Tuning scripts, & RRF ensemble blending weight optimization 
 ├── index.html              # Live documentation source page
-├── requirements.txt        # Environment Dependencies
+├── requirements.txt        # Environment dependencies
 └── workflow_settings.yaml  # Dataform configuration file
