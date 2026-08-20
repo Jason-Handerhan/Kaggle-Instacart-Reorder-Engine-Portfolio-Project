@@ -867,8 +867,8 @@
         
         <h2>Project Navigator</h2>
         <ul>
-            <li><a href="#system-architecture"><strong>System Architecture:</strong></a> Details the end-to-end architecture, from the Kaggle source data, through the GCP Platform, to Power BI. It utilizes BigQuery for orchestration of data transformation and feature engineering, Vertex AI for EDA and modeling, and Power BI for business intelligence insights.</li>
-            <li><a href="#environment-setup"><strong>Environment Setup & Provisioning:</strong></a> Provides instructions for configuring the GCP ecosystem and handling Kaggle API data ingestion into BigQuery. It also covers deploying a GPU-accelerated Vertex AI Workbench instance with automated multi-region fallbacks.</li>
+            <li><a href="#system-architecture"><strong>System Architecture:</strong></a> Details the end-to-end architecture, from the Kaggle source data, through the GCP Platform, to Power BI. It utilizes BigQuery for orchestration of data transformation and feature engineering, Agent Platform for EDA and modeling, and Power BI for business intelligence insights.</li>
+            <li><a href="#environment-setup"><strong>Environment Setup & Provisioning:</strong></a> Provides instructions for configuring the GCP ecosystem and handling Kaggle API data ingestion into BigQuery. It also covers deploying a GPU-accelerated Agent Platform Workbench instance with automated multi-region fallbacks.</li>
             <li><a href="#execution-order"><strong>Execution Order:</strong></a> Outlines the sequential nine-step execution workflow.</li>
             <li><a href="#data-sources"><strong>Data Sources:</strong></a> Explains the underlying Kaggle Instacart Market Basket Analysis dataset and its limitations. It specifically notes the absence of dates/timestamps, and consequently, the inability to generate global features (e.g., popular/trending products, global average time between product reorders) without introducing data leakage.</li>
             <li><a href="#preliminary-eda"><strong>Preliminary EDA:</strong></a> Highlights foundational behavioral insights, such as long-tail product sparsity, cyclical order patterns, and user exploratory ratios. These insights directly inform the feature engineering strategy.</li>
@@ -878,7 +878,7 @@
             <li><a href="#model-evaluation"><strong>Model Evaluation:</strong></a> Breaks down the primary metrics (Recall@5, NDCG@5, Precision@5, F1@5) used to evaluate the models. It compares the machine learning ensembles against a prior-cart heuristic baseline, discusses model selection using Recall@5 on the validation split, and verifies test generalization.</li>
             <li><a href="#financial-impact"><strong>Financial Impact Analysis:</strong></a> Evaluates the projected financial impact of the champion model on the unseen test data. It highlights an estimated annual profit lift of ~$118M compared to a "no widget" baseline and $33.5M over the heuristic baseline, revealing that churn reduction serves as the most significant driver of this increase.</li>
             <li><a href="#power-bi-dashboard"><strong>Power BI Business Intelligence Dashboard:</strong></a> Details the interactive Power BI dashboard built using the .pbip format to support CI/CD workflows, featuring model evaluation, feature importance interpretability, financial sensitivity analysis, and a star schema semantic data model.</li>
-            <li><a href="#mlops-blueprint"><strong>Path to Production: MLOps Blueprint:</strong></a> Details the MLOps engineering framework, contrasting current implementation (GitHub version control, Dataform ELT, MLflow tracking, automated shell training, and BigQuery feature storage) with target production architecture (CI/CD GitHub Actions, Vertex AI Feature Store, Vertex AI Pipelines CT orchestrations, and drift monitoring).</li>
+            <li><a href="#mlops-blueprint"><strong>Path to Production: MLOps Blueprint:</strong></a> Details the MLOps engineering framework, contrasting current implementation (GitHub version control, Dataform ELT, MLflow tracking, automated shell training, and BigQuery feature storage) with target production architecture (CI/CD GitHub Actions, Agent Platform Feature Store, Agent Platform Pipelines CT orchestrations, and drift monitoring).</li>
             <li><a href="#cold-start-strategy"><strong>Cold Start Strategy:</strong></a> Outlines the dynamic, heuristic-based fallback logic designed to populate the 5-slot widget for new or infrequent users (fewer than 4 prior orders).</li>
             <li><a href="#next-steps"><strong>Next Steps & Opportunities:</strong></a> Outlines prerequisites before a full production rollout, including automated data ingestion via Airflow, A/B testing against a control group, latency and load testing, and establishing CI/CD and retraining pipelines. It also identifies opportunities to enhance performance, such as widget UI expansion (e.g., a Top 10+ carousel), accessing timestamps for global features, and incorporating real-time "in-session" context.</li>
         </ul>
@@ -892,7 +892,7 @@
         </div>
 
         <p class="intro-text">
-            The diagram below illustrates the end-to-end architecture of the Instacart Reorder Engine. Data flows horizontally from the initial Kaggle source data into Google Cloud Storage, then downstream to BigQuery where data pipelines are executed. Exploratory analysis, ML modeling, and model evaluation occur in Vertex AI. The results are then streamed to Big Query to feed business intelligence insights displayed in a Power BI Dashboard.
+            The diagram below illustrates the end-to-end architecture of the Instacart Reorder Engine. Data flows horizontally from the initial Kaggle source data into Google Cloud Storage, then downstream to BigQuery where data pipelines are executed. Exploratory analysis, ML modeling, and model evaluation occur in Agent Platform. The results are then streamed to Big Query to feed business intelligence insights displayed in a Power BI Dashboard.
         </p>
 
         <div class="diagram-scroll-container">
@@ -996,7 +996,7 @@
                                         <circle cx="192" cy="329" r="16" fill="#fbbc04"/>
                                     </svg>
                                 </div>
-                                <span style="font-weight: 700; font-size: 15px;">Vertex AI</span>
+                                <span style="font-weight: 700; font-size: 15px;">Agent Platform</span>
                                 <span style="font-weight: normal; font-size: 12px; color: #5f6368;">(16 vCPU Compute | 64GB RAM | 1x NVIDIA L4 GPU)</span>
                             </div>
                             
@@ -1263,7 +1263,7 @@
             <h1>Environment Setup & Provisioning</h1>
         </div>
 
-        <p>This project is designed to run on the Google Cloud Platform (GCP), leveraging Google Cloud Shell, Cloud Storage (GCS), BigQuery, and Vertex AI Workbench with GPU acceleration. Follow the steps below to provision an identical workspace environment.</p>
+        <p>This project is designed to run on the Google Cloud Platform (GCP), leveraging Google Cloud Shell, Cloud Storage (GCS), BigQuery, and Agent Platform Workbench with GPU acceleration. Follow the steps below to provision an identical workspace environment.</p>
 
         <h2>1. Prerequisites & API Enablement</h2>
         <p>GCP service APIs are specified in a version-controlled configuration file (<code>config/enabled_apis.txt</code>) and automated using an enablement shell script (<code>scripts/enable_apis.sh</code>). The script dynamically resolves the environment root from <code>config/config.py</code> and enables all required service endpoints via <code>gcloud</code>.</p>
@@ -1276,7 +1276,7 @@
 
         <div class="strategy-callout">
             <strong>📌 GCP API Scope Note:</strong> 
-            The setup script enables the primary service APIs required for Vertex AI, BigQuery, Dataform, GCS, IAM, and MLOps tooling. In GCP, enabling high-level service APIs automatically provisions auxiliary background dependencies (such as telemetry, logging, and underlying storage components). While active projects may show additional auto-enabled dependencies in <code>gcloud services list --enabled</code>, enabling the core APIs specified in <code>config/enabled_apis.txt</code> is all that is required to provision a fresh environment.
+            The setup script enables the primary service APIs required for Agent Platform, BigQuery, Dataform, GCS, IAM, and MLOps tooling. In GCP, enabling high-level service APIs automatically provisions auxiliary background dependencies (such as telemetry, logging, and underlying storage components). While active projects may show additional auto-enabled dependencies in <code>gcloud services list --enabled</code>, enabling the core APIs specified in <code>config/enabled_apis.txt</code> is all that is required to provision a fresh environment.
         </div>
 
         <h2>2. IAM Security & Permissions Configuration</h2>
@@ -1347,8 +1347,8 @@ bq load --autodetect --source_format=CSV instacart.order_products__prior gs://$B
 bq load --autodetect --source_format=CSV instacart.order_products__train gs://$BUCKET_NAME/order_products__train.csv</code></pre>
         </div>
 
-        <h2>4. Compute Provisioning: Vertex AI Workbench VM</h2>
-        <p>Due to the scale of the 18.9M-row dataset, models are trained on a GPU-accelerated <strong>Vertex AI Workbench</strong> instance.</p>
+        <h2>4. Compute Provisioning: Agent Platform Workbench VM</h2>
+        <p>Due to the scale of the 18.9M-row dataset, models are trained on a GPU-accelerated <strong>Agent Platform Workbench</strong> instance.</p>
 
         <h3>Multi-Region Fallback Launcher (<code>deploy_workbench.sh</code>)</h3>
         <p>To handle regional stockouts of GPU hardware, execute the deployment script in <strong>Cloud Shell</strong>. It automatically scans GCP zones in sequence until an <strong>NVIDIA L4 GPU</strong> paired with a <code>g2-standard-16</code> machine is successfully allocated:</p>
@@ -1438,7 +1438,7 @@ print(f"• MLflow Tracking System:       {mlflow.__version__}")</code></pre>
                 <div class="step-content">
                     <div class="step-title">Infrastructure Provisioning</div>
                     <div class="step-description">
-                        Execute the environment setup and provisioning scripts outlined in Section 2 to configure GCP service APIs, IAM permissions, Kaggle-to-BigQuery ETL, and the Vertex AI GPU Workbench VM.
+                        Execute the environment setup and provisioning scripts outlined in Section 2 to configure GCP service APIs, IAM permissions, Kaggle-to-BigQuery ETL, and the Agent Platform GPU Workbench VM.
                     </div>
                 </div>
             </div>
@@ -2145,7 +2145,7 @@ for train_index, val_index in sgkf.split(train_val_df[feature_list], train_val_d
 
         <ul>
             <li><strong>Tree Ceiling & Early Stopping (<code>n_estimators = 2000</code>):</strong> Setting a high tree limit provided sufficient capacity for models to converge. An <code>early_stopping_rounds = 50</code> callback was implemented as a primary regularization mechanism, halting training at peak validation performance before the models could memorize noise.</li>
-            <li><strong>Learning Rate (<code>learning_rate = 0.05</code>):</strong> A moderate learning rate was selected to prevent overfitting while maintaining practical execution runtimes on a 16 vCPU Vertex AI virtual machine.</li>
+            <li><strong>Learning Rate (<code>learning_rate = 0.05</code>):</strong> A moderate learning rate was selected to prevent overfitting while maintaining practical execution runtimes on a 16 vCPU Agent Platform virtual machine.</li>
             <li><strong>Tree Depth Strategy (<code>num_leaves</code> vs. <code>max_depth</code>):</strong> For LightGBM models, <code>num_leaves</code> was tuned instead of maximum depth to leverage leaf-wise growth. For XGBoost models, <code>max_depth</code> was tuned to control level-wise growth, capped at 10 to mitigate overfitting from repetitive splits on identical features.</li>
             <li><strong>L2 Regularization (<code>reg_lambda</code>):</strong> EDA feature screening revealed that a small subset of features drove the majority of feature importance. Tuning <code>reg_lambda</code> penalized the model for over-splitting on these dominant features, forcing it to learn patterns from secondary signals.</li>
             <li><strong>Feature Sampling (<code>feature_fraction</code> / <code>colsample_bytree</code>):</strong> This was tuned to inject diversity across individual trees, improving overall ensemble regularization and generalization.</li>
@@ -2437,7 +2437,7 @@ with mlflow.start_run(run_name="Ensemble_Weight_Tuning") as parent_run:
         </div>
 
         <h3>5.3 MLflow User Interface & Tracking Dashboard</h3>
-        <p>The screenshot below displays the centralized MLflow tracking dashboard hosted on the Vertex AI Workbench instance, showing parameter comparisons and logged artifacts across optimization experiments:</p>
+        <p>The screenshot below displays the centralized MLflow tracking dashboard hosted on the Agent Platform Workbench instance, showing parameter comparisons and logged artifacts across optimization experiments:</p>
 
         <div class="img-container">
             <img src="images/mlflow_dashboard.png" alt="MLflow Experiment Tracking Dashboard Interface">
@@ -2805,8 +2805,8 @@ nohup ./run_training_pipeline.sh > pipeline.log 2>&1 &</code></pre>
 
         <p>The culmination of this machine learning pipeline is an interactive Power BI dashboard, built using the <code>.pbip</code> (Power BI Project) format to support CI/CD workflows and version control (a downloadable <code>.pbix</code> file is also available). This dashboard empowers technical and business stakeholders to evaluate model performance, interpret feature importance, and perform financial sensitivity analysis.</p>
 
-        <h2>1. Data Preparation Strategy (Vertex AI to BigQuery)</h2>
-        <p>To improve dashboard performance, heavy analytical processing is offloaded to Vertex AI (model evaluation notebook) before data ever reaches Power BI. Key datasets are transformed, streamed to BigQuery, then imported into Power BI.</p>
+        <h2>1. Data Preparation Strategy (Agent Platform to BigQuery)</h2>
+        <p>To improve dashboard performance, heavy analytical processing is offloaded to Agent Platform (model evaluation notebook) before data ever reaches Power BI. Key datasets are transformed, streamed to BigQuery, then imported into Power BI.</p>
         <ul>
             <li><strong>SHAP Beeswarm Optimization:</strong> Because Power BI struggles to render scatter plots with millions of data points, raw features and SHAP values are unpivoted (melted) into a long format. A stratified percentile bin sampling method is then applied to downsample the data (600 rows per feature) while preserving the original feature distribution shape.</li>
             <li><strong>Ensemble Weight Normalization:</strong> JSON ensemble weights are parsed, normalized to sum to 100%, and pivoted into a wide-format for use in the pop-up ensemble weight pie charts.</li>
@@ -2908,17 +2908,17 @@ nohup ./run_training_pipeline.sh > pipeline.log 2>&1 &</code></pre>
                 <tr>
                     <td><b>Feature Serving & Online Storage</b></td>
                     <td>Google BigQuery Gold feature table storing historical feature sets for training and evaluation.</td>
-                    <td>Scheduled batch pipeline publishing the latest user feature snapshots from BigQuery Gold tables to Vertex AI Feature Store and Cloud Bigtable for single-digit millisecond online serving during active shopping sessions.</td>
+                    <td>Scheduled batch pipeline publishing the latest user feature snapshots from BigQuery Gold tables to Agent Platform Feature Store and Cloud Bigtable for single-digit millisecond online serving during active shopping sessions.</td>
                 </tr>
                 <tr>
                     <td><b>Continuous Training (CT) & Orchestration</b></td>
                     <td>Automated background bash pipeline script (<code>scripts/run_training_pipeline.sh</code>) chaining base model training and ensemble weight blending.</td>
-                    <td>Orchestrated DAG workflows via Vertex AI Pipelines (Kubeflow) triggered on scheduled intervals or model drift alerts.</td>
+                    <td>Orchestrated DAG workflows via Agent Platform Pipelines (Kubeflow) triggered on scheduled intervals or model drift alerts.</td>
                 </tr>
                 <tr>
                     <td><b>Data Quality & Monitoring</b></td>
                     <td>Dataform SQL quality assertions (null value prevention, sequence consistency, cold-start threshold filters, and bounded range checks).</td>
-                    <td><b>Vertex AI Model Monitoring</b> tracking Data Drift (e.g., changes in basket sizes/purchase concentrations) and Concept Drift (decay in <code>Recall@5</code> / <code>NDCG@5</code>) to trigger automated alerts.</td>
+                    <td><b>Agent Platform Model Monitoring</b> tracking Data Drift (e.g., changes in basket sizes/purchase concentrations) and Concept Drift (decay in <code>Recall@5</code> / <code>NDCG@5</code>) to trigger automated alerts.</td>
                 </tr>
             </tbody>
         </table>
@@ -2978,7 +2978,7 @@ nohup ./run_training_pipeline.sh > pipeline.log 2>&1 &</code></pre>
         <p>Before a full production rollout, several critical validation and engineering steps must be completed:</p>
         <ul>
             <li><strong>Automated Data Ingestion:</strong> Replacing the static Kaggle dataset with an orchestrated Cloud Composer (Airflow) DAG to continuously ingest, validate, and load source data into the BigQuery Bronze layer.</li>
-            <li><strong>MLOps Strategy Execution:</strong> Execute the production MLOps target architecture detailed in the <em>Path to Production: MLOps Blueprint</em> module—specifically configuring GitHub Actions CI/CD workflows across the codebase, setting up Vertex AI Feature Store / Cloud Bigtable for low-latency online serving, establishing MLflow Model Registry governance, and deploying Vertex AI Pipelines (Kubeflow) automated retraining DAGs with drift monitoring.</li>
+            <li><strong>MLOps Strategy Execution:</strong> Execute the production MLOps target architecture detailed in the <em>Path to Production: MLOps Blueprint</em> module—specifically configuring GitHub Actions CI/CD workflows across the codebase, setting up Agent Platform Feature Store / Cloud Bigtable for low-latency online serving, establishing MLflow Model Registry governance, and deploying Agent Platform Pipelines (Kubeflow) automated retraining DAGs with drift monitoring.</li>
             <li><strong>Front-End Widget & Cold Start Implementation:</strong> The front-end user interface for the 5-slot widget must be built and integrated into the active shopping session. Concurrently, the dynamic cold start strategy outlined previously must be engineered into the application logic.</li>
             <li><strong>A/B Testing & Financial Impact Validation:</strong> Deploy the champion model in a controlled A/B test to a sample group of active users. This is a vital prerequisite to validate the current theoretical financial impacts. Specifically, the A/B test should track actual changes in Average Order Value (AOV), Conversion Rate, and Customer Churn against a control group.</li>
             <li><strong>Latency & Load Testing:</strong> Assess the model's real-time inference latency. The system must populate the widget seamlessly during peak traffic hours without disrupting the shopping experience.</li>
