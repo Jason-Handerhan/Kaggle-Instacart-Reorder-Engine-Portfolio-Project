@@ -28,6 +28,8 @@ This project leverages the Kaggle Instacart Market Basket Analysis dataset to bu
 * **Predictive Lift:** Achieved a **0.3674 Recall@5** on unseen test data—a **39.3% lift** over the prior-cart heuristic baseline (0.2638).
 * **Financial Impact:** Projected **\$118M Annual Profit Lift** over a "no widget" scenario & **\$33.5M Lift** over a heuristic baseline (using SEC filings metrics for baseline assumptions).
 
+*__Financial Impact Disclaimer:__ This is a hypothetical scenario based on public SEC assumptions, speculative AOV, conversion, and churn improvements requiring A/B testing validation, and does not account for the sophisticated recommendation systems already employed by Instacart. The projected financial impact is not a claim about Instacart's actual business performance, but a demonstration of the analytical framework and business-impact analysis used in this portfolio project.*
+
 ## 🛠️ Tech Stack
 * **Cloud Warehouse & Pipelines:** Google Cloud Storage, GCP BigQuery & Dataform (Medallion Architecture SQL: Bronze &rarr; Silver &rarr; Gold)
 * **Machine Learning & MLOps:** Vertex AI Workbench (16 vCPU|64GB RAM|NVIDIA L4 GPU), XGBoost, LightGBM, Optuna (Bayesian Optimization), MLflow, SHAP
