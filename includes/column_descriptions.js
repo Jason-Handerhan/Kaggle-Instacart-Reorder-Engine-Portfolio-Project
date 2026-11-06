@@ -1,0 +1,32 @@
+// Descriptions for columns that mean the same thing in every table where they appear.
+// Columns whose meaning differs between tables are described in their own config block.
+module.exports = {
+  user_id: "Identifier of the user (customer) who placed the order.",
+  order_id: "Identifier of the order.",
+  product_id: "Identifier of the product.",
+  aisle_id: "Identifier of the aisle.",
+  department_id: "Identifier of the department.",
+  aisle: "Name of the aisle.",
+  department: "Name of the department.",
+  product_name: "Name of the product as shown in the catalog.",
+  is_organic: "1 if the product name contains the word 'organic', otherwise 0.",
+  order_number: "Position of the order in the user's order history; 1 is the user's first order.",
+  order_dow: "Day of the week the order was placed, as an integer from 0 to 6, where 0 is Sunday.",
+  order_hour_of_day: "Hour of the day the order was placed, as an integer from 0 to 23.",
+  time_of_day: "Part of the day the order was placed, from order_hour_of_day: morning (05-11), afternoon (12-16), evening (17-21) or nighttime (22-04).",
+  days_since_prior_order: "Days since the user's previous order. 0 for the user's first order, which has no previous order.",
+  days_since_first_order: "Days from the user's first order to this order: running sum of days_since_prior_order. 0 for the first order.",
+  eval_set: "Dataset split the order belongs to in the source data, lower-cased and trimmed.",
+  add_to_cart_order: "Position at which the product was added to the cart within the order; 1 is the first item added.",
+  reordered: "1 if the user had ordered this product in an earlier order, otherwise 0.",
+  user_cumulative_products: "Count of product line items the user has bought across all orders up to and including this order.",
+  candidate_product_id: "Identifier of the candidate product: a product the user bought in or before the anchor order.",
+  label_order_id: "Identifier of the label order, the user's order right after the anchor order.",
+  label_order_number: "Order number of the label order; always the anchor order number plus 1.",
+  label_reordered: "Target label: 1 if the candidate product is in the label order, otherwise 0.",
+  label_order_dow: "Day of the week the label order was placed, as an integer from 0 to 6, where 0 is Sunday.",
+  label_order_hour_of_day: "Hour of the day the label order was placed, as an integer from 0 to 23.",
+  label_days_since_prior_order: "Days between the anchor order and the label order. 0 if the source value is missing.",
+  label_time_of_day: "Part of the day the label order was placed: morning, afternoon, evening or nighttime.",
+  label_days_since_first_order: "Days from the user's first order to the label order."
+};

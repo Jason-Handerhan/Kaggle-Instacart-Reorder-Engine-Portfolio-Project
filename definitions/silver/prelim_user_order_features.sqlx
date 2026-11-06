@@ -3,7 +3,22 @@ config {
   schema: "building_blocks",
   name: "prelim_user_order_features",
   bigquery: { clusterBy: ["user_id"] },
-  description: "User order patterns (basket size, time intervals, order/reorder volumes, & distinct product counts )."
+  description: "User order patterns (basket size, time intervals, order/reorder volumes, & distinct product counts ).",
+  columns: {
+    user_id: column_descriptions.user_id,
+    order_id: column_descriptions.order_id,
+    order_number: column_descriptions.order_number,
+    days_since_prior_order: column_descriptions.days_since_prior_order,
+    days_since_first_order: column_descriptions.days_since_first_order,
+    user_cumulative_products: column_descriptions.user_cumulative_products,
+    user_cumulative_products_reordered: "Count of product line items flagged as reordered across the user's orders up to and including this order.",
+    user_cumulative_organic_products: "Count of organic product line items the user has bought across all orders up to and including this order.",
+    user_distinct_product_count: "Count of distinct products the user has bought up to and including this order.",
+    user_organic_affinity_ratio: "Share (0 to 1) of the user's products bought up to this order that are organic. Null if undefined.",
+    user_avg_basket_size: "Average number of product line items per order for the user, up to and including this order.",
+    user_reorder_ratio: "Share (0 to 1) of the user's products bought up to this order that were reorders. Null if undefined.",
+    user_avg_days_between_orders: "Average days between the user's orders up to this order: days_since_first_order divided by (order_number - 1). Null for the first order."
+  }
 }
 
 WITH product_first_purchases AS (

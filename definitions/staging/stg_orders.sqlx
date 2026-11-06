@@ -2,7 +2,18 @@ config {
   type: "table",
   schema: "instacart",
   name: "cleansed_orders",
-  description: "Cleansed order records capturing a reproducible 10% sample of users with time metrics"
+  description: "Cleansed order records capturing a reproducible 10% sample of users with time metrics",
+  columns: {
+    order_id: column_descriptions.order_id,
+    user_id: column_descriptions.user_id,
+    order_number: column_descriptions.order_number,
+    order_dow: column_descriptions.order_dow,
+    order_hour_of_day: column_descriptions.order_hour_of_day,
+    time_of_day: column_descriptions.time_of_day,
+    days_since_prior_order: column_descriptions.days_since_prior_order,
+    days_since_first_order: column_descriptions.days_since_first_order,
+    eval_set: column_descriptions.eval_set
+  }
 }
 
 SELECT

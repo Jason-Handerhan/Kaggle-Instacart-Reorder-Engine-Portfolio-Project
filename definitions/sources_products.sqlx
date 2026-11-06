@@ -3,5 +3,11 @@ config {
   database: "instacart-ml-model",
   schema: "instacart",
   name: "products",
-  description: "Raw dimensional lookup mapping product IDs to their text descriptions"
+  description: "Raw dimensional lookup mapping product IDs to their text descriptions",
+  columns: {
+    product_id: column_descriptions.product_id,
+    product_name: column_descriptions.product_name,
+    aisle_id: column_descriptions.aisle_id,
+    department_id: column_descriptions.department_id
+  }
 }

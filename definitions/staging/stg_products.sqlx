@@ -2,7 +2,14 @@ config {
   type: "table",
   schema: "instacart",
   name: "cleansed_products",
-  description: "Product dimension records with flag tracking if product is organic based on text lookup"
+  description: "Product dimension records with flag tracking if product is organic based on text lookup",
+  columns: {
+    product_id: column_descriptions.product_id,
+    aisle_id: column_descriptions.aisle_id,
+    department_id: column_descriptions.department_id,
+    product_name: column_descriptions.product_name,
+    is_organic: column_descriptions.is_organic
+  }
 }
 
 SELECT
