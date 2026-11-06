@@ -3,7 +3,20 @@ config {
   schema: "building_blocks",
   name: "prelim_user_order_dow_wide",
   bigquery: { clusterBy: ["user_id"] },
-  description: "Create wide table of historical product purchases indicating the day of week for each purchase."
+  description: "Create wide table of historical product purchases indicating the day of week for each purchase.",
+  columns: {
+    user_id: column_descriptions.user_id,
+    product_id: column_descriptions.product_id,
+    order_id: column_descriptions.order_id,
+    order_number: column_descriptions.order_number,
+    user_product_same_dow_count_0: "Running count of the user's purchases of this product on day of week 0 up to this order. Equals 0 when this order was not placed on day 0.",
+    user_product_same_dow_count_1: "Running count of the user's purchases of this product on day of week 1 up to this order. Equals 0 when this order was not placed on day 1.",
+    user_product_same_dow_count_2: "Running count of the user's purchases of this product on day of week 2 up to this order. Equals 0 when this order was not placed on day 2.",
+    user_product_same_dow_count_3: "Running count of the user's purchases of this product on day of week 3 up to this order. Equals 0 when this order was not placed on day 3.",
+    user_product_same_dow_count_4: "Running count of the user's purchases of this product on day of week 4 up to this order. Equals 0 when this order was not placed on day 4.",
+    user_product_same_dow_count_5: "Running count of the user's purchases of this product on day of week 5 up to this order. Equals 0 when this order was not placed on day 5.",
+    user_product_same_dow_count_6: "Running count of the user's purchases of this product on day of week 6 up to this order. Equals 0 when this order was not placed on day 6."
+  }
 }
 
 SELECT

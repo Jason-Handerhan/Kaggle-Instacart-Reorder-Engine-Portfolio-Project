@@ -3,7 +3,16 @@ config {
   schema: "building_blocks",
   name: "prelim_user_aisle_features",
   bigquery: { clusterBy: ["user_id"] },
-  description: "User aisle-level categorical shares."
+  description: "User aisle-level categorical shares.",
+  columns: {
+    user_id: column_descriptions.user_id,
+    order_id: column_descriptions.order_id,
+    order_number: column_descriptions.order_number,
+    aisle_id: column_descriptions.aisle_id,
+    user_cumulative_aisle_products: "Count of product line items the user has bought from this aisle across all orders up to and including this order. Rows exist only for orders that contain the aisle.",
+    user_cumulative_products: column_descriptions.user_cumulative_products,
+    user_aisle_share: "Share (0 to 1) of the user's products bought up to this order that came from this aisle. Null if undefined."
+  }
 }
 
 WITH user_category_temp AS (

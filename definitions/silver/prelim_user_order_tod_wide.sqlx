@@ -3,7 +3,17 @@ config {
   schema: "building_blocks",
   name: "prelim_user_order_tod_wide",
   bigquery: { clusterBy: ["user_id"] },
-  description: "Create wide table of historical product purchases indicating the time of day for each purchase."
+  description: "Create wide table of historical product purchases indicating the time of day for each purchase.",
+  columns: {
+    user_id: column_descriptions.user_id,
+    product_id: column_descriptions.product_id,
+    order_id: column_descriptions.order_id,
+    order_number: column_descriptions.order_number,
+    user_product_same_tod_count_morning: "Running count of the user's purchases of this product in the morning (05-11h) up to this order. Equals 0 when this order was not placed in the morning.",
+    user_product_same_tod_count_afternoon: "Running count of the user's purchases of this product in the afternoon (12-16h) up to this order. Equals 0 when this order was not placed in the afternoon.",
+    user_product_same_tod_count_evening: "Running count of the user's purchases of this product in the evening (17-21h) up to this order. Equals 0 when this order was not placed in the evening.",
+    user_product_same_tod_count_nighttime: "Running count of the user's purchases of this product at night (22-04h) up to this order. Equals 0 when this order was not placed at night."
+  }
 }
 
 SELECT
