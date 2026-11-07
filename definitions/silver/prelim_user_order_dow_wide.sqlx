@@ -3,33 +3,37 @@ config {
   schema: "building_blocks",
   name: "prelim_user_order_dow_wide",
   bigquery: { clusterBy: ["user_id"] },
-  description: "Create wide table of historical product purchases indicating the day of week for each purchase.",
+  description: "Wide table with one row per user, product and order holding the running count of the user's purchases of the product on each day of week, up to and including that order.",
   columns: {
     user_id: column_descriptions.user_id,
     product_id: column_descriptions.product_id,
     order_id: column_descriptions.order_id,
     order_number: column_descriptions.order_number,
-    user_product_same_dow_count_0: "Running count of the user's purchases of this product on day of week 0 up to this order. Equals 0 when this order was not placed on day 0.",
-    user_product_same_dow_count_1: "Running count of the user's purchases of this product on day of week 1 up to this order. Equals 0 when this order was not placed on day 1.",
-    user_product_same_dow_count_2: "Running count of the user's purchases of this product on day of week 2 up to this order. Equals 0 when this order was not placed on day 2.",
-    user_product_same_dow_count_3: "Running count of the user's purchases of this product on day of week 3 up to this order. Equals 0 when this order was not placed on day 3.",
-    user_product_same_dow_count_4: "Running count of the user's purchases of this product on day of week 4 up to this order. Equals 0 when this order was not placed on day 4.",
-    user_product_same_dow_count_5: "Running count of the user's purchases of this product on day of week 5 up to this order. Equals 0 when this order was not placed on day 5.",
-    user_product_same_dow_count_6: "Running count of the user's purchases of this product on day of week 6 up to this order. Equals 0 when this order was not placed on day 6."
+    user_product_same_dow_count_0: "Running count of the user's purchases of this product on day of week 0 (Sunday), up to and including this order, whatever day this order was placed.",
+    user_product_same_dow_count_1: "Running count of the user's purchases of this product on day of week 1, up to and including this order, whatever day this order was placed.",
+    user_product_same_dow_count_2: "Running count of the user's purchases of this product on day of week 2, up to and including this order, whatever day this order was placed.",
+    user_product_same_dow_count_3: "Running count of the user's purchases of this product on day of week 3, up to and including this order, whatever day this order was placed.",
+    user_product_same_dow_count_4: "Running count of the user's purchases of this product on day of week 4, up to and including this order, whatever day this order was placed.",
+    user_product_same_dow_count_5: "Running count of the user's purchases of this product on day of week 5, up to and including this order, whatever day this order was placed.",
+    user_product_same_dow_count_6: "Running count of the user's purchases of this product on day of week 6, up to and including this order, whatever day this order was placed."
   }
 }
 
+-- Deduplicate to one row per user, product and order before counting, so each purchase is counted once
 SELECT
   user_id,
   product_id,
   order_id,
   order_number,
-  SUM(CASE WHEN order_dow = 0 THEN user_product_same_dow_count ELSE 0 END) as user_product_same_dow_count_0,
-  SUM(CASE WHEN order_dow = 1 THEN user_product_same_dow_count ELSE 0 END) as user_product_same_dow_count_1,
-  SUM(CASE WHEN order_dow = 2 THEN user_product_same_dow_count ELSE 0 END) as user_product_same_dow_count_2,
-  SUM(CASE WHEN order_dow = 3 THEN user_product_same_dow_count ELSE 0 END) as user_product_same_dow_count_3,
-  SUM(CASE WHEN order_dow = 4 THEN user_product_same_dow_count ELSE 0 END) as user_product_same_dow_count_4,
-  SUM(CASE WHEN order_dow = 5 THEN user_product_same_dow_count ELSE 0 END) as user_product_same_dow_count_5,
-  SUM(CASE WHEN order_dow = 6 THEN user_product_same_dow_count ELSE 0 END) as user_product_same_dow_count_6
-FROM ${ref("prelim_user_product_features")}
-GROUP BY user_id, product_id, order_id, order_number
+  COUNTIF(order_dow = 0) OVER(PARTITION BY user_id, product_id ORDER BY order_number) AS user_product_same_dow_count_0,
+  COUNTIF(order_dow = 1) OVER(PARTITION BY user_id, product_id ORDER BY order_number) AS user_product_same_dow_count_1,
+  COUNTIF(order_dow = 2) OVER(PARTITION BY user_id, product_id ORDER BY order_number) AS user_product_same_dow_count_2,
+  COUNTIF(order_dow = 3) OVER(PARTITION BY user_id, product_id ORDER BY order_number) AS user_product_same_dow_count_3,
+  COUNTIF(order_dow = 4) OVER(PARTITION BY user_id, product_id ORDER BY order_number) AS user_product_same_dow_count_4,
+  COUNTIF(order_dow = 5) OVER(PARTITION BY user_id, product_id ORDER BY order_number) AS user_product_same_dow_count_5,
+  COUNTIF(order_dow = 6) OVER(PARTITION BY user_id, product_id ORDER BY order_number) AS user_product_same_dow_count_6
+FROM (
+  SELECT user_id, product_id, order_id, order_number, order_dow
+  FROM ${ref("prelim_user_product_features")}
+  GROUP BY user_id, product_id, order_id, order_number, order_dow
+)
