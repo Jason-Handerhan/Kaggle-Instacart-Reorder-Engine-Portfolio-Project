@@ -3,27 +3,31 @@ config {
   schema: "building_blocks",
   name: "prelim_user_order_tod_wide",
   bigquery: { clusterBy: ["user_id"] },
-  description: "Create wide table of historical product purchases indicating the time of day for each purchase.",
+  description: "Wide table with one row per user, product and order holding the running count of the user's purchases of the product in each time of day, up to and including that order.",
   columns: {
     user_id: column_descriptions.user_id,
     product_id: column_descriptions.product_id,
     order_id: column_descriptions.order_id,
     order_number: column_descriptions.order_number,
-    user_product_same_tod_count_morning: "Running count of the user's purchases of this product in the morning (05-11h) up to this order. Equals 0 when this order was not placed in the morning.",
-    user_product_same_tod_count_afternoon: "Running count of the user's purchases of this product in the afternoon (12-16h) up to this order. Equals 0 when this order was not placed in the afternoon.",
-    user_product_same_tod_count_evening: "Running count of the user's purchases of this product in the evening (17-21h) up to this order. Equals 0 when this order was not placed in the evening.",
-    user_product_same_tod_count_nighttime: "Running count of the user's purchases of this product at night (22-04h) up to this order. Equals 0 when this order was not placed at night."
+    user_product_same_tod_count_morning: "Running count of the user's purchases of this product in the morning (05-11h), up to and including this order, whatever time of day this order was placed.",
+    user_product_same_tod_count_afternoon: "Running count of the user's purchases of this product in the afternoon (12-16h), up to and including this order, whatever time of day this order was placed.",
+    user_product_same_tod_count_evening: "Running count of the user's purchases of this product in the evening (17-21h), up to and including this order, whatever time of day this order was placed.",
+    user_product_same_tod_count_nighttime: "Running count of the user's purchases of this product at night (22-04h), up to and including this order, whatever time of day this order was placed."
   }
 }
 
+-- Deduplicate to one row per user, product and order before counting, so each purchase is counted once
 SELECT
   user_id,
   product_id,
   order_id,
   order_number,
-  SUM(CASE WHEN time_of_day = 'morning' THEN user_product_same_tod_count ELSE 0 END) as user_product_same_tod_count_morning,
-  SUM(CASE WHEN time_of_day = 'afternoon' THEN user_product_same_tod_count ELSE 0 END) as user_product_same_tod_count_afternoon,
-  SUM(CASE WHEN time_of_day = 'evening' THEN user_product_same_tod_count ELSE 0 END) as user_product_same_tod_count_evening,
-  SUM(CASE WHEN time_of_day = 'nighttime' THEN user_product_same_tod_count ELSE 0 END) as user_product_same_tod_count_nighttime
-FROM ${ref("prelim_user_product_features")}
-GROUP BY user_id, product_id, order_id, order_number
+  COUNTIF(time_of_day = 'morning') OVER(PARTITION BY user_id, product_id ORDER BY order_number) AS user_product_same_tod_count_morning,
+  COUNTIF(time_of_day = 'afternoon') OVER(PARTITION BY user_id, product_id ORDER BY order_number) AS user_product_same_tod_count_afternoon,
+  COUNTIF(time_of_day = 'evening') OVER(PARTITION BY user_id, product_id ORDER BY order_number) AS user_product_same_tod_count_evening,
+  COUNTIF(time_of_day = 'nighttime') OVER(PARTITION BY user_id, product_id ORDER BY order_number) AS user_product_same_tod_count_nighttime
+FROM (
+  SELECT user_id, product_id, order_id, order_number, time_of_day
+  FROM ${ref("prelim_user_product_features")}
+  GROUP BY user_id, product_id, order_id, order_number, time_of_day
+)
