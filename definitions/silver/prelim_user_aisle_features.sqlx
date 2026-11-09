@@ -3,7 +3,7 @@ config {
   schema: "building_blocks",
   name: "prelim_user_aisle_features",
   bigquery: { clusterBy: ["user_id"] },
-  description: "User aisle-level categorical shares.",
+  description: "User aisle-level categorical shares and purchase timing.",
   columns: {
     user_id: column_descriptions.user_id,
     order_id: column_descriptions.order_id,
@@ -11,7 +11,10 @@ config {
     aisle_id: column_descriptions.aisle_id,
     user_cumulative_aisle_products: "Count of product line items the user has bought from this aisle across all orders up to and including this order. Rows exist only for orders that contain the aisle.",
     user_cumulative_products: column_descriptions.user_cumulative_products,
-    user_aisle_share: "Share (0 to 1) of the user's products bought up to this order that came from this aisle. Null if undefined."
+    user_aisle_share: "Share (0 to 1) of the user's products bought up to this order that came from this aisle. Null if undefined.",
+    user_aisle_first_purchase_day: "Day, counted from the user's first order, of the first time the user bought from this aisle.",
+    user_aisle_last_purchase_day: "days_since_first_order of this order, i.e. the day (counted from the user's first order) of the aisle's latest purchase as of this row.",
+    user_aisle_cumulative_purchase_orders: "Number of orders, up to and including this one, in which the user bought from this aisle."
   }
 }
 
@@ -20,10 +23,11 @@ WITH user_category_temp AS (
     user_id, 
     order_id, 
     order_number, 
+    days_since_first_order,
     aisle_id AS category_id, 
     COUNT(*) AS user_order_category_products
   FROM ${ref("base_analytical_table")}
-  GROUP BY user_id, order_id, order_number, category_id
+  GROUP BY user_id, order_id, order_number, days_since_first_order, category_id
 ),
 
 user_category_temp2 AS (
@@ -31,6 +35,7 @@ user_category_temp2 AS (
     user_id,
     order_id,
     order_number,
+    days_since_first_order,
     category_id,
     user_order_category_products,
     SUM(user_order_category_products) OVER(
@@ -41,7 +46,15 @@ user_category_temp2 AS (
       PARTITION BY user_id 
       ORDER BY order_number 
       RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-    ) AS user_cumulative_products
+    ) AS user_cumulative_products,
+    MIN(days_since_first_order) OVER(
+      PARTITION BY user_id, category_id
+      ORDER BY order_number
+    ) AS user_aisle_first_purchase_day,
+    COUNT(*) OVER(
+      PARTITION BY user_id, category_id
+      ORDER BY order_number
+    ) AS user_aisle_cumulative_purchase_orders
   FROM user_category_temp
 )
 
@@ -52,5 +65,8 @@ SELECT
   category_id AS aisle_id,
   user_cumulative_category_products AS user_cumulative_aisle_products,
   user_cumulative_products,
-  SAFE_DIVIDE(user_cumulative_category_products, user_cumulative_products) AS user_aisle_share
+  SAFE_DIVIDE(user_cumulative_category_products, user_cumulative_products) AS user_aisle_share,
+  user_aisle_first_purchase_day,
+  days_since_first_order AS user_aisle_last_purchase_day,
+  user_aisle_cumulative_purchase_orders
 FROM user_category_temp2
