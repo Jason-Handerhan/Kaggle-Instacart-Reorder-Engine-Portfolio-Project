@@ -65,7 +65,8 @@ def select_features(df):
                     'user_product_avg_cart_position',
                     'user_distinct_product_count',
                     'user_deptartment_share',
-                    'user_aisle_share']
+                    'user_aisle_share',
+                    'aisle_days_since_last_ordered_vs_user_pace_ratio']
     
     sort_list = ['user_id', 'anchor_order_number']
     
