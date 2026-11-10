@@ -96,6 +96,7 @@ SELECT
 
   -- Forward fill last non-null value for user department and user aisle preliminary features
   LAST_VALUE(a.user_cumulative_aisle_products IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.aisle_id ORDER BY cs.order_number) AS user_cumulative_aisle_products,
+  LAST_VALUE(a.user_aisle_last_purchased_day IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.aisle_id ORDER BY cs.order_number) AS user_aisle_last_purchased_day,
   LAST_VALUE(d.user_cumulative_department_products IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.department_id ORDER BY cs.order_number) AS user_cumulative_department_products,
 
   -- Add preliminary order features
