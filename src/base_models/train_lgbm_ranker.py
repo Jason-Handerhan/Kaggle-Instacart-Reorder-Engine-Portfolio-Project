@@ -54,7 +54,7 @@ if __name__ == "__main__":
         # ----- SELECT FEATURES AND SPLIT DATA -----
         
         #Select only features, sort columns, and target column for training
-        df_features, feature_list, sort_list = select_features(df_full)
+        df_features, feature_list, sort_list = select_features(df_full, include_aisle_pacing=True)
         
         #Perform split and only return train_val_df to save memory
         train_val_df, _, _ = split_data(df_features)

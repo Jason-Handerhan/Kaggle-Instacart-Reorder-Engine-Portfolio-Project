@@ -36,7 +36,7 @@ def split_data(df):
     return train_val_df, val_df, test_df
 
 
-def select_features(df):
+def select_features(df, include_aisle_pacing=False):
     """
     Select features, target, and sort list (for ranking models) for model training.
 
@@ -44,6 +44,8 @@ def select_features(df):
     -----------
     df : pd.DataFrame
         The full dataset containing all raw features and target columns.
+    include_aisle_pacing : bool, default=False
+        Add user_aisle_pacing_ratio to the features. Only the LGBM ranker sets this to True.
 
     Returns:
     --------
@@ -66,6 +68,9 @@ def select_features(df):
                     'user_distinct_product_count',
                     'user_deptartment_share',
                     'user_aisle_share']
+
+    if include_aisle_pacing:
+        feature_list.append('user_aisle_pacing_ratio')
     
     sort_list = ['user_id', 'anchor_order_number']
     
