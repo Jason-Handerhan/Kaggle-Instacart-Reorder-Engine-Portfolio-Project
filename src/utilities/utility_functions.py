@@ -474,3 +474,29 @@ def get_baseline_evaluation_metrics(df, dataset_split= 'validation'):
     }])
     
     return heuristic_evaluation_metrics, heuristic_recall, heuristic_ndcg
+
+def find_near_duplicate_names(names, threshold=90):
+    """
+    Find pairs of product names whose similarity score is at least threshold.
+
+    Parameters:
+    -----------
+    names : list of str
+        Product names to compare.
+    threshold : float
+        Minimum rapidfuzz similarity score (0 to 100).
+
+    Returns:
+    --------
+    list of tuple
+        (name_a, name_b, score) for each pair once, highest score first.
+    """
+    from rapidfuzz import fuzz
+
+    pairs = []
+    for i, name_a in enumerate(names):
+        for name_b in names[i + 1:]:
+            score = fuzz.ratio(name_a, name_b)
+            if score >= threshold:
+                pairs.append((name_a, name_b, score))
+    return sorted(pairs, key=lambda pair: pair[2], reverse=True)

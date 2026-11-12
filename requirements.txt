@@ -16,4 +16,4 @@ statsmodels
 optuna-integration[lightgbm,xgboost]
 shap
 mlflow
-pytest
+pytestrapidfuzz
