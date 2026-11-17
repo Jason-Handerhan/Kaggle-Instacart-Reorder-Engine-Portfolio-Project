@@ -41,6 +41,7 @@ config {
     user_prod_avg_days_between_purchases: "Days from the user's first purchase of the product to the anchor order, divided by the number of purchases minus 1. 999 if undefined (bought once).",
     user_product_nearing_reorder_ratio: "Ratio of days since the product was last purchased (as of the label order) to the average days between its purchases. Above 1 means overdue. 999 if undefined.",
     days_since_last_ordered_vs_user_pace_ratio: "Ratio of days since the product was last purchased (as of the label order) to the user's average days between orders. 999 if undefined.",
+    user_aisle_pacing_ratio: "Ratio of days since the user last bought anything from the candidate's aisle (as of the label order) to the user's average days between orders. 999 if undefined.",
     user_product_day_of_week_affinity: "Share (0 to 1) of the user's purchases of the candidate product that fall on the label order's day of week. 0 if undefined.",
     user_product_time_of_day_affinity: "Share (0 to 1) of the user's purchases of the candidate product that fall in the label order's time of day. 0 if undefined."
   },
@@ -83,6 +84,7 @@ config {
       "user_prod_avg_days_between_purchases IS NOT NULL",
       "user_product_nearing_reorder_ratio IS NOT NULL",
       "days_since_last_ordered_vs_user_pace_ratio IS NOT NULL",
+      "user_aisle_pacing_ratio IS NOT NULL",
       "user_product_day_of_week_affinity IS NOT NULL",
       "user_product_time_of_day_affinity IS NOT NULL",
 
@@ -176,7 +178,8 @@ WITH temp_ml_features AS (
 
   -- Recency & Pacings
   COALESCE(hist.label_days_since_first_order - hist.user_product_last_purchased_day, 999) AS label_user_product_days_since_last_purchased,
-  COALESCE(SAFE_DIVIDE(hist.days_since_first_order - hist.user_product_first_purchase_day, hist.user_product_cumulative_purchases - 1), 999) AS user_prod_avg_days_between_purchases
+  COALESCE(SAFE_DIVIDE(hist.days_since_first_order - hist.user_product_first_purchase_day, hist.user_product_cumulative_purchases - 1), 999) AS user_prod_avg_days_between_purchases,
+  COALESCE(SAFE_DIVIDE(hist.label_days_since_first_order - hist.user_aisle_last_purchased_day, hist.user_avg_days_between_orders), 999) AS user_aisle_pacing_ratio
 
   FROM ${ref("skeleton_features")} hist
   WHERE hist.order_number > 4
