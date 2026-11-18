@@ -31,7 +31,5 @@ mlruns/
 # ==========================================
 # Power BI Temporary & User Settings
 # ==========================================
-*.pbip.user
-*.Dataset/localSettings.json
-*.Report/localSettings.json
-*.Report/definition.pir
+**/.pbi/localSettings.json
+**/.pbi/cache.abf

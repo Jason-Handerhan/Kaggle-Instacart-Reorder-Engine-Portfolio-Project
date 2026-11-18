@@ -3,5 +3,9 @@ config {
   database: "instacart-ml-model",
   schema: "instacart",
   name: "aisles",
-  description: "dimensional aisles data"
+  description: "dimensional aisles data",
+  columns: {
+    aisle_id: column_descriptions.aisle_id,
+    aisle: column_descriptions.aisle
+  }
 }

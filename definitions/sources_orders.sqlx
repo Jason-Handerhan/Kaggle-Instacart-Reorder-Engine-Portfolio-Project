@@ -3,5 +3,14 @@ config {
   database: "instacart-ml-model",
   schema: "instacart",
   name: "orders",
-  description: "Raw historical transaction records containing user orders"
+  description: "Raw historical transaction records containing user orders",
+  columns: {
+    order_id: column_descriptions.order_id,
+    user_id: column_descriptions.user_id,
+    eval_set: "Dataset split the order belongs to in the source data (the pipeline lower-cases and trims it).",
+    order_number: column_descriptions.order_number,
+    order_dow: column_descriptions.order_dow,
+    order_hour_of_day: column_descriptions.order_hour_of_day,
+    days_since_prior_order: "Days since the user's previous order. Missing (null) for the user's first order."
+  }
 }
