@@ -2,7 +2,13 @@ config {
   type: "table",
   schema: "instacart",
   name: "order_products_cleansed",
-  description: "Unified table combining prior and training set items to get the full transactional baskets"
+  description: "Unified table combining prior and training set items to get the full transactional baskets",
+  columns: {
+    order_id: column_descriptions.order_id,
+    product_id: column_descriptions.product_id,
+    add_to_cart_order: column_descriptions.add_to_cart_order,
+    reordered: column_descriptions.reordered
+  }
 }
 
 SELECT CAST(order_id AS INT64) AS order_id,

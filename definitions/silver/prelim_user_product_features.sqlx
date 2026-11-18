@@ -3,7 +3,29 @@ config {
   schema: "building_blocks",
   name: "prelim_user_product_features",
   bigquery: { clusterBy: ["user_id"] },
-  description: "User-product interaction metrics"
+  description: "User-product interaction metrics",
+  columns: {
+    user_id: column_descriptions.user_id,
+    order_id: column_descriptions.order_id,
+    order_number: column_descriptions.order_number,
+    order_dow: column_descriptions.order_dow,
+    time_of_day: column_descriptions.time_of_day,
+    product_id: column_descriptions.product_id,
+    add_to_cart_order: column_descriptions.add_to_cart_order,
+    purchased_indicator: "Always 1: marks that the user bought the product in this order.",
+    user_product_cumulative_purchases: "Number of orders, up to and including this one, in which the user bought this product.",
+    user_product_avg_cart_position: "Average add_to_cart_order of the product across the user's orders up to and including this one.",
+    user_product_avg_relative_cart_position: "Average relative cart position (add_to_cart_order divided by items in the order, 0 to 1) of the product up to and including this order.",
+    user_product_last3order_streak: "Consecutive-order purchase streak for the product, ending at this order and capped at 3: 1 if not bought in the previous order, 2 if bought in the previous order, 3 if bought in the previous two.",
+    user_product_same_dow_count: "Number of the user's purchases of this product, up to and including this order, placed on the same day of week as this order.",
+    user_product_same_tod_count: "Number of the user's purchases of this product, up to and including this order, placed in the same time of day as this order.",
+    user_product_last_purchased_day: "days_since_first_order of this order, i.e. the day (counted from the user's first order) of the product's latest purchase as of this row.",
+    user_product_first_purchase_day: "Day, counted from the user's first order, of the first time the user bought this product.",
+    user_product_prev_purchase_day: "Day, counted from the user's first order, of the previous purchase of this product. Null if this is the first purchase.",
+    user_product_cumulative_reorders: "Count of times, up to and including this order, that the product was bought as a reorder by the user.",
+    user_product_reorder_vs_total_reorders_ratio: "Share (0 to 1) of all the user's reordered items up to this order that were this product. 0 if undefined.",
+    user_product_last_purchased_order_number: "order_number of this order, i.e. the product's latest purchase as of this row."
+  }
 }
 
 WITH user_product_metrics_temp AS (

@@ -8,7 +8,24 @@ config {
       expiration_timestamp: "TIMESTAMP_ADD(CURRENT_TIMESTAMP(), INTERVAL 14 DAY)"
     }
   },
-  description: "Create skeleton of all products a user has purchased prior to the label order. This table provides a historical anchor order for joining to preliminary features to ensure no data leakage."
+  description: "Create skeleton of all products a user has purchased prior to the label order. This table provides a historical anchor order for joining to preliminary features to ensure no data leakage.",
+  columns: {
+    user_id: column_descriptions.user_id,
+    order_id: "Identifier of the anchor order: the user's order just before the label order. Features are computed as of this order.",
+    order_number: "Order number of the anchor order within the user's history.",
+    days_since_first_order: "Days from the user's first order to the anchor order.",
+    candidate_product_id: column_descriptions.candidate_product_id,
+    aisle_id: column_descriptions.aisle_id,
+    department_id: column_descriptions.department_id,
+    label_order_id: column_descriptions.label_order_id,
+    label_order_number: column_descriptions.label_order_number,
+    label_reordered: column_descriptions.label_reordered,
+    label_order_dow: column_descriptions.label_order_dow,
+    label_order_hour_of_day: column_descriptions.label_order_hour_of_day,
+    label_days_since_prior_order: column_descriptions.label_days_since_prior_order,
+    label_time_of_day: column_descriptions.label_time_of_day,
+    label_days_since_first_order: column_descriptions.label_days_since_first_order
+  }
 }
 
 WITH skeleton_temp AS(

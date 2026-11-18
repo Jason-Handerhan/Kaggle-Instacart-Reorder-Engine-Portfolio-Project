@@ -3,5 +3,9 @@ config {
   database: "instacart-ml-model",
   schema: "instacart",
   name: "departments",
-  description: "Dimensional department data"
+  description: "Dimensional department data",
+  columns: {
+    department_id: column_descriptions.department_id,
+    department: column_descriptions.department
+  }
 }

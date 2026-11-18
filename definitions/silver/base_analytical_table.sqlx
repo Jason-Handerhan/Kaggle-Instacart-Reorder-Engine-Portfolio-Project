@@ -5,7 +5,27 @@ config {
   bigquery: {
     clusterBy: ["user_id"]
   },
-  description: "Base analytical table that compiles cleaned orders, products, departments, and aisles to use for generating features."
+  description: "Base analytical table that compiles cleaned orders, products, departments, and aisles to use for generating features.",
+  columns: {
+    order_id: column_descriptions.order_id,
+    user_id: column_descriptions.user_id,
+    order_number: column_descriptions.order_number,
+    order_dow: column_descriptions.order_dow,
+    order_hour_of_day: column_descriptions.order_hour_of_day,
+    time_of_day: column_descriptions.time_of_day,
+    days_since_prior_order: column_descriptions.days_since_prior_order,
+    days_since_first_order: column_descriptions.days_since_first_order,
+    eval_set: column_descriptions.eval_set,
+    product_id: column_descriptions.product_id,
+    add_to_cart_order: column_descriptions.add_to_cart_order,
+    reordered: column_descriptions.reordered,
+    aisle_id: column_descriptions.aisle_id,
+    aisle: column_descriptions.aisle,
+    department_id: column_descriptions.department_id,
+    department: column_descriptions.department,
+    product_name: column_descriptions.product_name,
+    is_organic: column_descriptions.is_organic
+  }
 }
 
 SELECT
