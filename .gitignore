@@ -33,3 +33,4 @@ mlruns/
 # ==========================================
 **/.pbi/localSettings.json
 **/.pbi/cache.abf
+**/.pbi/preview/
