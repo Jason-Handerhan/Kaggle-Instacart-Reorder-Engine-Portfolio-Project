@@ -5,9 +5,7 @@
   "options": {
     "applyOnlyToTargetVisuals": true,
     "targetVisualNames": [
-      "b3417ba6e090e24636d9",
-      "9f89c5c0960b5c5285be",
-      "93147d5b33b621a502c3"
+      "b3417ba6e090e24636d9"
     ],
     "suppressData": true
   },
