@@ -50,3 +50,9 @@ This project leverages the Kaggle Instacart Market Basket Analysis dataset to bu
 ├── index.html              # Live documentation source page
 ├── requirements.txt        # Environment dependencies 
 └── workflow_settings.yaml  # Dataform configuration file
+```
+
+---
+
+## 📝 Note on the `dev` and `main` Branches
+The Power BI dashboard in `dashboard/` on the `dev` branch reflects updates made for the [analytics-agent](https://github.com/Jason-Handerhan/analytics-agent) project, a conversational analytics agent that sits beside the dashboard. The `main` branch still has the original dashboard for this project.
