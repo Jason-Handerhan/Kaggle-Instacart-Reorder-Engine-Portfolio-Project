@@ -1,12 +1,15 @@
+/// What-if parameter table driving the sensitivity slider for average-order-value lift per 10-point gain in Recall at 5.
 table 'AOV Lift per 10% Recall'
 	lineageTag: 649061ba-359d-4256-a13e-44a92e43ff35
 
+	/// Current AOV-lift assumption: the slider's selected value, or default value if none is set
 	measure 'AOV Lift per 10% Recall Value' = SELECTEDVALUE('AOV Lift per 10% Recall'[AOV Lift per 10% Recall], 0.05)
 		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
 		lineageTag: 929d953d-1537-407e-925a-240290b7f44b
 
 		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
 
+	/// Candidate AOV-lift value offered by the what-if slider
 	column 'AOV Lift per 10% Recall'
 		lineageTag: 2890218e-004f-41d2-ad66-7de30099f067
 		summarizeBy: none

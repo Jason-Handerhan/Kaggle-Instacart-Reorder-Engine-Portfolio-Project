@@ -1,11 +1,14 @@
+/// What-if parameter table driving the sensitivity slider for baseline churn rate.
 table 'Churn Rate'
 	lineageTag: 24bea127-afa1-4e9b-82f1-974b4fa26b4c
 
+	/// Current churn-rate assumption: the slider's selected value, or default value if none is set
 	measure 'Churn Rate Value' = SELECTEDVALUE('Churn Rate'[Churn Rate], 0.39)
 		lineageTag: 09ab8f0a-fd8a-47b6-b45b-c08cdd42e065
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// Candidate churn-rate value offered by the what-if slider
 	column 'Churn Rate'
 		lineageTag: af0c2c42-c984-4c23-b58d-a30c96a10dca
 		summarizeBy: none

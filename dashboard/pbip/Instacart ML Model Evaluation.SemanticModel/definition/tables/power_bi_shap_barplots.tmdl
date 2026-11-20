@@ -1,6 +1,8 @@
+/// Feature-importance data (mean absolute SHAP) for the bar chart, one row per feature/model/split combination. Contains full population (not a sample).
 table power_bi_shap_barplots
 	lineageTag: 21e22476-b942-4018-bfd6-62c1ebaa6eab
 
+	/// Dataset split (Test or Validation) this SHAP value was computed on
 	column split
 		dataType: string
 		lineageTag: db9440fe-91a4-4afe-98c9-cb5556e72b68
@@ -9,6 +11,7 @@ table power_bi_shap_barplots
 
 		annotation SummarizationSetBy = Automatic
 
+	/// model id (another name for the model... model name is preferred)
 	column model_id
 		dataType: string
 		lineageTag: 6a0acf95-01fc-4a11-a214-c63d1d1fcfdc
@@ -17,6 +20,7 @@ table power_bi_shap_barplots
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Name of the model
 	column model_name
 		dataType: string
 		lineageTag: a99a2e34-bc31-4b97-b112-903665397089
@@ -25,6 +29,7 @@ table power_bi_shap_barplots
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Name of the feature
 	column feature_name
 		dataType: string
 		lineageTag: bdf4fa8a-bd7e-4ce0-bbdf-66a4cf16215c
@@ -33,6 +38,7 @@ table power_bi_shap_barplots
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Average magnitude of this feature's SHAP value, used for feature-importance ranking (log-odds for classifiers, raw score units for rankers)
 	column mean_absolute_shap
 		dataType: double
 		lineageTag: 5224f1ad-5601-427c-b5ec-08861352e183
@@ -43,6 +49,7 @@ table power_bi_shap_barplots
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// LightGBM or XGBoost
 	column model_type
 		dataType: string
 		lineageTag: d9dc66ee-1645-4a59-99a8-713a18e0f88c

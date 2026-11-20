@@ -1,6 +1,8 @@
+/// Dimension table defining the profit-lift drivers shown in the donut chart.
 table Donut_Dimensions
 	lineageTag: 0b57926e-2dd2-4e08-b275-55b31d974c12
 
+	/// Name of the profit-lift driver (e.g. Conversion Profit Lift, Churn Profit Lift, AOV Profit Lift)
 	column 'Driver Name'
 		dataType: string
 		lineageTag: f95cfae7-50dd-4c4f-aea1-4c9f36844fe5
@@ -12,6 +14,7 @@ table Donut_Dimensions
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Display order of this driver in the donut chart
 	column 'Sort Order'
 		dataType: int64
 		formatString: 0

@@ -1,0 +1,67 @@
+/// Container table for the measures that feed the embedded chat app's dashboard-state capture — holds no real data, only DAX measures (docs/frontend.md).
+table _SelectionMeasures
+	lineageTag: 6eca0b20-b22c-4d0b-8e14-42955526bd21
+
+	/// Currently selected dataset split (Test/Validation)
+	measure Selected_Dataset_Split = SELECTEDVALUE(dataset_split_dimension[dataset_split])
+		lineageTag: 2009b0e5-d260-4b00-996c-20121354adee
+
+	/// Current model filter selection on the financial impact page for the Waterfall chart and profit lift share donut chart pop-up.
+	measure Selected_Model = SELECTEDVALUE(models_dimension[Model])
+		lineageTag: a0633b11-b32a-47ae-a345-29e198f5c65c
+
+	/// Current base model filter selection for the feature importance chart on the Model Performance page.
+	measure Selected_Base_Model = SELECTEDVALUE(base_models_dimension[model_name])
+		lineageTag: 179334a5-b043-40de-bb2e-39a40043bb92
+
+	/// Which evaluation metric (Recall@5, NDCG@5, Precision@5, or F1@5) is currently selected for the Model Performance page's '[Metric]@5 by Model' chart
+	measure Selected_Evaluation_Metric = ```
+			
+			LOOKUPVALUE(
+			    'Evaluation Metric Parameter'[Evaluation Metric Parameter],
+			    'Evaluation Metric Parameter'[Parameter Fields], SELECTEDVALUE('Evaluation Metric Parameter'[Parameter Fields])
+			)
+			
+			
+			```
+		lineageTag: e8ff33ed-5e42-4603-9b5c-e30b69bbcb3e
+
+	/// Which model is currently selected for the Model Performance page's Optimal Ensemble Weights pop-up pie chart.
+	measure Selected_Ensemble_Weights_Model = ```
+			
+			LOOKUPVALUE(
+			    'Ensemble Weight Parameter'[Ensemble Weight Parameter],
+			    'Ensemble Weight Parameter'[Ensemble Weight Parameter Fields], SELECTEDVALUE('Ensemble Weight Parameter'[Ensemble Weight Parameter Fields])
+			)
+			
+			```
+		lineageTag: 1d01d3bb-4004-4735-aa62-18c5ab712398
+
+	/// Which plot type (Bar Plot or Beeswarm) the Model Performance page's Feature Importance chart is currently showing.
+	measure Selected_Feature_Importance_Plot = SELECTEDVALUE(Feature_Importance_Chart_Types[Chart_Types])
+		lineageTag: cac53937-5a54-45b4-8b79-7e9ef247e8bd
+
+	/// Page the user is currently looking at.
+	measure Active_Page = SELECTEDVALUE(_CurrentPages[Current Page])
+		lineageTag: b5832c8e-1bf8-4181-b7ca-90afc5ef936f
+
+	/// Placeholder column — this table exists only to host measures
+	column Column1
+		dataType: string
+		lineageTag: b6b7b1a3-a225-4005-b065-2e8fff026899
+		summarizeBy: none
+		sourceColumn: Column1
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _SelectionMeasures = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

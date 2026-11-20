@@ -1,10 +1,13 @@
+/// Container table for the profit waterfall chart's staged measures — holds no real data, only DAX measures.
 table _Waterfall_Measures
 	lineageTag: 854c7b68-24c7-4923-ab70-9cfc755763b7
 
+	/// Waterfall stage value: baseline annual order count before any model impact
 	measure Conversion_Stage1_Baseline_Orders = [SEC_2025_Annual_Orders]
 		formatString: 0
 		lineageTag: 9321fba6-5f7f-4239-8acb-0ed9f4e29e42
 
+	/// Waterfall stage value: additional orders driven by the model's Recall via the conversion-lift assumption
 	measure Conversion_Stage2_Extra_Orders =
 			
 			VAR Annual_Orders = [SEC_2025_Annual_Orders]
@@ -18,11 +21,13 @@ table _Waterfall_Measures
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// Waterfall stage value: profit lift from additional orders
 	measure Conversion_Stage3_Profit_Lift = [Conversion_Profit_Lift]
 		lineageTag: 43235b7b-eb0d-45ec-858c-60fdd5239734
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// Routes each waterfall stage (Baseline Profit, Conversion/Churn/AOV Profit Lift) to its value, based on the currently selected stage
 	measure Master_Waterfall_Values =
 			
 			SWITCH(
@@ -36,6 +41,7 @@ table _Waterfall_Measures
 		formatString: \$#,0;(\$#,0);\$#,0
 		lineageTag: b60899c0-3e8d-4341-b6f5-e2441d9d9f89
 
+	/// Tooltip text summarizing the baseline conversion rate, the model's lift, and the resulting new conversion rate
 	measure Conversion_Dyanmic_Tool_Tip = ```
 			
 			VAR Recall = IF(SELECTEDVALUE(evaluation_metrics[Model]) = "No Widget", 0, [Recall])
@@ -50,16 +56,19 @@ table _Waterfall_Measures
 			```
 		lineageTag: 204c365f-f433-49bb-a83a-7d0d7684ec03
 
+	/// Lower bound for the waterfall chart's Y-axis, set just below baseline profit
 	measure Yaxis_min = [Baseline_Profit] - 100000000
 		lineageTag: bbe54033-ef93-4045-98e0-014e834a40b0
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// Upper bound for the waterfall chart's Y-axis, set just above total annual profit
 	measure Yaxis_max = [Annual_Profit] *1.017
 		lineageTag: d96708be-2897-41c8-8997-beae774d060a
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// Placeholder column — this table exists only to host measures
 	column Column1
 		dataType: string
 		lineageTag: c7b891bb-db08-4f8f-9305-e31302eccc35

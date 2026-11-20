@@ -1,6 +1,8 @@
+/// Dimension table listing every model name
 table models_dimension
 	lineageTag: f4c33ecd-ad70-4482-8242-5e93c8796160
 
+	/// Name of the model
 	column Model
 		dataType: string
 		lineageTag: 1b3f608b-ce59-456f-a512-924e74ea1eef

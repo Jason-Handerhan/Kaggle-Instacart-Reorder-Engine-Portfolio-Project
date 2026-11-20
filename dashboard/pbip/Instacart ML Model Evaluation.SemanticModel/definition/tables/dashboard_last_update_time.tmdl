@@ -1,6 +1,8 @@
+/// Single-row table recording when the dashboard's underlying data was last refreshed.
 table dashboard_last_update_time
 	lineageTag: 874b654b-cd3b-413f-beec-8bc18e6885fb
 
+	/// Label describing the refresh status (e.g. 'Last Update')
 	column Status
 		dataType: string
 		lineageTag: ba379100-3c57-46f7-a11d-b05d8a107f16
@@ -9,6 +11,7 @@ table dashboard_last_update_time
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Date/time the underlying data was last refreshed
 	column Timestamp
 		dataType: dateTime
 		formatString: General Date

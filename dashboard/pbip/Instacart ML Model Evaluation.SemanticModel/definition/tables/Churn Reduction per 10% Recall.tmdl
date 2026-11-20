@@ -1,11 +1,14 @@
+/// What-if parameter table driving the sensitivity slider for churn reduction per 10-point gain in Recall at 5.
 table 'Churn Reduction per 10% Recall'
 	lineageTag: 949d9c8b-4fb5-43b1-a1ff-9dc9e1c81e6b
 
+	/// Current churn-reduction assumption: the slider's selected value, or default value if none is set
 	measure 'Churn Reduction per 10% Recall Value' = SELECTEDVALUE('Churn Reduction per 10% Recall'[Churn Reduction per 10% Recall], 0.005)
 		lineageTag: b115afff-ccd9-424b-9d49-2e7fb67a1d3a
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// Candidate churn-reduction value offered by the what-if slider
 	column 'Churn Reduction per 10% Recall'
 		lineageTag: 22f0cfe6-fb04-4192-b759-42cbdd0b608e
 		summarizeBy: none

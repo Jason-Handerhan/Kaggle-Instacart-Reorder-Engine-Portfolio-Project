@@ -1,6 +1,8 @@
+/// Model evaluation results — Recall, Precision, NDCG, and F1 at 5 — for every model and dataset split.
 table evaluation_metrics
 	lineageTag: 160401bf-8ec6-4f92-87fc-9f4b86c85ded
 
+	/// Dataset split this evaluation was computed on
 	column Split
 		dataType: string
 		lineageTag: 246ade2c-35cc-4b27-9958-9c22876f0364
@@ -9,6 +11,7 @@ table evaluation_metrics
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Model Type: Base, Ensemble, or Heuristic Baseline
 	column Type
 		dataType: string
 		lineageTag: a56166dc-d68d-4fe6-9010-00262099b67d
@@ -17,6 +20,7 @@ table evaluation_metrics
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Name of the model
 	column Model
 		dataType: string
 		lineageTag: 437a207c-2fad-4273-a044-fc17f46b88d4
@@ -25,6 +29,7 @@ table evaluation_metrics
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Recall at 5: percentage of actual reorders captured in the top 5 recommendations
 	column Recall_at_5
 		dataType: double
 		lineageTag: 99ec4f6f-9819-4daf-8c73-aec88cc9365b
@@ -35,6 +40,7 @@ table evaluation_metrics
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// NDCG at 5: rewards models that rank true reorders higher within the top 5
 	column NDCG_at_5
 		dataType: double
 		lineageTag: 24d9c4bc-3eb4-4039-a48a-ad1e177ac45c
@@ -45,6 +51,7 @@ table evaluation_metrics
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// Precision at 5: percentage of the top 5 recommendations that were actual reorders
 	column Precision_at_5
 		dataType: double
 		lineageTag: cdc4e4ac-05cf-4f32-a06f-cb94acfee694
@@ -55,6 +62,7 @@ table evaluation_metrics
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// F1 at 5: harmonic mean of Precision at 5 and Recall at 5
 	column F1_at_5
 		dataType: double
 		lineageTag: 0de8f8d6-1606-41a8-9297-84a740a8cd74

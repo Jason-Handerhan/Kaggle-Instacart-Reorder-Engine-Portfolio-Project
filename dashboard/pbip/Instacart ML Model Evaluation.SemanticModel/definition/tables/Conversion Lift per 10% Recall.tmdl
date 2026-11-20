@@ -1,11 +1,14 @@
+/// What-if parameter table driving the sensitivity slider for conversion lift per 10-point gain in Recall at 5.
 table 'Conversion Lift per 10% Recall'
 	lineageTag: 3d99836e-d927-4159-9f49-d89e6ebcd7e1
 
+	/// Current conversion-lift assumption: the slider's selected value, or default value if none is set
 	measure 'Conversion Lift per 10% Recall Value' = SELECTEDVALUE('Conversion Lift per 10% Recall'[Conversion Lift per 10% Recall], 0.002)
 		lineageTag: 6858e1ef-d004-4d03-bb86-fdef0177f8a0
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// Candidate conversion-lift value offered by the what-if slider
 	column 'Conversion Lift per 10% Recall'
 		lineageTag: 500ddd5b-b562-4b7e-b88f-64a3cac52a43
 		summarizeBy: none

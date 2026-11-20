@@ -1,22 +1,28 @@
+/// Container table for the Model Evaluation page's measures — holds no real data, only DAX measures.
 table _Model_Evaluation_Measures
 	lineageTag: 75932f5a-9401-4cea-ab9b-6074cf8c6fec
 
+	/// Model Evaluation metric: Recall at 5
 	measure Recall = SUM(evaluation_metrics[Recall_at_5])
 		formatString: 0.00000
 		lineageTag: 23581aca-a856-4ba3-b27d-f17e43bd8634
 
+	/// Model evaluation metric: Precision at 5
 	measure Precision = SUM(evaluation_metrics[Precision_at_5])
 		formatString: 0.00000
 		lineageTag: c3b34068-f9ac-4524-883c-0c3ccf28daf5
 
+	/// Model evaluation metric: NDCG at 5
 	measure NDCG = SUM(evaluation_metrics[NDCG_at_5])
 		formatString: 0.00000
 		lineageTag: 356850fb-dfab-4248-8d87-722825619be7
 
+	/// Model evaluation metric: F1 at 5
 	measure F1 = SUM(evaluation_metrics[F1_at_5])
 		formatString: 0.00000
 		lineageTag: c4ae2324-42cd-4b1f-90f4-44283517510c
 
+	/// Plain-language definition of whichever evaluation metric is currently selected in Evaluation Metric Parameter
 	measure Dynamic_Metric_Description = ```
 			
 			VAR SelectedMetricText = SELECTEDVALUE('Evaluation Metric Parameter'[Parameter Fields])
@@ -34,6 +40,7 @@ table _Model_Evaluation_Measures
 			```
 		lineageTag: 09b7e478-8708-4e41-80a0-783d0241986c
 
+	/// Recall at 5 for the champion model
 	measure 'Champion Recall' =
 			
 			VAR Champion = [Champion_Model]
@@ -45,6 +52,7 @@ table _Model_Evaluation_Measures
 		formatString: 0.0000
 		lineageTag: 76904924-0468-449a-aec3-e5fee38688d3
 
+	/// Precision at 5 for the champion model
 	measure 'Champion Precision' =
 			
 			VAR Champion = [Champion_Model]
@@ -56,6 +64,7 @@ table _Model_Evaluation_Measures
 		formatString: 0.0000
 		lineageTag: a3b48325-70c8-4bbc-bf27-0616316c0343
 
+	/// NDCG at 5 for the champion model
 	measure 'Champion NDCG' =
 			
 			VAR Champion = [Champion_Model]
@@ -67,6 +76,7 @@ table _Model_Evaluation_Measures
 		formatString: 0.0000
 		lineageTag: 9239bf7c-f427-4cb6-b66d-8fd9e460e246
 
+	/// F1 at 5 for the champion model
 	measure 'Champion F1' =
 			
 			VAR Champion = [Champion_Model]
@@ -78,6 +88,7 @@ table _Model_Evaluation_Measures
 		formatString: 0.0000
 		lineageTag: 49431830-80f3-40e0-a6a1-156fc6fdf3c0
 
+	/// Vertical position for a beeswarm plot point, offset slightly within its feature's row to avoid perfect overlap
 	measure Feature_Y_Axis_Position = ```
 			
 			-- Step 1: Get the baseline rank of the feature (e.g., 1 through 15)
@@ -95,6 +106,7 @@ table _Model_Evaluation_Measures
 		formatString: 0
 		lineageTag: 46aebf55-9609-43f8-9005-4404aa3fe257
 
+	/// This point's feature value, normalized 0–1 within that feature's own range, used to color the beeswarm plot
 	measure SHAP_Color_Scale = ```
 			
 			-- Step 1: Capture the current row's feature name and individual feature value
@@ -132,6 +144,7 @@ table _Model_Evaluation_Measures
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// Recall at 5 for the heuristic baseline (no ML model)
 	measure 'Baseline Recall' = ```
 			
 			CALCULATE(
@@ -143,12 +156,14 @@ table _Model_Evaluation_Measures
 		formatString: 0.0000
 		lineageTag: 1c3f1cbc-ef8e-49a7-82dc-94fd824867f3
 
+	/// Percentage improvement in Recall at 5 of the champion model over the heuristic baseline
 	measure Pct_Diff_Recall = DIVIDE([Champion Recall] - [Baseline Recall], [Baseline Recall], 0)
 		formatString: "▲ "0.0%;"▼ "0.0%;0.0%
 		lineageTag: b54dd8b8-791d-4bb5-956e-80ab83878318
 
 		annotation PBI_FormatHint = {"isCustom":true}
 
+	/// NDCG at 5 for the heuristic baseline (no ML model)
 	measure 'Baseline NDCG' = ```
 			
 			CALCULATE(
@@ -160,32 +175,39 @@ table _Model_Evaluation_Measures
 		formatString: 0.0000
 		lineageTag: 214a87c9-b0a8-4682-818d-a3acca7a2f31
 
+	/// Percentage improvement in NDCG at 5 of the champion model over the heuristic baseline
 	measure Pct_Diff_NDCG = DIVIDE([Champion NDCG] - [Baseline NDCG], [Baseline NDCG], 0)
 		formatString: "▲ "0.0%;"▼ "0.0%;0.0%
 		lineageTag: c0c6cea7-97ac-43b0-9a6d-faface0d4c80
 
 		annotation PBI_FormatHint = {"isCustom":true}
 
+	/// Sum of optimal ensemble weight shares for the LightGBM Ranker + XGBoost Classifier ensemble (sums to 1)
 	measure ensemble_weights_lgbm_rank_xgb_class = SUM('optimal_ensemble_weights'[ens1_lgb_rank_xgb_class])
 		formatString: 0.0%;-0.0%;0.0%
 		lineageTag: 15a2b6f2-7a18-424b-8dfa-3fed9c36cbf7
 
+	/// Sum of optimal ensemble weight shares for the LightGBM Ranker + LightGBM Classifier ensemble (sums to 1)
 	measure ensemble_weights_lgbm_rank_lgbm_class = SUM('optimal_ensemble_weights'[ens2_lgb_rank_lgb_class])
 		formatString: 0.0%;-0.0%;0.0%
 		lineageTag: 249c46ef-8235-49c4-a157-05f186fdbcc6
 
+	/// Sum of optimal ensemble weight shares for the XGBoost Ranker + LightGBM Classifier ensemble (sums to 1)
 	measure ensemble_weights_xgb_rank_lgbm_class = SUM('optimal_ensemble_weights'[ens3_xgb_rank_lgb_class])
 		formatString: 0.0%;-0.0%;0.0%
 		lineageTag: f99fd433-7b3a-498d-b857-950ef3820882
 
+	/// Sum of optimal ensemble weight shares for the XGBoost Ranker + XGBoost Classifier ensemble (sums to 1)
 	measure ensemble_weights_xgb_rank_xgb_class = SUM('optimal_ensemble_weights'[ens4_xgb_rank_xgb_class])
 		formatString: 0.0%;-0.0%;0.0%
 		lineageTag: ddaf1132-6723-44bb-a960-9a5f7a2b1eda
 
+	/// Sum of optimal ensemble weight shares for the Full ensemble (sums to 1)
 	measure ensemble_weights_all_base_models = SUM('optimal_ensemble_weights'[ens5_all_base_models])
 		formatString: 0.0%;-0.0%;0.0%
 		lineageTag: 913719c5-7511-44e9-aa61-df56d1603ada
 
+	/// Precision at 5 for the heuristic baseline (no ML model)
 	measure 'Baseline Precision' = ```
 			
 			CALCULATE(
@@ -197,12 +219,14 @@ table _Model_Evaluation_Measures
 		formatString: 0.0000
 		lineageTag: 6e4ef990-0854-4d7b-adcd-f7329b1bd72d
 
+	/// Percentage improvement in Precision at 5 of the champion model over the heuristic baseline
 	measure Pct_Diff_Precision = DIVIDE([Champion Precision] - [Baseline Precision], [Baseline Precision], 0)
 		formatString: "▲ "0.0%;"▼ "0.0%;0.0%
 		lineageTag: ad3a1481-0839-4f5e-8e50-00359859b4fd
 
 		annotation PBI_FormatHint = {"isCustom":true}
 
+	/// F1 at 5 for the heuristic baseline (no ML model)
 	measure 'Baseline F1' = ```
 			
 			CALCULATE(
@@ -214,12 +238,14 @@ table _Model_Evaluation_Measures
 		formatString: 0.0000
 		lineageTag: d13e33d4-643f-4f49-aae1-87512432710e
 
+	/// Percentage improvement in F1 at 5 of the champion model over the heuristic baseline
 	measure Pct_Diff_F1 = DIVIDE([Champion F1] - [Baseline F1], [Baseline F1], 0)
 		formatString: "▲ "0.0%;"▼ "0.0%;0.0%
 		lineageTag: 1144cd1c-2832-4cd9-aef0-d2e2045a0cff
 
 		annotation PBI_FormatHint = {"isCustom":true}
 
+	/// Name of the model with the highest validation Recall at 5 — treated as champion throughout the dashboard
 	measure Champion_Model = ```
 			
 			VAR ModelSummary = 
@@ -435,6 +461,7 @@ table _Model_Evaluation_Measures
 			```
 		lineageTag: df7baecc-ff2e-4c2e-b674-d4153e5a2a0b
 
+	/// Placeholder column — this table exists only to host measures
 	column Column1
 		dataType: string
 		lineageTag: 25ca7028-dfcc-4895-9e21-c9aac7a158f9

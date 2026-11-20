@@ -1,0 +1,22 @@
+table Feature_Importance_Chart_Types
+	lineageTag: c51d01e7-78b1-4668-80da-f38aa932baf5
+
+	column Chart_Types
+		dataType: string
+		lineageTag: bf10c8f5-8524-48fc-a337-c89c614d1955
+		summarizeBy: none
+		sourceColumn: Chart_Types
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Feature_Importance_Chart_Types = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WckpNLS5PLMpVitUBchKLFAJy8ksUNHxTE/MUHJOK83NKS1IVgj0cAzSVYmMB", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Chart_Types = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Chart_Types", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

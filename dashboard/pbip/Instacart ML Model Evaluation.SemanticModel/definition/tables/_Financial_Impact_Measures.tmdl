@@ -1,10 +1,13 @@
+/// Container table for the Financial Impact page's profit-lift calculations — holds no real data, only DAX measures.
 table _Financial_Impact_Measures
 	lineageTag: bbbab0bf-f97f-4f11-bc56-5f0fdd28f05e
 
+	/// Projected annual profit with no recommendation model (heuristic baseline)
 	measure Baseline_Profit = [SEC_2025_Total_Revenue] * [SEC_2025_Profit_Margin]
 		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
 		lineageTag: abc642a0-ebdd-45b9-bf08-594d93bc781e
 
+	/// Additional annual profit from extra orders driven by the model's Recall, via the conversion-lift assumption
 	measure Conversion_Profit_Lift =
 			
 			VAR Annual_Orders = [SEC_2025_Annual_Orders]
@@ -21,25 +24,30 @@ table _Financial_Impact_Measures
 		formatString: \$#,0;(\$#,0);\$#,0
 		lineageTag: c682ec7d-5db3-40ad-902b-ae0a6e8e8c64
 
+	/// Baseline average order value: total revenue divided by annual orders
 	measure Base_AOV = DIVIDE([SEC_2025_Total_Revenue], [SEC_2025_Annual_Orders], 0)
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
 		lineageTag: 34192899-47d0-480c-8964-13608f6e3ba8
 
+	/// Passthrough of the current conversion-rate assumption, for use in visit/traffic calculations
 	measure Conversion_Rate = 'Conversion Rate'[Conversion Rate Value]
 		lineageTag: 3577128d-d96c-40b8-ad4a-53a8cdc116c3
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// Estimated annual site visits, derived from annual orders and the conversion-rate assumption
 	measure Annual_Visits = DIVIDE([SEC_2025_Annual_Orders], [Conversion_Rate], 0)
 		lineageTag: 9fb6919b-21b3-4065-9022-a32bbdbf2721
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// Average number of orders per active customer per year
 	measure Annual_User_Orders = DIVIDE([SEC_2025_Annual_Orders], [SEC_2025_Active_Customers], 0)
 		lineageTag: 43dbdd03-ccbd-42c2-aa71-77a582d1f846
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// Additional annual profit from customers retained (reduced churn) due to the model's Recall, via the churn-reduction assumption
 	measure Churn_Profit_Lift =
 			
 			VAR Active_Users = [SEC_2025_Active_Customers]
@@ -58,15 +66,18 @@ table _Financial_Impact_Measures
 		formatString: \$#,0;(\$#,0);\$#,0
 		lineageTag: 56715b52-00cf-4a5d-81dc-190eea22de98
 
+	/// Total additional annual profit from all three drivers combined: AOV, conversion, and churn
 	measure Annual_Profit_Lift = [AOV_Profit_Lift] + [Conversion_Profit_Lift] + [Churn_Profit_Lift]
 		formatString: \$#,0;(\$#,0);\$#,0
 		lineageTag: 51634cfc-8838-424e-aac1-427d783d56cb
 
+	/// Projected total annual profit: baseline profit plus the model's total profit lift
 	measure Annual_Profit = [Baseline_Profit] + [Annual_Profit_Lift]
 		lineageTag: c84cc650-fc64-45a1-b2af-8e9e6909ba82
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// Projected annual profit for the champion model
 	measure 'Champion Profit' =
 			
 			VAR Champion = [Champion_Model]
@@ -78,6 +89,7 @@ table _Financial_Impact_Measures
 		formatString: \$#,0.000;(\$#,0.000);\$#,0.000
 		lineageTag: b641436f-9298-436e-bfcf-82e657efa4b3
 
+	/// Total annual profit lift for the champion model, over the heuristic baseline
 	measure 'Champion Profit Lift' =
 			
 			VAR Champion = [Champion_Model]
@@ -89,6 +101,7 @@ table _Financial_Impact_Measures
 		formatString: \$#,0.000;(\$#,0.000);\$#,0.000
 		lineageTag: 61bcf33b-b284-4dc0-aede-fcb1fac02a68
 
+	/// Conversion-driven profit lift for the champion model
 	measure 'Champion Conversion Profit Lift' =
 			
 			VAR Champion = [Champion_Model]
@@ -100,6 +113,7 @@ table _Financial_Impact_Measures
 		formatString: \$#,0.000;(\$#,0.000);\$#,0.000
 		lineageTag: 608bcc9d-17a8-426b-9f0d-9af76fdd9165
 
+	/// Churn-driven profit lift for the champion model
 	measure 'Champion Churn Profit Lift' =
 			
 			VAR Champion = [Champion_Model]
@@ -113,6 +127,7 @@ table _Financial_Impact_Measures
 
 		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
 
+	/// Additional annual profit from a higher average order value, driven by the model's Recall via the AOV-lift assumption
 	measure AOV_Profit_Lift =
 			
 			VAR Annual_Orders = [SEC_2025_Annual_Orders]
@@ -144,6 +159,7 @@ table _Financial_Impact_Measures
 		formatString: \$#,0;(\$#,0);\$#,0
 		lineageTag: cf0573ee-c082-4c54-b8ba-15394729158b
 
+	/// AOV-driven profit lift for the champion model
 	measure 'Champion AOV Profit Lift' =
 			
 			VAR Champion = [Champion_Model]
@@ -156,6 +172,7 @@ table _Financial_Impact_Measures
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// Routes each profit-lift driver (Conversion, Churn, AOV) to its value for the donut chart, based on the currently selected driver
 	measure Donut_Chart_Lift_Values =
 			
 			SWITCH(
@@ -167,6 +184,7 @@ table _Financial_Impact_Measures
 			)
 		lineageTag: a365b5eb-3f90-4038-846b-6f18af594ce7
 
+	/// Total profit lift for the heuristic baseline row
 	measure 'Heuristic Profit Lift' = ```
 			
 			CALCULATE(
@@ -179,12 +197,14 @@ table _Financial_Impact_Measures
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// Percentage improvement in total profit lift of the champion model over the heuristic baseline
 	measure Pct_Diff_Profit_Lift = DIVIDE([Champion Profit Lift] - [Heuristic Profit Lift], [Heuristic Profit Lift], 0)
 		formatString: "▲ "0.0%;"▼ "0.0%;0.0%
 		lineageTag: e5d3334a-7bb3-4bba-bc96-7afe79e536e0
 
 		annotation PBI_FormatHint = {"isCustom":true}
 
+	/// AOV-driven profit lift for the heuristic baseline row
 	measure 'Heuristic AOV Profit Lift' = ```
 			
 			CALCULATE(
@@ -197,6 +217,7 @@ table _Financial_Impact_Measures
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// Churn-driven profit lift for the heuristic baseline row
 	measure 'Heuristic Churn Profit Lift' = ```
 			
 			CALCULATE(
@@ -209,6 +230,7 @@ table _Financial_Impact_Measures
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// Conversion-driven profit lift for the heuristic baseline row
 	measure 'Heuristic Conversion Profit Lift' = ```
 			
 			CALCULATE(
@@ -221,18 +243,21 @@ table _Financial_Impact_Measures
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// Percentage improvement in AOV-driven profit lift of the champion model over the heuristic baseline
 	measure Pct_Diff_AOV_Profit_Lift = DIVIDE([Champion AOV Profit Lift] - [Heuristic AOV Profit Lift], [Heuristic AOV Profit Lift], 0)
 		formatString: "▲ "0.0%;"▼ "0.0%;0.0%
 		lineageTag: 3daf6378-db1d-428d-b144-afc8e21b7200
 
 		annotation PBI_FormatHint = {"isCustom":true}
 
+	/// Percentage improvement in churn-driven profit lift of the champion model over the heuristic baseline
 	measure Pct_Diff_Churn_Profit_Lift = DIVIDE([Champion Churn Profit Lift] - [Heuristic Churn Profit Lift], [Heuristic Churn Profit Lift], 0)
 		formatString: "▲ "0.0%;"▼ "0.0%;0.0%
 		lineageTag: 7cd8e18d-8971-46f1-ba78-4607a34cb5d2
 
 		annotation PBI_FormatHint = {"isCustom":true}
 
+	/// Percentage improvement in conversion-driven profit lift of the champion model over the heuristic baseline
 	measure Pct_Diff_Conversion_Profit_Lift = DIVIDE([Champion Conversion Profit Lift] - [Heuristic Conversion Profit Lift], [Heuristic Conversion Profit Lift], 0)
 		formatString: "▲ "0.0%;"▼ "0.0%;0.0%
 		lineageTag: a561b2d9-7085-430c-871b-e60b6af5134c
@@ -346,6 +371,7 @@ table _Financial_Impact_Measures
 			```
 		lineageTag: bc6ef7a9-ab3c-4453-b349-ceef0cc3a6dc
 
+	/// Placeholder column — this table exists only to host measures
 	column Column1
 		dataType: string
 		lineageTag: ad4751d7-9db5-4503-b3f1-f13ba6d76635

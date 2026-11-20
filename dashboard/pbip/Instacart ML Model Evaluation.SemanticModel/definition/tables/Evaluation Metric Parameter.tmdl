@@ -1,6 +1,8 @@
+/// Display label for the selected evaluation metric option (Model Evaluation page horizontal bar chart)
 table 'Evaluation Metric Parameter'
 	lineageTag: ff0e4751-e634-4778-a7d0-a88ea1e05f07
 
+	/// Display label for the selected evaluation metric option
 	column 'Evaluation Metric Parameter'
 		lineageTag: 2f95d248-ede4-409b-9006-51034d0961df
 		summarizeBy: none
@@ -12,6 +14,7 @@ table 'Evaluation Metric Parameter'
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Internal field reference (NAMEOF) for the selected evaluation metric measure
 	column 'Parameter Fields'
 		isHidden
 		lineageTag: 23d64112-dc4c-49fc-957e-40ac85888bac
@@ -27,6 +30,7 @@ table 'Evaluation Metric Parameter'
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Sort order for the evaluation metric options in the slicer
 	column 'Parameter Order'
 		isHidden
 		formatString: 0

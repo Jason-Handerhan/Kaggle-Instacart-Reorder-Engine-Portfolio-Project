@@ -1,11 +1,14 @@
+/// What-if parameter table driving the sensitivity slider for baseline conversion rate.
 table 'Conversion Rate'
 	lineageTag: 02454cd9-aa7e-4464-bf5f-444c1404bb38
 
+	/// Current conversion-rate assumption: the slider's selected value, or default value if none is set
 	measure 'Conversion Rate Value' = SELECTEDVALUE('Conversion Rate'[Conversion Rate], 0.06)
 		lineageTag: c0faa08d-f4c5-46d3-bd1f-f18c2f02f356
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// Candidate conversion-rate value offered by the what-if slider
 	column 'Conversion Rate'
 		lineageTag: 71c8cb4e-01e4-430b-8379-976151d46430
 		summarizeBy: none

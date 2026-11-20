@@ -1,6 +1,8 @@
+/// Field parameter letting the user pick which base-model ensemble combination's weight is displayed (used in pop-up pie chart)
 table 'Ensemble Weight Parameter'
 	lineageTag: 68da07ac-a656-4a9d-948a-6d3ab185e636
 
+	/// Display label for the selected ensemble combination option
 	column 'Ensemble Weight Parameter'
 		lineageTag: 066e906a-813d-49dc-a5a6-56404858a295
 		summarizeBy: none
@@ -12,6 +14,7 @@ table 'Ensemble Weight Parameter'
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Internal field reference (NAMEOF) for the selected ensemble weight measure
 	column 'Ensemble Weight Parameter Fields'
 		isHidden
 		lineageTag: 2764124c-92b5-4452-8e0c-e799cb992d89
@@ -27,6 +30,7 @@ table 'Ensemble Weight Parameter'
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Sort order for the ensemble combination options in the slicer
 	column 'Ensemble Weight Parameter Order'
 		isHidden
 		formatString: 0

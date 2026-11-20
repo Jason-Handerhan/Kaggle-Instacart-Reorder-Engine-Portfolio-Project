@@ -60,6 +60,16 @@
       "type": "RegisteredResources",
       "items": [
         {
+          "name": "AI_Icon_optionA007978466546369689.svg",
+          "path": "AI_Icon_optionA007978466546369689.svg",
+          "type": "Image"
+        },
+        {
+          "name": "AI_Icon_optionA049078283694125924.svg",
+          "path": "AI_Icon_optionA049078283694125924.svg",
+          "type": "Image"
+        },
+        {
           "name": "Background_Gradient_Darker23246686806868921.png",
           "path": "Background_Gradient_Darker23246686806868921.png",
           "type": "Image"

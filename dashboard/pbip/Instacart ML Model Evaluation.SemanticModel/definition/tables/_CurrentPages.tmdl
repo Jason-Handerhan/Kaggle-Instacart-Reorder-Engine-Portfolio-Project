@@ -1,0 +1,22 @@
+table _CurrentPages
+	lineageTag: af0e48f9-1cc3-4c88-8fd3-5f060d6beb90
+
+	column 'Current Page'
+		dataType: string
+		lineageTag: a3a08133-a9c1-44da-9cb9-cbf34b149874
+		summarizeBy: none
+		sourceColumn: Current Page
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _CurrentPages = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45W8s1PSc1RCEgtSssvyk3MS05VitWJVnLLzAOyMxNzFDxzCxKTS5RiYwE=", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Current Page" = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Current Page", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

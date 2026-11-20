@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="sparkleGrad" cx="36" cy="44" r="34" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#8FA6F2"/>
+      <stop offset="50%" stop-color="#1403AE"/>
+      <stop offset="100%" stop-color="#F98B5C"/>
+    </radialGradient>
+  </defs>
+  <path d="M44.00,15.00 C52.49,46.51 52.49,46.51 84.00,55.00 C52.49,63.49 52.49,63.49 44.00,95.00 C35.51,63.49 35.51,63.49 4.00,55.00 C35.51,46.51 35.51,46.51 44.00,15.00 Z" fill="url(#sparkleGrad)"/>
+  <path d="M76.00,4.00 C80.67,21.33 80.67,21.33 98.00,26.00 C80.67,30.67 80.67,30.67 76.00,48.00 C71.33,30.67 71.33,30.67 54.00,26.00 C71.33,21.33 71.33,21.33 76.00,4.00 Z" fill="#F98B5C"/>
+</svg>
+

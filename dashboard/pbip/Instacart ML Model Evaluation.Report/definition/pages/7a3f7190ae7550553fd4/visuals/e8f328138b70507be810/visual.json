@@ -1,0 +1,17 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "e8f328138b70507be810",
+  "position": {
+    "x": 781.97879455349948,
+    "y": 0.99410298329085922,
+    "z": 10000,
+    "height": 719.16445623342167,
+    "width": 717.17506631299727,
+    "tabOrder": 10000
+  },
+  "visualGroup": {
+    "displayName": "Analytics Agent Popup",
+    "groupMode": "ScaleMode"
+  },
+  "isHidden": true
+}

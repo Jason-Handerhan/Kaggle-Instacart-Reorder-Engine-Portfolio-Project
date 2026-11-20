@@ -1,18 +1,23 @@
+/// Container table for the fixed, SEC-sourced financial constants used in the profit model — holds no real data, only DAX measures.
 table _Financial_Model_Constants
 	lineageTag: 83035f8d-2d70-44b8-a835-ba9f9fb57e1b
 
+	/// Instacart's total 2025 revenue, from its SEC filings — the base for all profit calculations
 	measure SEC_2025_Total_Revenue = 3742000000
 		formatString: 0
 		lineageTag: edc75dba-dea2-4137-aa06-5a1dd30ef76f
 
+	/// Instacart's total 2025 order volume, from its SEC filings
 	measure SEC_2025_Annual_Orders = 338800000
 		formatString: 0
 		lineageTag: 4eb81eee-2555-4920-8add-3211f5935e0d
 
+	/// Instacart's total 2025 active customer count, from its SEC filings
 	measure SEC_2025_Active_Customers = 14000000
 		formatString: 0
 		lineageTag: 3e8ac93d-b4a1-451a-88e1-9a7a011e1894
 
+	/// Instacart's 2025 profit margin, from its SEC filings
 	measure SEC_2025_Profit_Margin = 0.737
 		formatString: 0.0%;-0.0%;0.0%
 		lineageTag: 29ead141-0df6-4af3-abe6-4b17ad60ae4d
@@ -75,6 +80,7 @@ table _Financial_Model_Constants
 			```
 		lineageTag: 4d6c75ad-3c03-40d1-872f-eead8223e49a
 
+	/// Placeholder column — this table exists only to host measures
 	column Column1
 		dataType: string
 		lineageTag: a9842b3e-d5ab-4e81-8adf-15cf0de72398

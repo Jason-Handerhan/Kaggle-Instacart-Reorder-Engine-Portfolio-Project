@@ -1,6 +1,8 @@
+/// Dimension table defining the stages and display order of the profit waterfall chart.
 table Waterfall_Dimensions
 	lineageTag: c5442fae-a0e0-4688-b7c7-af834f493249
 
+	/// Name of the waterfall stage (e.g. Baseline Profit, Conversion Profit Lift)
 	column 'Stage Name'
 		dataType: string
 		lineageTag: b2d3c66f-e10c-42d6-8221-c670f0c97206
@@ -9,6 +11,7 @@ table Waterfall_Dimensions
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Left-to-right display order of this stage in the waterfall chart
 	column 'Sort Order'
 		dataType: int64
 		formatString: 0

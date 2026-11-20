@@ -1,6 +1,8 @@
+/// Dimension table listing the dataset splits (Test, Validation) used to slice evaluation results.
 table dataset_split_dimension
 	lineageTag: 4dc2ee1b-22db-4ebf-8bea-218a970b34c1
 
+	/// Name of the dataset split (e.g. Test, Validation)
 	column dataset_split
 		dataType: string
 		lineageTag: 6c0b05ee-b919-4aab-bbf0-2facfbaaf54c

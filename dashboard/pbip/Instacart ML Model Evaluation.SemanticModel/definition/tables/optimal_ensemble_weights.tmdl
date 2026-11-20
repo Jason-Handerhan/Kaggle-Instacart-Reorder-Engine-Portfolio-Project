@@ -1,6 +1,8 @@
+/// Optimal blending weight shares for each base-model ensemble combination. The ensemble model is the column and the rows are the base models. Each column sums to 1.
 table optimal_ensemble_weights
 	lineageTag: b9ecaceb-3490-43bb-bb86-9bec836cc48e
 
+	/// Name of the base model for this rows blending weight shares
 	column model_name
 		dataType: string
 		lineageTag: f26ecb97-6ffe-40f5-80f9-29daa1377646
@@ -9,6 +11,7 @@ table optimal_ensemble_weights
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Optimal ensemble weight shares for the LightGBM Ranker + XGBoost Classifier ensemble
 	column ens1_lgb_rank_xgb_class
 		dataType: double
 		formatString: 0.0%;-0.0%;0.0%
@@ -18,6 +21,7 @@ table optimal_ensemble_weights
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Optimal ensemble weight shares for the LightGBM Ranker + LightGBM Classifier ensemble
 	column ens2_lgb_rank_lgb_class
 		dataType: double
 		formatString: 0.0%;-0.0%;0.0%
@@ -27,6 +31,7 @@ table optimal_ensemble_weights
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Optimal ensemble weight shares for the XGBoost Ranker + LightGBM Classifier ensemble
 	column ens3_xgb_rank_lgb_class
 		dataType: double
 		formatString: 0.0%;-0.0%;0.0%
@@ -36,6 +41,7 @@ table optimal_ensemble_weights
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Optimal ensemble weight shares for the XGBoost Ranker + XGBoost Classifier ensemble
 	column ens4_xgb_rank_xgb_class
 		dataType: double
 		formatString: 0.0%;-0.0%;0.0%
@@ -45,6 +51,7 @@ table optimal_ensemble_weights
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Optimal ensemble weight shares for the ensemble of all base models (Full Ensemble)
 	column ens5_all_base_models
 		dataType: double
 		formatString: 0.0%;-0.0%;0.0%

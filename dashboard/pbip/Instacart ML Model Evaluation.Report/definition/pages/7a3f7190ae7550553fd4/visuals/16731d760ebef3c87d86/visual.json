@@ -1,0 +1,538 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "16731d760ebef3c87d86",
+  "position": {
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "height": 719.16445623342167,
+    "width": 717.17506631299727,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "PowerApps_PBI_CV_C29F1DCC_81F5_4973_94AD_0517D44CC06A",
+    "query": {
+      "queryState": {
+        "table": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_SelectionMeasures"
+                    }
+                  },
+                  "Property": "Active_Page"
+                }
+              },
+              "queryRef": "_SelectionMeasures.Active_Page",
+              "nativeQueryRef": "Active_Page"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_SelectionMeasures"
+                    }
+                  },
+                  "Property": "Selected_Base_Model"
+                }
+              },
+              "queryRef": "_SelectionMeasures.Selected_Base_Model",
+              "nativeQueryRef": "Selected_Base_Model"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_SelectionMeasures"
+                    }
+                  },
+                  "Property": "Selected_Dataset_Split"
+                }
+              },
+              "queryRef": "_SelectionMeasures.Selected_Dataset_Split",
+              "nativeQueryRef": "Selected_Dataset_Split"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_SelectionMeasures"
+                    }
+                  },
+                  "Property": "Selected_Ensemble_Weights_Model"
+                }
+              },
+              "queryRef": "_SelectionMeasures.Selected_Ensemble_Weights_Model",
+              "nativeQueryRef": "Selected_Ensemble_Weights_Model"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_SelectionMeasures"
+                    }
+                  },
+                  "Property": "Selected_Evaluation_Metric"
+                }
+              },
+              "queryRef": "_SelectionMeasures.Selected_Evaluation_Metric",
+              "nativeQueryRef": "Selected_Evaluation_Metric"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_SelectionMeasures"
+                    }
+                  },
+                  "Property": "Selected_Feature_Importance_Plot"
+                }
+              },
+              "queryRef": "_SelectionMeasures.Selected_Feature_Importance_Plot",
+              "nativeQueryRef": "Selected_Feature_Importance_Plot"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_SelectionMeasures"
+                    }
+                  },
+                  "Property": "Selected_Model"
+                }
+              },
+              "queryRef": "_SelectionMeasures.Selected_Model",
+              "nativeQueryRef": "Selected_Model"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "AOV Lift per 10% Recall"
+                    }
+                  },
+                  "Property": "AOV Lift per 10% Recall Value"
+                }
+              },
+              "queryRef": "AOV Lift per 10% Recall.AOV Lift per 10% Recall Value",
+              "nativeQueryRef": "AOV Lift per 10% Recall Value"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Churn Rate"
+                    }
+                  },
+                  "Property": "Churn Rate Value"
+                }
+              },
+              "queryRef": "Churn Rate.Churn Rate Value",
+              "nativeQueryRef": "Churn Rate Value"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Churn Reduction per 10% Recall"
+                    }
+                  },
+                  "Property": "Churn Reduction per 10% Recall Value"
+                }
+              },
+              "queryRef": "Churn Reduction per 10% Recall.Churn Reduction per 10% Recall Value",
+              "nativeQueryRef": "Churn Reduction per 10% Recall Value"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Conversion Lift per 10% Recall"
+                    }
+                  },
+                  "Property": "Conversion Lift per 10% Recall Value"
+                }
+              },
+              "queryRef": "Conversion Lift per 10% Recall.Conversion Lift per 10% Recall Value",
+              "nativeQueryRef": "Conversion Lift per 10% Recall Value"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Conversion Rate"
+                    }
+                  },
+                  "Property": "Conversion Rate Value"
+                }
+              },
+              "queryRef": "Conversion Rate.Conversion Rate Value",
+              "nativeQueryRef": "Conversion Rate Value"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "_SelectionMeasures"
+                  }
+                },
+                "Property": "Active_Page"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "appId": {
+              "expr": {
+                "Literal": {
+                  "Value": "'/providers/Microsoft.PowerApps/apps/fe2b1217-745f-4438-9aa1-f149a2f9532b'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Analytics Agent'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualHeader": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "showVisualInformationButton": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "showVisualWarningButton": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "showVisualErrorButton": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "showDrillRoleSelector": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "showDrillUpButton": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "showDrillToggleButton": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "showDrillDownLevelButton": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "showDrillDownExpandButton": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "showPinButton": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "showFocusModeButton": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "showSeeDataLayoutToggleButton": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "showOptionsMenu": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "showFilterRestatementButton": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "showCommentButton": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "showCopyVisualImageButton": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "showSetAlertButton": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "parentGroupName": "e8f328138b70507be810",
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "8895fc42cc413b20da3d",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_SelectionMeasures"
+              }
+            },
+            "Property": "Active_Page"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "ee2eef1d0ed5f3555693",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_SelectionMeasures"
+              }
+            },
+            "Property": "Selected_Base_Model"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "1b0b24f2f256b9b95f32",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_SelectionMeasures"
+              }
+            },
+            "Property": "Selected_Dataset_Split"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "584b1b1d52913bf361c9",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_SelectionMeasures"
+              }
+            },
+            "Property": "Selected_Ensemble_Weights_Model"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "c674c6d84d7692e46fad",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_SelectionMeasures"
+              }
+            },
+            "Property": "Selected_Evaluation_Metric"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "cb540c49d5391bd4da6f",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_SelectionMeasures"
+              }
+            },
+            "Property": "Selected_Feature_Importance_Plot"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "6ff35df02d2aaa31d2f3",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_SelectionMeasures"
+              }
+            },
+            "Property": "Selected_Model"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "09f1c2d4bd7f146146bc",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "AOV Lift per 10% Recall"
+              }
+            },
+            "Property": "AOV Lift per 10% Recall Value"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "ce518d920163eb687897",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Churn Rate"
+              }
+            },
+            "Property": "Churn Rate Value"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "8ffab9560ec05b268bbf",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Churn Reduction per 10% Recall"
+              }
+            },
+            "Property": "Churn Reduction per 10% Recall Value"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "6db7b1f841a0cce0f900",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Conversion Lift per 10% Recall"
+              }
+            },
+            "Property": "Conversion Lift per 10% Recall Value"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "153203e49db1480cc60f",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Conversion Rate"
+              }
+            },
+            "Property": "Conversion Rate Value"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}
