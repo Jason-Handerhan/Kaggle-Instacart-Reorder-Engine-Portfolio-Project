@@ -1,8 +1,11 @@
+from itertools import combinations
+
 import pandas as pd
 import numpy as np
 import bigframes.pandas as bpd
 from sklearn.utils import shuffle
 from sklearn.metrics import ndcg_score
+from rapidfuzz import fuzz
 
 def split_data(df):
     """
@@ -474,3 +477,28 @@ def get_baseline_evaluation_metrics(df, dataset_split= 'validation'):
     }])
     
     return heuristic_evaluation_metrics, heuristic_recall, heuristic_ndcg
+
+
+def find_near_duplicate_names(names, threshold=90):
+    """
+    Find pairs of product names that are similar to each other.
+
+    Parameters:
+    -----------
+    names : list of str
+        Product names to compare.
+    threshold : int or float
+        Minimum rapidfuzz similarity score (0 to 100) for a pair to be returned.
+
+    Returns:
+    --------
+    list of tuple
+        (name_a, name_b, score) for each pair scoring at least threshold,
+        each pair once, highest score first.
+    """
+    pairs = [
+        (name_a, name_b, fuzz.ratio(name_a, name_b))
+        for name_a, name_b in combinations(names, 2)
+    ]
+    near_duplicates = [pair for pair in pairs if pair[2] >= threshold]
+    return sorted(near_duplicates, key=lambda pair: pair[2], reverse=True)
