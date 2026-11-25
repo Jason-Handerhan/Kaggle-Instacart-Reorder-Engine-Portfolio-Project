@@ -48,6 +48,9 @@ config {
     user_product_same_tod_count_evening: "Running count of the user's evening purchases of the product, up to and including the last order containing the product at or before the anchor order (carried forward).",
     user_product_same_tod_count_nighttime: "Running count of the user's nighttime purchases of the product, up to and including the last order containing the product at or before the anchor order (carried forward).",
     user_cumulative_aisle_products: "Count of product line items the user bought from the candidate's aisle up to the anchor order (carried forward from the last order containing the aisle).",
+    user_aisle_first_purchase_day: "Day, counted from the user's first order, of the user's first purchase from the candidate's aisle (carried forward from the last order containing the aisle).",
+    user_aisle_last_purchase_day: "Day, counted from the user's first order, of the user's latest purchase from the candidate's aisle at or before the anchor order (carried forward).",
+    user_aisle_cumulative_purchase_orders: "Number of orders up to the anchor order in which the user bought from the candidate's aisle (carried forward from the last order containing the aisle).",
     user_cumulative_department_products: "Count of product line items the user bought from the candidate's department up to the anchor order (carried forward from the last order containing it).",
     user_avg_days_between_orders: "Average days between the user's orders up to the anchor order. 0 when undefined (anchor is the first order).",
     user_distinct_product_count: "Count of distinct products the user bought up to the anchor order. 0 if missing.",
@@ -96,6 +99,9 @@ SELECT
 
   -- Forward fill last non-null value for user department and user aisle preliminary features
   LAST_VALUE(a.user_cumulative_aisle_products IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.aisle_id ORDER BY cs.order_number) AS user_cumulative_aisle_products,
+  LAST_VALUE(a.user_aisle_first_purchase_day IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.aisle_id ORDER BY cs.order_number) AS user_aisle_first_purchase_day,
+  LAST_VALUE(a.user_aisle_last_purchase_day IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.aisle_id ORDER BY cs.order_number) AS user_aisle_last_purchase_day,
+  LAST_VALUE(a.user_aisle_cumulative_purchase_orders IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.aisle_id ORDER BY cs.order_number) AS user_aisle_cumulative_purchase_orders,
   LAST_VALUE(d.user_cumulative_department_products IGNORE NULLS) OVER(PARTITION BY cs.user_id, cs.department_id ORDER BY cs.order_number) AS user_cumulative_department_products,
 
   -- Add preliminary order features
